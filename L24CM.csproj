@@ -1,0 +1,292 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5CB77D16-242A-429C-9AD5-8969BC058853}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>L24CM</RootNamespace>
+    <AssemblyName>L24CM</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\L24CM.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="HtmlAgilityPack, Version=1.4.0.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>ThirdParty\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>ThirdParty\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.Entity">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Extensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Routing">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attributes\ContentDisplayNameAttribute.cs" />
+    <Compile Include="Attributes\NoCacheAttribute.cs" />
+    <Compile Include="Config\ConfigHelper.cs" />
+    <Compile Include="Config\L24CMSection.cs" />
+    <Compile Include="Config\NavCache.cs" />
+    <Compile Include="ContentClasses\LoginForm.cs" />
+    <Compile Include="Controllers\HttpStatusCodeResult.cs" />
+    <Compile Include="L24SecurityManager.cs" />
+    <Compile Include="Filters\IncludesFilter.cs" />
+    <Compile Include="Membership\IUser.cs" />
+    <Compile Include="Membership\IUserCachingService.cs" />
+    <Compile Include="Membership\IUserObjectContext.cs" />
+    <Compile Include="Membership\LightweightIdentity.cs" />
+    <Compile Include="Models\BaseContent.cs" />
+    <Compile Include="Models\ContentRepository.cs" />
+    <Compile Include="Models\ContentModel.cs" />
+    <Compile Include="Models\L24CMEntities.cs" />
+    <Compile Include="Models\Link.cs" />
+    <Compile Include="Models\LoaderDictionary.cs" />
+    <Compile Include="Models\PageContent.cs" />
+    <Compile Include="Models\PagingInfo.cs" />
+    <Compile Include="Routing\ContentRoute.cs" />
+    <Compile Include="Controllers\ContentController.cs" />
+    <Compile Include="Controllers\AjaxController.cs" />
+    <Compile Include="Controllers\DataController.cs" />
+    <Compile Include="Controllers\ExtendedController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\EmbeddedController.cs" />
+    <Compile Include="Controllers\FileManagerController.cs" />
+    <Compile Include="Controllers\UploadController.cs" />
+    <Compile Include="FileUploader.cs" />
+    <Compile Include="FormClasses\LoginForm.cs" />
+    <Compile Include="FormFileUploader.cs" />
+    <Compile Include="IOX.cs" />
+    <Compile Include="L24Manager.cs" />
+    <Compile Include="L24View.cs" />
+    <Compile Include="L24ViewEngine.cs" />
+    <Compile Include="L24HtmlHelper.cs" />
+    <Compile Include="L24Model.cs" />
+    <Compile Include="Membership\LightweightMembershipProvider.cs" />
+    <Compile Include="Membership\LightweightRoleProvider.cs" />
+    <Compile Include="Models\ContentItem.cs" />
+    <Compile Include="Models\DataExtensions.cs" />
+    <Compile Include="Models\L24CM.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>L24CM.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Membership\LightweightMembershipUser.cs" />
+    <Compile Include="Models\MappedLoader.cs" />
+    <Compile Include="Models\RequestDataSpecification.cs" />
+    <Compile Include="Models\User.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Routing\ExtendedRoute.cs" />
+    <Compile Include="Routing\PathMap.cs" />
+    <Compile Include="Routing\RouteX.cs" />
+    <Compile Include="ThirdParty\Dynamic.cs" />
+    <Compile Include="ThirdParty\RssReader.cs" />
+    <Compile Include="Utility\ArrayGraph.cs" />
+    <Compile Include="Utility\DateTimeX.cs" />
+    <Compile Include="Utility\EntityX.cs" />
+    <Compile Include="Utility\HtmlHelperX.cs" />
+    <Compile Include="Utility\IOX.cs" />
+    <Compile Include="Utility\LinqX.cs" />
+    <Compile Include="Utility\StringX.cs" />
+    <Compile Include="Utility\UrlX.cs" />
+    <Compile Include="Utility\WebX.cs" />
+    <Compile Include="Validation.cs" />
+    <Compile Include="XhrFileUploader.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <EntityDeploy Include="Models\L24CM.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>L24CM.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\L24Main.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\TextItemPage.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\TextItem.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Content\Images\application.png" />
+    <EmbeddedResource Include="Content\Images\code.png" />
+    <EmbeddedResource Include="Content\Images\css.png" />
+    <EmbeddedResource Include="Content\Images\db.png" />
+    <EmbeddedResource Include="Content\Images\directory.png" />
+    <EmbeddedResource Include="Content\Images\doc.png" />
+    <EmbeddedResource Include="Content\Images\file.png" />
+    <EmbeddedResource Include="Content\Images\film.png" />
+    <EmbeddedResource Include="Content\Images\flash.png" />
+    <EmbeddedResource Include="Content\Images\folder_open.png" />
+    <EmbeddedResource Include="Content\Images\html.png" />
+    <EmbeddedResource Include="Content\Images\java.png" />
+    <EmbeddedResource Include="Content\Images\linux.png" />
+    <EmbeddedResource Include="Content\Images\music.png" />
+    <EmbeddedResource Include="Content\Images\pdf.png" />
+    <EmbeddedResource Include="Content\Images\php.png" />
+    <EmbeddedResource Include="Content\Images\picture.png" />
+    <EmbeddedResource Include="Content\Images\ppt.png" />
+    <EmbeddedResource Include="Content\Images\psd.png" />
+    <EmbeddedResource Include="Content\Images\ruby.png" />
+    <EmbeddedResource Include="Content\Images\script.png" />
+    <EmbeddedResource Include="Content\Images\spinner.gif" />
+    <EmbeddedResource Include="Content\Images\txt.png" />
+    <EmbeddedResource Include="Content\Images\xls.png" />
+    <EmbeddedResource Include="Content\Images\zip.png" />
+    <EmbeddedResource Include="Content\jquery.jstreelist.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Content\fileuploader.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\fileuploader.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Content\Images\loading.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\jquery.tmpl.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\jquery.jstree.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\jquery.jstreelist.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\themes\default\d.gif" />
+    <EmbeddedResource Include="Scripts\themes\default\d.png" />
+    <EmbeddedResource Include="Scripts\themes\default\style.css" />
+    <EmbeddedResource Include="Scripts\themes\default\throbber.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\L24Admin.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\L24Editor.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Content\L24Main.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\jquery.layout.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\jquery-ui.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Content\jquery.layout.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\jquery.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\jquery.contextMenu.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Content\Images\cut.png" />
+    <EmbeddedResource Include="Content\Images\door.png" />
+    <EmbeddedResource Include="Content\Images\page_white_copy.png" />
+    <EmbeddedResource Include="Content\Images\page_white_delete.png" />
+    <EmbeddedResource Include="Content\Images\page_white_edit.png" />
+    <EmbeddedResource Include="Content\Images\page_white_paste.png" />
+    <EmbeddedResource Include="Content\jquery.contextMenu.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\jquery.simplemodal.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Content\Images\close-white.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Content\Images\dropdownarrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\L24Controls.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Content\jquery-ui.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Content\Images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
+    <EmbeddedResource Include="Content\Images\ui-bg_diagonals-thick_20_666666_40x40.png" />
+    <EmbeddedResource Include="Content\Images\ui-bg_flat_10_000000_40x100.png" />
+    <EmbeddedResource Include="Content\Images\ui-bg_glass_100_f6f6f6_1x400.png" />
+    <EmbeddedResource Include="Content\Images\ui-bg_glass_100_fdf5ce_1x400.png" />
+    <EmbeddedResource Include="Content\Images\ui-bg_glass_65_ffffff_1x400.png" />
+    <EmbeddedResource Include="Content\Images\ui-bg_gloss-wave_35_f6a828_500x100.png" />
+    <EmbeddedResource Include="Content\Images\ui-bg_highlight-soft_100_eeeeee_1x100.png" />
+    <EmbeddedResource Include="Content\Images\ui-bg_highlight-soft_75_ffe45c_1x100.png" />
+    <EmbeddedResource Include="Content\Images\ui-icons_222222_256x240.png" />
+    <EmbeddedResource Include="Content\Images\ui-icons_228ef1_256x240.png" />
+    <EmbeddedResource Include="Content\Images\ui-icons_ef8c08_256x240.png" />
+    <EmbeddedResource Include="Content\Images\ui-icons_ffd27a_256x240.png" />
+    <EmbeddedResource Include="Content\Images\ui-icons_ffffff_256x240.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Caches\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

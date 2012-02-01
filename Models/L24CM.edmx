@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="l24cmModel.Store" Alias="Self" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.1" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
+        <EntityContainer Name="l24cmModelStoreContainer">
+          <EntitySet Name="contentitem" EntityType="l24cmModel.Store.contentitem" store:Type="Tables" Schema="l24cm" />
+          <EntitySet Name="user" EntityType="l24cmModel.Store.user" store:Type="Tables" Schema="l24cm" />
+        </EntityContainer>
+        <EntityType Name="contentitem">
+          <Key>
+            <PropertyRef Name="path" />
+          </Key>
+          <Property Name="action" Type="varchar" Nullable="false" MaxLength="45" />
+          <Property Name="content" Type="varchar" MaxLength="60000" />
+          <Property Name="controller" Type="varchar" Nullable="false" MaxLength="45" />
+          <Property Name="path" Type="varchar" Nullable="false" MaxLength="700" />
+          <Property Name="subindex0" Type="varchar" MaxLength="150" />
+          <Property Name="subindex1" Type="varchar" MaxLength="150" />
+          <Property Name="subindex2" Type="varchar" MaxLength="150" />
+          <Property Name="subindex3" Type="varchar" MaxLength="150" />
+          <Property Name="subindex4" Type="varchar" MaxLength="150" />
+          <Property Name="subindex5" Type="varchar" MaxLength="150" />
+          <Property Name="type" Type="varchar" Nullable="false" MaxLength="300" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="created" Type="datetime" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="256" />
+          <Property Name="firstname" Type="varchar" MaxLength="60" />
+          <Property Name="id" Type="guid" Nullable="false" />
+          <Property Name="lastname" Type="varchar" MaxLength="80" />
+          <Property Name="modified" Type="datetime" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="256" />
+          <Property Name="roles" Type="varchar" Nullable="false" MaxLength="256" />
+          <Property Name="username" Type="varchar" Nullable="false" MaxLength="256" />
+        </EntityType>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="l24cmModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
+        <EntityContainer Name="L24CMEntities">
+          <EntitySet Name="ContentItemSet" EntityType="l24cmModel.ContentItem" />
+          <EntitySet Name="UserSet" EntityType="l24cmModel.User" /></EntityContainer>
+        <EntityType Name="ContentItem">
+          <Key>
+            <PropertyRef Name="Path" />
+          </Key>
+          <Property Name="Content" Type="String" />
+          <Property Name="Path" Type="String" Nullable="false" />
+          <Property Name="Type" Type="String" Nullable="false" />
+          <Property Name="Action" Type="String" Nullable="false" />
+          <Property Name="Controller" Type="String" Nullable="false" />
+          <Property Name="Subindex0" Type="String" Nullable="true" />
+          <Property Name="Subindex1" Type="String" Nullable="true" />
+          <Property Name="Subindex2" Type="String" Nullable="true" />
+          <Property Name="Subindex3" Type="String" Nullable="true" />
+          <Property Name="Subindex4" Type="String" Nullable="true" />
+          <Property Name="Subindex5" Type="String" Nullable="true" /></EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" /></Key>
+          <Property Name="Created" Type="DateTime" Nullable="false" />
+          <Property Name="Email" Type="String" Nullable="true" />
+          <Property Name="FirstName" Type="String" Nullable="true" />
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="LastName" Type="String" Nullable="true" />
+          <Property Name="Modified" Type="DateTime" Nullable="false" />
+          <Property Name="Password" Type="String" Nullable="true" />
+          <Property Name="Roles" Type="String" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" /></EntityType></Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="urn:schemas-microsoft-com:windows:storage:mapping:CS">
+        <EntityContainerMapping StorageEntityContainer="l24cmModelStoreContainer" CdmEntityContainer="L24CMEntities">
+          <EntitySetMapping Name="ContentItemSet">
+            <EntityTypeMapping TypeName="IsTypeOf(l24cmModel.ContentItem)">
+              <MappingFragment StoreEntitySet="contentitem">
+                <ScalarProperty Name="Subindex5" ColumnName="subindex5" />
+                <ScalarProperty Name="Subindex4" ColumnName="subindex4" />
+                <ScalarProperty Name="Subindex3" ColumnName="subindex3" />
+                <ScalarProperty Name="Subindex2" ColumnName="subindex2" />
+                <ScalarProperty Name="Subindex1" ColumnName="subindex1" />
+                <ScalarProperty Name="Subindex0" ColumnName="subindex0" />
+                <ScalarProperty Name="Controller" ColumnName="controller" />
+                <ScalarProperty Name="Action" ColumnName="action" />
+                <ScalarProperty Name="Content" ColumnName="content" />
+                <ScalarProperty Name="Path" ColumnName="path" />
+                <ScalarProperty Name="Type" ColumnName="type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserSet">
+            <EntityTypeMapping TypeName="IsTypeOf(l24cmModel.User)">
+              <MappingFragment StoreEntitySet="user">
+                <ScalarProperty Name="UserName" ColumnName="username" />
+                <ScalarProperty Name="Roles" ColumnName="roles" />
+                <ScalarProperty Name="Password" ColumnName="password" />
+                <ScalarProperty Name="Modified" ColumnName="modified" />
+                <ScalarProperty Name="LastName" ColumnName="lastname" />
+                <ScalarProperty Name="Id" ColumnName="id" />
+                <ScalarProperty Name="FirstName" ColumnName="firstname" />
+                <ScalarProperty Name="Email" ColumnName="email" />
+                <ScalarProperty Name="Created" ColumnName="created" /></MappingFragment></EntityTypeMapping></EntitySetMapping></EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2007/06/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram Name="L24CM">
+        <EntityTypeShape EntityType="l24cmModel.ContentItem" Width="1.5" PointX="0.75" PointY="0.75" Height="3.1340950520833331" IsExpanded="true" />
+        <EntityTypeShape EntityType="l24cmModel.User" Width="1.5" PointX="3.375" PointY="0.75" Height="2.7494921874999996" /></Diagram></edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

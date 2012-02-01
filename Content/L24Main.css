@@ -1,0 +1,11 @@
+﻿iframe { border: 0; }
+
+#l24-control {position: absolute; z-index: 999999; top: 100px; left: 100px; background-color: #d8d8d8; border: solid 1px #303030; padding: 8px; }
+#l24-control div { cursor: pointer; background-color: White; padding: 3px; font-size: 14px; }
+
+.l24-bimodal-autocomplete-container { display: inline-block; }
+.l24-bimodal-autocomplete-button
+{
+	width: 20px; height: 20px; display: inline-block; position: relative; top: 5px;
+	background-color: Red;
+}

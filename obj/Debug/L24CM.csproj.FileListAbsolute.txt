@@ -1,0 +1,10 @@
+C:\Dev\MVC2MS\MVC2MS\bin\Debug\L24CM.dll.config
+C:\Dev\MVC2MS\MVC2MS\bin\Debug\L24CM.XML
+C:\Dev\MVC2MS\MVC2MS\bin\Debug\L24CM.dll
+C:\Dev\MVC2MS\MVC2MS\bin\Debug\L24CM.pdb
+C:\Dev\MVC2MS\MVC2MS\bin\Debug\HtmlAgilityPack.dll
+C:\Dev\MVC2MS\MVC2MS\bin\Debug\log4net.dll
+C:\Dev\MVC2MS\MVC2MS\bin\Debug\log4net.xml
+C:\Dev\MVC2MS\MVC2MS\obj\Debug\ResolveAssemblyReference.cache
+C:\Dev\MVC2MS\MVC2MS\obj\Debug\L24CM.dll
+C:\Dev\MVC2MS\MVC2MS\obj\Debug\L24CM.pdb
