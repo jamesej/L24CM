@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web;
 using System.Collections;
 using System.Net;
+using System.IO;
 
 namespace L24CM.Utility
 {
@@ -30,6 +31,18 @@ namespace L24CM.Utility
             string authInfo = user + ":" + pass;
             authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(authInfo));
             req.Headers["Authorization"] = "Basic " + authInfo;
+        }
+
+        public static HttpWebRequest GetPostRequest(string url, string body)
+        {
+            HttpWebRequest req = WebRequest.Create(url) as HttpWebRequest;
+            req.Method = "POST";
+            req.ContentType = "application/x-www-form-urlencoded";
+            req.ContentLength = body.Length;
+            StreamWriter stOut = new StreamWriter(req.GetRequestStream(), System.Text.Encoding.ASCII);
+            stOut.Write(body);
+            stOut.Close();
+            return req;
         }
     }
 }
