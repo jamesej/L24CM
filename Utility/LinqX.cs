@@ -42,7 +42,9 @@ namespace L24CM.Utility
             if (source != null)
                 foreach (TSource element in source)
                     yield return element;
-            yield return item;
+            // don't append item if it's default for the type TSource
+            if (!EqualityComparer<TSource>.Default.Equals(item,default(TSource)))
+                yield return item;
         }
 
         private static Expression<Func<TElement, bool>> GetWhereInExpression<TElement, TValue>(Expression<Func<TElement, TValue>> propertySelector, IEnumerable<TValue> values)
