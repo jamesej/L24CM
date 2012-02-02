@@ -33,6 +33,11 @@ namespace L24CM.Utility
             req.Headers["Authorization"] = "Basic " + authInfo;
         }
 
+        public static string GetResponseString(this HttpWebRequest req)
+        {
+            return new StreamReader(req.GetResponse().GetResponseStream()).ReadToEnd();
+        }
+
         public static HttpWebRequest GetPostRequest(string url, string body)
         {
             HttpWebRequest req = WebRequest.Create(url) as HttpWebRequest;
