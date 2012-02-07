@@ -30,16 +30,22 @@ namespace L24CM
             HttpContext.Current.Application["_L24ControllerAssembly"] = typeInAssemblyWithControllers.Assembly;
 
             // Find embedded files in L24CM dll
-            routes.Add("embedded", new Route("L24CM/Embedded/{*innerUrl}", new MvcRouteHandler())
+            routes.Add("l24embedded", new Route("L24CM/Embedded/{*innerUrl}", new MvcRouteHandler())
             {
                 Defaults = new RouteValueDictionary(
-                    new { controller = "Embedded", action = "Index" }),
+                    new { controller = "Embedded", action = "Index" })
+            });
+            // Get dynamically generated content
+            routes.Add("l24dynamic", new Route("L24CM/Dynamic/{action}/{*urlTail}", new MvcRouteHandler())
+            {
+                Defaults = new RouteValueDictionary(
+                    new { controller = "Dynamic" })
             });
             // Find urls added to site by L24CM
             routes.Add("l24default", new Route("L24CM/{controller}/{action}", new MvcRouteHandler())
             {
                 Defaults = new RouteValueDictionary(
-                    new { controller = "Ajax", action = "Index" }),
+                    new { controller = "Ajax", action = "Index" })
             });
         }
 

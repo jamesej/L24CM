@@ -27,6 +27,7 @@ namespace L24CM.Controllers
                 Model = new T();
 
             RegisterScript("jquery", "/L24CM/Embedded/Scripts/jquery.js", PrimaryInclude);
+            //RegisterScript("jquery", "http://code.jquery.com/jquery-1.7.min.js", PrimaryInclude);
             //DataSpec = new RequestDataSpecification(filterContext);
             //T model = new T();
             //Loader = new MappedLoader<T>(model);
