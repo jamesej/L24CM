@@ -280,6 +280,9 @@
     <EmbeddedResource Include="Content\Images\ui-icons_ffffff_256x240.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Scripts\L24EditPanel.js" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Caches\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
