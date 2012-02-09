@@ -42,7 +42,7 @@ namespace L24CM.Membership
         public static Type UserObjectContextType = typeof(L24CMEntities);
         public static Type UserType = typeof(User);
 
-        IUserCachingService userCachingService = null;
+        IUserCachingService userCachingService = L24SecurityManager.Current;
         internal IUserCachingService UserCachingService { get { return userCachingService; } }
 
         public override void Initialize(string name, System.Collections.Specialized.NameValueCollection config)

@@ -41,6 +41,7 @@ using System.Web.UI;
 [assembly: WebResource("L24CM.Scripts.L24Editor.js", "application/javascript")]
 [assembly: WebResource("L24CM.Scripts.L24Admin.js", "application/javascript")]
 [assembly: WebResource("L24CM.Scripts.L24Controls.js", "application/javascript")]
+[assembly: WebResource("L24CM.Scripts.L24EditPanel.js", "application/javascript")]
 [assembly: WebResource("L24CM.Scripts.jquery.jstree.js", "application/javascript")]
 [assembly: WebResource("L24CM.Scripts.jquery.jstreelist.js", "application/javascript")]
 [assembly: WebResource("L24CM.Scripts.jquery.layout.js", "application/javascript")]
