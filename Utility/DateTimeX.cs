@@ -9,9 +9,12 @@ namespace L24CM.Utility
     {
         public static DateTime UnixEra = new DateTime(1970, 1, 1);
 
-        public static DateTime FromUnix(string unixTimestamp)
+        public static DateTime? FromUnix(string unixTimestamp)
         {
-            return UnixEra.AddSeconds(double.Parse(unixTimestamp));
+            if (unixTimestamp == "NaN" || unixTimestamp == "0" || string.IsNullOrEmpty(unixTimestamp))
+                return null;
+            else
+                return UnixEra.AddSeconds(double.Parse(unixTimestamp));
         }
 
         public static string ToUnix(this DateTime dt)
