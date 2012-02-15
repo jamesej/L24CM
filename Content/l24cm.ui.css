@@ -1,0 +1,13 @@
+﻿#outer { width: 600px; height: 300px; z-index: 0; }
+#listContainer, #treeContainer
+{
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+.jstreelist-folder-active { border: solid 1px #3030ff; background-color: Red important!; border-radius: 3px; -moz-border-radius: 3px; }
+
+#simplemodal-overlay { background-color: #000; }
+#simplemodal-container { padding: 20px; background-color: #e0e0ff; border-radius: 8px; -moz-border-radius: 10px; }

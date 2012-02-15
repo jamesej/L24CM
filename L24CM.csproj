@@ -283,6 +283,9 @@
     <EmbeddedResource Include="Scripts\L24EditPanel.js" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Content\l24cm.ui.css" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Caches\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

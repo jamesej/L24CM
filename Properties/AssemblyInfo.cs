@@ -60,6 +60,7 @@ using System.Web.UI;
 [assembly: WebResource("L24CM.Scripts.themes.default.style.css", "text/css")]
 [assembly: WebResource("L24CM.Content.jquery.contextMenu.css", "text/css")]
 [assembly: WebResource("L24CM.Content.jquery-ui.css", "text/css")]
+[assembly: WebResource("L24CM.Content.l24cm.ui.css", "text/css")]
 
 [assembly: WebResource("L24CM.Views.TI.aspx", "text/html")]
 
