@@ -1,20 +1,21 @@
-﻿
+﻿// DEPENDS ON jquery.js, L24Main.js, jquery-ui.js, jquery.tmpl.js, fileuploader.js, jquery.jstree.js, jquery.contextMenu.js
 //(function($) {
 $.fn.jstreelist = function(options) {
     settings = {
         treeContainerSelector: '.treeContainer',
         listContainerSelector: '.listContainer',
-		filenameSelector: 'input.filename'
+		filenameSelector: 'input.filename',
+		detailsSelector: '.fileDetails'
     };
     if (options && typeof options == "object")
         $.extend(settings, options);
 
     var $treeContainer = this.find(settings.treeContainerSelector);
-
-    // set up list container
     var $listContainer = this.find(settings.listContainerSelector);
-	
 	var $filename = this.find(settings.filenameSelector);
+	var $fileDetails = this.find(settings.detailsSelector);
+	if ($fileDetails.length == 0)
+		$fileDetails = null;
 
     if (typeof options == "string") {
         var cmdName = options;
@@ -113,6 +114,15 @@ $.fn.jstreelist = function(options) {
 	
 	var showFilename = function (filename) {
 		$filename.val(filename);
+		if ($fileDetails && filename && filename.length) {
+			var suffix = filename.afterLast('.').toLowerCase();
+			switch (suffix){
+				case "png": case "jpg": case "gif":
+					$fileDetails.empty().append($("<img class='file-image-thumb' src='" + filename + "'/>"));
+					break;
+			}
+		}
+		
 	}
 
     // setup list container

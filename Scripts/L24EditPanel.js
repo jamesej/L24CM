@@ -28,14 +28,20 @@
 		});
 	    //});
 		
-		// FILE
+		// IMAGE
 		
 		$('.l24-image-load').click(function () {
 			var $this = $(this);
 			var $fname = $this.siblings('input');
 			top.getFile($fname.val(), function(fname) {
-				alert($fname.val());
+				var suffix = fname.afterLast('.').toLowerCase();
+				if ("png|jpg|gif".indexOf(suffix) < 0)
+					return "Please select an image file only";
 				$fname.val(fname);
+				$this.closest('table').find('.l24-image-content-cell')
+					.empty()
+					.append($("<img class='file-image-thumb' src='" + fname + "'/>"));
+				return null;
 			});
 			return false;
 		})

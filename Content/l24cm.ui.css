@@ -11,3 +11,7 @@
 
 #simplemodal-overlay { background-color: #000; }
 #simplemodal-container { padding: 20px; background-color: #e0e0ff; border-radius: 8px; -moz-border-radius: 10px; }
+
+#filename { width: 320px }
+#fileDetails { float:right }
+.file-image-thumb { max-width: 50px; max-height: 50px; }
