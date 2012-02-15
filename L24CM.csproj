@@ -93,6 +93,7 @@
     <Compile Include="Models\BaseContent.cs" />
     <Compile Include="Models\ContentRepository.cs" />
     <Compile Include="Models\ContentModel.cs" />
+    <Compile Include="Models\Image.cs" />
     <Compile Include="Models\L24CMEntities.cs" />
     <Compile Include="Models\Link.cs" />
     <Compile Include="Models\LoaderDictionary.cs" />

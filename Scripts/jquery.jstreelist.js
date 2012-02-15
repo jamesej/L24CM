@@ -150,11 +150,11 @@ $.fn.jstreelist = function(options) {
         element: $listContainer[0],
         action: '/L24CM/Upload/',
         template: '<div class="qq-upload-drop-area"></div>' +
-                        '<div class="file-list-area"></div>' +
-                        '<div class="upload-control-area">' +
+					'<div class="upload-control-area">' +
                         '<div class="qq-upload-button">Upload</div>' +
                         '<ul class="qq-upload-list"></ul>' +
-                        '</div>',
+                        '</div>' +
+                    '<div class="file-list-area"></div>',
         fileTemplate: '<li>' +
                     '<span class="qq-upload-file"></span>' +
                     '<span class="qq-upload-spinner"></span>' +
@@ -167,7 +167,8 @@ $.fn.jstreelist = function(options) {
             uploader.setParams({ dir: $listContainer.data('jstreelist_path') });
         },
         onComplete: function(id, filename, responseJSON) {
-            $listContainer.jstreelist("showDir");
+            commands.showDir('uploader');
+			setTimeout("$('.qq-upload-list').find('li:first').remove()", 3500);
         }
     });
 
@@ -249,12 +250,6 @@ $.fn.jstreelist = function(options) {
 							var $this = $(this);
 							if ($this.is('tr')) $this.find('span').dblclick();
 							else $treeContainer.jstree("rename", $this.parent());
-						}
-					},
-				properties: {
-					name: "Properties",
-					callback: function(key, opt){
-						alert("Properties " + key);
 						}
 					}
 			}
