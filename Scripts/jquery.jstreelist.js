@@ -189,7 +189,7 @@ $.fn.jstreelist = function(options) {
                 data: { title: settings.rootPath },
                 attr: { title: settings.rootPath },
                 state: "closed"
-}],
+				}],
                 ajax: {
                     url: "/L24CM/Ajax/FileTreeFolders",
                     data: function(n) {
@@ -214,7 +214,10 @@ $.fn.jstreelist = function(options) {
             commands.rename('tree', dir, data.rslt.new_name, function() { $.jstree.rollback(data.rlbk); })
         }).bind("load_node.jstree", function(event, data) {
 			var $n = data.args[0];
-			if ($n == -1) return;
+			if ($n == -1) {
+				$treeContainer.jstree("toggle_node", $n);
+				return;
+			}
 			$n.find('a').droppable({
 				hoverClass: 'jstreelist-folder-active',
 				drop: function(event, ui) {

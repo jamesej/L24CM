@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Web;
 using System.IO;
 using L24CM.Utility;
+using L24CM.Config;
 
 namespace L24CM.Controllers
 {
@@ -15,6 +16,9 @@ namespace L24CM.Controllers
         public ActionResult FileTreeFolders(string dir)
         {
             if (string.IsNullOrEmpty(dir)) dir = "/";
+
+            if (!dir.StartsWith(ConfigHelper.FileManagerRoot))
+                return new HttpStatusCodeResult(403, "Cannot access this directory");
 
             DirectoryInfo di = new System.IO.DirectoryInfo(Server.MapPath(dir));
             var output = di.GetDirectories()
@@ -32,6 +36,9 @@ namespace L24CM.Controllers
         public ActionResult FileTreeFiles(string dir)
         {
             if (string.IsNullOrEmpty(dir)) dir = "/";
+
+            if (!dir.StartsWith(ConfigHelper.FileManagerRoot))
+                return new HttpStatusCodeResult(403, "Cannot access this directory");
 
             DirectoryInfo di = new System.IO.DirectoryInfo(Server.MapPath(dir));
             var output = new
@@ -59,6 +66,8 @@ namespace L24CM.Controllers
         [HttpPost]
         public ActionResult Rename(string path, string newName)
         {
+            if (!path.StartsWith(ConfigHelper.FileManagerRoot))
+                return new HttpStatusCodeResult(403, "Cannot access this directory");
             try
             {
                 string filePath = Server.MapPath(path);
@@ -76,6 +85,8 @@ namespace L24CM.Controllers
         [HttpPost]
         public ActionResult Move(string path, string newDir)
         {
+            if (!path.StartsWith(ConfigHelper.FileManagerRoot))
+                return new HttpStatusCodeResult(403, "Cannot access this directory");
             try
             {
                 string filePath = Server.MapPath(path);
@@ -95,6 +106,8 @@ namespace L24CM.Controllers
         [HttpPost]
         public ActionResult Delete(string path)
         {
+            if (!path.StartsWith(ConfigHelper.FileManagerRoot))
+                return new HttpStatusCodeResult(403, "Cannot access this directory");
             try
             {
                 string filePath = Server.MapPath(path);
@@ -119,6 +132,9 @@ namespace L24CM.Controllers
         [HttpPost]
         public ActionResult CreateFolder(string path)
         {
+            if (!path.StartsWith(ConfigHelper.FileManagerRoot))
+                return new HttpStatusCodeResult(403, "Cannot access this directory");
+
             return Json(true);
         }
     }

@@ -14,6 +14,13 @@ namespace L24CM.Config
             get { return (ValueElement)this["l24CMAreaBaseUrl"]; }
             set { this["l24CMAreaBaseUrl"] = value; }
         }
+
+        [ConfigurationProperty("l24CMFileManagerRoot")]
+        public ValueElement L24CMFileManagerRoot
+        {
+            get { return (ValueElement)this["l24CMFileManagerRoot"]; }
+            set { this["l24CMFileManagerRoot"] = value; }
+        }
     }
 
     public class ValueElement : ConfigurationElement

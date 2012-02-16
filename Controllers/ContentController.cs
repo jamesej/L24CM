@@ -61,6 +61,7 @@ namespace L24CM.Controllers
                 && (Request.QueryString["-mode"] ?? "").ToLower() != "view")
             {
                 ViewData["Path"] = "/" + (string)RouteData.Values["path"];
+                ViewData["FileManagerRoot"] = ConfigHelper.FileManagerRoot;
                 filterContext.Result = View(ConfigHelper.GetViewPath("L24CMDual.aspx"));
                 return;
             }
