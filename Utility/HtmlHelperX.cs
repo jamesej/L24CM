@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using L24CM.Controllers;
-using L24CM.Utility;
 
-namespace L24CM
+namespace L24CM.Utility
 {
     public static class HtmlHelperX
     {

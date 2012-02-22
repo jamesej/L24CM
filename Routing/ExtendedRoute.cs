@@ -25,17 +25,7 @@ namespace L24CM.Routing
 
         private void SaveStructure(string url, RouteValueDictionary defaults)
         {
-            SiteStructure struc = HttpContext.Current.Items["_L24SiteStructure"] as SiteStructure;
-            if (struc == null)
-            {
-                struc = new SiteStructure();
-                HttpContext.Current.Items["_L24SiteStructure"] = struc;
-            }
-
-            if (url.Contains("{controller}"))
-            {
-                struc.Controllers.Add
-            }
+            SiteStructure.Current.AddController(url, defaults);
         }
 
         public override RouteData GetRouteData(HttpContextBase httpContext)

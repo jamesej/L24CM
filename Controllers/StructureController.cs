@@ -11,11 +11,7 @@ namespace L24CM.Controllers
     {
         public ActionResult Index()
         {
-            UrlHelper urls = new UrlHelper((System.Web.HttpContext.Current.Handler as MvcHandler).RequestContext);
-
-            string url = urls.Action("*1", "Ajax");
-            url = urls.Action("Index", "Ajax");
-            return View("L24CMStructure");
+            return View("L24CMStructure", SiteStructure.Current);
         }
 
     }

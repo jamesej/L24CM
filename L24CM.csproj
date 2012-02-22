@@ -117,7 +117,6 @@
     <Compile Include="L24Manager.cs" />
     <Compile Include="L24View.cs" />
     <Compile Include="L24ViewEngine.cs" />
-    <Compile Include="L24HtmlHelper.cs" />
     <Compile Include="L24Model.cs" />
     <Compile Include="Membership\LightweightMembershipProvider.cs" />
     <Compile Include="Membership\LightweightRoleProvider.cs" />
@@ -286,7 +285,7 @@
     <EmbeddedResource Include="Scripts\L24EditPanel.js" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Content\l24cm.ui.css" />
+    <EmbeddedResource Include="Content\L24External.css" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Caches\" />

@@ -11,10 +11,7 @@ namespace L24CM.Routing
     {
         public static void MapExtendedRoute(this RouteCollection routes, string name, string url, object defaults)
         {
-            routes.Add(name, new ExtendedRoute(url, new MvcRouteHandler())
-            {
-                Defaults = new RouteValueDictionary(defaults)
-            });
+            routes.Add(name, new ExtendedRoute(url, new RouteValueDictionary(defaults), new MvcRouteHandler()));
         }
     }
 }

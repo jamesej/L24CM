@@ -1,16 +1,30 @@
 ﻿iframe { border: 0; }
 
-#l24-control {position: absolute; z-index: 999999; top: 100px; left: 100px; background-color: #d8d8d8; border: solid 1px #303030; padding: 8px; }
-#l24-control div { cursor: pointer; background-color: White; padding: 3px; font-size: 14px; }
+body { font-family: Arial, Sans-Serif; }
 
-.l24-bimodal-autocomplete-container { display: inline-block; }
-.l24-bimodal-autocomplete-button
-{
-	width: 20px; height: 20px; display: inline-block; position: relative; top: 5px;
-	background-color: Red;
-}
-
-#editPanel { font-size: 11px; font-family: Arial, Sans-Serif; }
+#editPanel { font-size: 11px; }
 #editPanel input[type="text"] { font-size: 11px; }
-#editPanel .editor-label { background-color: Gray; color: White; padding: 2px; font-size: 12px; }
+#editPanel .editor-label { background-color: Gray; color: White; padding: 2px; font-size: 12px; height: auto; }
 .file-image-thumb { max-width: 50px; max-height: 50px; }
+
+#outer { width: 600px; height: 300px; z-index: 0; }
+#listContainer, #treeContainer
+{
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+.jstreelist-folder-active { border: solid 1px #3030ff; background-color: Red important!; border-radius: 3px; -moz-border-radius: 3px; }
+
+#simplemodal-overlay { background-color: #000; }
+#simplemodal-container { padding: 20px; background-color: #e0e0ff; border-radius: 8px; -moz-border-radius: 10px; }
+
+#filename { width: 320px }
+#fileDetails { float:right }
+.file-image-thumb { max-width: 50px; max-height: 50px; }
+
+.editor-label { background-color: Gray; color: White; padding: 2px; font-size: 12px; height: 22px; }
+.editor-label .template-name { float: left; width: 120px; overflow: hidden; font-size: 16px; }
+.editor-label .url-pattern { float: left; margin-left: 10px; }
