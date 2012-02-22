@@ -35,6 +35,9 @@ namespace L24CM.Filters
 
         public void UpdateIncludes(HtmlDocument doc, string tag, string attr, List<IncludeEntry> includes, Dictionary<string, string> createAttributes)
         {
+            if (includes == null || includes.Count == 0)
+                return;
+
             List<HtmlNode> existingIncludes = doc.DocumentNode
                 .Descendants(tag)
                 .Where(n => n.GetAttributeValue(attr, "") != "")
@@ -121,7 +124,15 @@ namespace L24CM.Filters
             List<IncludeEntry> scripts = controller.HttpContext.Items[ExtendedController.ScriptsItem] as List<IncludeEntry>;
             List<IncludeEntry> htmls = controller.HttpContext.Items[ExtendedController.HtmlsItem] as List<IncludeEntry>;
 
-            s = InsertIncludes(s, scripts, csses, htmls);
+            if (!s.Contains("</html>"))
+            {
+                s = string.Format("<html><head></head><body>{0}</body></html>", s);
+            }
+
+            if ((csses != null && csses.Count > 0)
+                || (scripts != null && scripts.Count > 0)
+                || (htmls != null && htmls.Count > 0))
+                s = InsertIncludes(s, scripts, csses, htmls);
 
             sw.Write(s);
             sw.Flush();

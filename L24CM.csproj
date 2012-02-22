@@ -82,6 +82,7 @@
     <Compile Include="Config\L24CMSection.cs" />
     <Compile Include="Config\NavCache.cs" />
     <Compile Include="ContentClasses\LoginForm.cs" />
+    <Compile Include="Controllers\StructureController.cs" />
     <Compile Include="Controllers\DynamicController.cs" />
     <Compile Include="Controllers\HttpStatusCodeResult.cs" />
     <Compile Include="L24SecurityManager.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="Models\LoaderDictionary.cs" />
     <Compile Include="Models\PageContent.cs" />
     <Compile Include="Models\PagingInfo.cs" />
+    <Compile Include="Models\SiteStructure.cs" />
     <Compile Include="Routing\ContentRoute.cs" />
     <Compile Include="Controllers\ContentController.cs" />
     <Compile Include="Controllers\AjaxController.cs" />

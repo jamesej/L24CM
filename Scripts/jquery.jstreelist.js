@@ -120,6 +120,9 @@ $.fn.jstreelist = function(options) {
 				case "png": case "jpg": case "gif":
 					$fileDetails.empty().append($("<img class='file-image-thumb' src='" + filename + "'/>"));
 					break;
+				default:
+					$fileDetails.empty();
+					break;
 			}
 		}
 		
@@ -182,11 +185,13 @@ $.fn.jstreelist = function(options) {
         }
     });
 
+    var rootName = settings.rootPath;
+	rootName = rootName.right(1) == '/' ? rootName.upToLast('/').afterLast('/') : rootName.afterLast('/');
     $treeContainer.jstree({
         plugins: ["themes", "json_data", "ui", "crrm", "dnd"],
         json_data: {
             data: [{
-                data: { title: settings.rootPath },
+                data: { title: rootName },
                 attr: { title: settings.rootPath },
                 state: "closed"
 				}],
@@ -215,7 +220,8 @@ $.fn.jstreelist = function(options) {
         }).bind("load_node.jstree", function(event, data) {
 			var $n = data.args[0];
 			if ($n == -1) {
-				$treeContainer.jstree("toggle_node", $n);
+				$treeContainer.jstree("toggle_node", "li:first");
+				commands.showDir('tree', settings.rootPath);
 				return;
 			}
 			$n.find('a').droppable({

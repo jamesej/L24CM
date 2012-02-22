@@ -46,10 +46,12 @@ namespace L24CM.Controllers
 
         protected override void OnResultExecuted(ResultExecutedContext filterContext)
         {
-            if (filterContext.Result is ViewResult)
+            if (filterContext.Result is ViewResult
+                || (filterContext.Result is PartialViewResult && !this.ControllerContext.IsChildAction))
             {
                 filterContext.HttpContext.Response.Filter = new IncludesFilter(filterContext.HttpContext.Response.Filter, this);
             }
+
         }
 
         protected virtual void RegisterInclude(string key, string incl, string id, List<string> deps)
@@ -67,7 +69,7 @@ namespace L24CM.Controllers
         /// <param name="script">url of script, or prefix with 'javascript:' for javascript code to include</param>
         public void RegisterScript(string script)
         {
-            RegisterInclude(ScriptsItem, script, script, null);
+            RegisterInclude(ScriptsItem, script, script, new List<string>());
         }
         /// <summary>
         /// Register a script for once-only inclusion on the page
@@ -77,7 +79,7 @@ namespace L24CM.Controllers
         /// <param name="script"></param>
         public void RegisterScript(string id, string script)
         {
-            RegisterInclude(ScriptsItem, script, id, null);
+            RegisterInclude(ScriptsItem, script, id, new List<string>());
         }
         public void RegisterScript(string id, string script, List<string> dependencies)
         {
@@ -86,11 +88,11 @@ namespace L24CM.Controllers
 
         public void RegisterCss(string css)
         {
-            RegisterInclude(CssItem, css, css, null);
+            RegisterInclude(CssItem, css, css, new List<string>());
         }
         public void RegisterCss(string id, string css)
         {
-            RegisterInclude(CssItem, css, id, null);
+            RegisterInclude(CssItem, css, id, new List<string>());
         }
         public void RegisterCss(string id, string css, List<string> dependencies)
         {
@@ -99,7 +101,7 @@ namespace L24CM.Controllers
 
         public void RegisterHtml(string id, string html)
         {
-            RegisterInclude(HtmlsItem, html, id, null);
+            RegisterInclude(HtmlsItem, html, id, new List<string>());
         }
 
     }

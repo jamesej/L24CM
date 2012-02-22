@@ -11,4 +11,6 @@
 }
 
 #editPanel { font-size: 11px; font-family: Arial, Sans-Serif; }
+#editPanel input[type="text"] { font-size: 11px; }
+#editPanel .editor-label { background-color: Gray; color: White; padding: 2px; font-size: 12px; }
 .file-image-thumb { max-width: 50px; max-height: 50px; }
