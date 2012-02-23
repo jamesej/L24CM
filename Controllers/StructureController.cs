@@ -14,5 +14,35 @@ namespace L24CM.Controllers
             return View("L24CMStructure", SiteStructure.Current);
         }
 
+        [HttpGet]
+        public ActionResult Instances(string name)
+        {
+            ControllerInfo cInfo = SiteStructure.Current.Controllers.FirstOrDefault(ci => ci.Name == name);
+
+            if (cInfo == null)
+                return new HttpStatusCodeResult(500, "No such template: " + name);
+
+            var instances = new
+            {
+                actions = cInfo.Actions,
+                routeKeys = cInfo.RouteKeys
+            };
+
+            return Json(instances, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult AddInstance(string name, string[] fieldNames, string[] fieldValues)
+        {
+            ControllerInfo cInfo = SiteStructure.Current.Controllers.FirstOrDefault(ci => ci.Name == name);
+
+            if (cInfo == null)
+                return new HttpStatusCodeResult(500, "No such template: " + name);
+
+            cInfo.Create(fieldNames, fieldValues);
+
+            return Content("OK");
+        }
+
     }
 }

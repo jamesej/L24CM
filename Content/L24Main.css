@@ -2,9 +2,10 @@
 
 body { font-family: Arial, Sans-Serif; }
 
+.editor-label { background-color: Gray; color: White; padding: 2px; font-size: 12px; height: auto; }
+
 #editPanel { font-size: 11px; }
 #editPanel input[type="text"] { font-size: 11px; }
-#editPanel .editor-label { background-color: Gray; color: White; padding: 2px; font-size: 12px; height: auto; }
 .file-image-thumb { max-width: 50px; max-height: 50px; }
 
 #outer { width: 600px; height: 300px; z-index: 0; }
@@ -25,6 +26,6 @@ body { font-family: Arial, Sans-Serif; }
 #fileDetails { float:right }
 .file-image-thumb { max-width: 50px; max-height: 50px; }
 
-.editor-label { background-color: Gray; color: White; padding: 2px; font-size: 12px; height: 22px; }
-.editor-label .template-name { float: left; width: 120px; overflow: hidden; font-size: 16px; }
-.editor-label .url-pattern { float: left; margin-left: 10px; }
+#structureManager .editor-label { height: 22px; margin-bottom: 3px; }
+#structureManager .template-name { float: left; width: 120px; overflow: hidden; font-size: 16px; }
+#structureManager .url-pattern { float: left; margin-left: 10px; }

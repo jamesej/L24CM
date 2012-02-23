@@ -40,6 +40,22 @@ namespace L24CM.Models
             return contentItem;
         }
 
+        public virtual void CreateContent<TController>(string action, string[] routeKeys, string[] routeValues)
+        {
+            Type ctrType = typeof(TController);
+            Type contentType = ctrType.GetGenericArguments().Where(t => typeof(BaseContent).IsAssignableFrom(t)).First();
+
+            ContentItem contentItem = new ContentItem
+            {
+                Action = action,
+                Content = null,
+                Controller = ctrType.Name.UpTo("Controller"),
+                Type = contentType.FullName
+            };
+            
+                    
+        }
+
         public virtual void Save()
         {
             Ctx.SaveChanges();

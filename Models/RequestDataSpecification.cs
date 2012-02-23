@@ -78,6 +78,16 @@ namespace L24CM.Models
             : this(filterContext.RouteData, filterContext.HttpContext.Request)
         {
         }
+        public RequestDataSpecification(string controller, string action, string[] routeNames, string[] routeValues)
+        {
+            UrlHelper urls = new UrlHelper((HttpContext.Current.Handler as MvcHandler).RequestContext);
+            Controller = controller;
+            Action = action;
+            RouteData = Enumerable.Range(0, routeNames.Length)
+                .ToDictionary(i => routeNames[i], i => (object)routeValues[i]);
+
+            Path = urls.Action(Action, Controller);
+        }
         public RequestDataSpecification(RouteData rd, HttpRequestBase req)
         {
             Path = (rd.Values["path"] as string) ?? req.Path;

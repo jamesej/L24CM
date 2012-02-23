@@ -19,15 +19,30 @@ using System.Configuration;
 
 namespace L24CM.Controllers
 {
-    public abstract class ContentController<TContent> : ContentController<ContentModel<TContent>, TContent>
+    public interface IContentController
+    {
+        List<string> SignificantRouteKeys { get; }
+    }
+    
+    public class ContentController<TContent> : ContentController<ContentModel<TContent>, TContent>
         where TContent: BaseContent, new()
     {
+        public ContentController()
+            : base()
+        { }
     }
-    public abstract class ContentController<TModel, TContent> : DataController<TModel>
+    public class ContentController<TModel, TContent> : DataController<TModel>, IContentController
         where TModel : ContentModel<TContent>, new()
         where TContent : BaseContent, new()
     {
-        abstract public List<string> SignificantRouteKeys { get; }
+        public virtual List<string> SignificantRouteKeys
+        {
+            get { return new List<string>(); }
+        }
+
+        public ContentController()
+        {
+        }
 
         protected override void Initialize(RequestContext requestContext)
         {
