@@ -94,14 +94,14 @@
     <Compile Include="Models\BaseContent.cs" />
     <Compile Include="Models\ContentRepository.cs" />
     <Compile Include="Models\ContentModel.cs" />
-    <Compile Include="Models\ControllerInfo.cs" />
+    <Compile Include="Routing\ControllerInfo.cs" />
     <Compile Include="Models\Image.cs" />
     <Compile Include="Models\L24CMEntities.cs" />
     <Compile Include="Models\Link.cs" />
     <Compile Include="Models\LoaderDictionary.cs" />
     <Compile Include="Models\PageContent.cs" />
     <Compile Include="Models\PagingInfo.cs" />
-    <Compile Include="Models\SiteStructure.cs" />
+    <Compile Include="Routing\SiteStructure.cs" />
     <Compile Include="Routing\ContentRoute.cs" />
     <Compile Include="Controllers\ContentController.cs" />
     <Compile Include="Controllers\AjaxController.cs" />
@@ -136,6 +136,7 @@
     <Compile Include="Routing\ExtendedRoute.cs" />
     <Compile Include="Routing\PathMap.cs" />
     <Compile Include="Routing\RouteX.cs" />
+    <Compile Include="Routing\UrlPattern.cs" />
     <Compile Include="ThirdParty\Dynamic.cs" />
     <Compile Include="ThirdParty\RssReader.cs" />
     <Compile Include="Utility\ArrayGraph.cs" />

@@ -7,6 +7,7 @@ using System.Web;
 using L24CM.Utility;
 using System.Linq.Expressions;
 using System.Web.Routing;
+using L24CM.Routing;
 
 namespace L24CM.Models
 {
@@ -78,15 +79,23 @@ namespace L24CM.Models
             : this(filterContext.RouteData, filterContext.HttpContext.Request)
         {
         }
-        public RequestDataSpecification(string controller, string action, string[] routeNames, string[] routeValues)
+        public RequestDataSpecification(string routeName, string controller, string action, string[] routeKeys, string[] routeValues)
         {
-            UrlHelper urls = new UrlHelper((HttpContext.Current.Handler as MvcHandler).RequestContext);
             Controller = controller;
             Action = action;
-            RouteData = Enumerable.Range(0, routeNames.Length)
-                .ToDictionary(i => routeNames[i], i => (object)routeValues[i]);
+            RouteData = Enumerable.Range(0, routeKeys.Length)
+                .ToDictionary(i => routeKeys[i], i => (object)routeValues[i]);
 
-            Path = urls.Action(Action, Controller);
+            RouteValueDictionary rvs = new RouteValueDictionary(RouteData);
+            rvs.Add("controller", controller);
+            rvs.Add("action", action);
+            Path = SiteStructure.Current.GetUrl(rvs);
+            //Path = UrlHelper.GenerateUrl(routeName,
+            //    Action, Controller,
+            //    new RouteValueDictionary(RouteData),
+            //    RouteTable.Routes,
+            //    (HttpContext.Current.Handler as MvcHandler).RequestContext,
+            //    false);
         }
         public RequestDataSpecification(RouteData rd, HttpRequestBase req)
         {

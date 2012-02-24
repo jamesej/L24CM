@@ -21,8 +21,13 @@ namespace L24CM.Models
             List<string> subindexes = rds.GetRouteValues(significantRouteKeys);
             SetSubindexes(subindexes);
 
-            JavaScriptSerializer jsSer = new JavaScriptSerializer();
-            this.Content = jsSer.Serialize(content);
+            if (content == null)
+                this.Content = "{}";
+            else
+            {
+                JavaScriptSerializer jsSer = new JavaScriptSerializer();
+                this.Content = jsSer.Serialize(content);
+            }
         }
 
         public void SetSubindexes(List<string> subindexes)
@@ -40,6 +45,18 @@ namespace L24CM.Models
             this.Subindex4 = subindexes[4];
             if (c < 6) return;
             this.Subindex5 = subindexes[5];
+        }
+
+        public List<string> GetSubindexes()
+        {
+            List<string> sis = new List<string>();
+            if (this.Subindex0 != null) sis.Add(this.Subindex0);
+            if (this.Subindex1 != null) sis.Add(this.Subindex1);
+            if (this.Subindex2 != null) sis.Add(this.Subindex2);
+            if (this.Subindex3 != null) sis.Add(this.Subindex3);
+            if (this.Subindex4 != null) sis.Add(this.Subindex4);
+            if (this.Subindex5 != null) sis.Add(this.Subindex5);
+            return sis;
         }
 
         public T GetContent<T>() where T: new()

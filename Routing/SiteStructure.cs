@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 using L24CM.Utility;
 
-namespace L24CM.Models
+namespace L24CM.Routing
 {
     public class SiteStructure
     {
@@ -45,31 +45,42 @@ namespace L24CM.Models
             }
         }
 
-        public void AddController(string url, RouteValueDictionary defaults)
+        public void AddController(string routeName, string url, RouteValueDictionary defaults)
         {
             if (url.Contains("{controller}"))
-                AddPatternToAll(url, defaults);
+                AddPatternToAll(routeName, url, defaults);
             else if (defaults.ContainsKey("controller"))
             {
                 Type controllerType = AllControllers.FirstOrDefault(t => t.Name.UpTo("Controller") == (string)defaults["controller"]);
                 if (controllerType == null)
                     throw new Exception("Attempt to add route to missing controller " + (string)defaults["controller"]);
-                Controllers.Add(new ControllerInfo(controllerType, url, defaults));
+                Controllers.Add(new ControllerInfo(routeName, controllerType, url, defaults));
             }
             else
                 throw new Exception("No controller specified");
         }
 
-        public void AddPatternToAll(string url, RouteValueDictionary defaults)
+        public void AddPatternToAll(string routeName, string url, RouteValueDictionary defaults)
         {
             List<ControllerInfo> newControllers =
                 AllControllers
                     .Where(c => !Controllers.Any(ci => ci.Controller.FullName == c.FullName))
-                    .Select(c => new ControllerInfo(c, url, defaults))
+                    .Select(c => new ControllerInfo(routeName, c, url, defaults))
                     .ToList();
             foreach (ControllerInfo controller in Controllers)
-                controller.UrlPatterns.Add(url);
+                controller.TryAddPattern(url, defaults);
             Controllers.AddRange(newControllers);
+        }
+
+        public string GetUrl(RouteValueDictionary rvs)
+        {
+            if (!rvs.ContainsKey("controller")) return null;
+            ControllerInfo cInfo = Controllers.FirstOrDefault(ci => ci.Name == (string)rvs["controller"]);
+            if (cInfo == null) return null;
+
+            UrlPattern patt = cInfo.UrlPatterns.FirstOrDefault(up => up.Matches(rvs));
+            if (patt == null) return null;
+            return patt.BuildUrl(rvs);
         }
     }
 }

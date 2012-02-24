@@ -40,20 +40,39 @@ namespace L24CM.Models
             return contentItem;
         }
 
-        public virtual void CreateContent<TController>(string action, string[] routeKeys, string[] routeValues)
+        public virtual ContentItem AddContentItem(ContentItem item)
         {
-            Type ctrType = typeof(TController);
-            Type contentType = ctrType.GetGenericArguments().Where(t => typeof(BaseContent).IsAssignableFrom(t)).First();
-
-            ContentItem contentItem = new ContentItem
+            ContentItem existing = Ctx.ContentItemSet.FirstOrDefault(ci => ci.Path == item.Path);
+            if (existing != null)
+                return existing;
+            else
             {
-                Action = action,
-                Content = null,
-                Controller = ctrType.Name.UpTo("Controller"),
-                Type = contentType.FullName
-            };
-            
-                    
+                Ctx.AddToContentItemSet(item);
+                Ctx.SaveChanges();
+                return item;
+            }
+        }
+
+        public virtual List<ContentItem> GetTemplateInstances(string controller)
+        {
+            var insts = Ctx.ContentItemSet
+                .Where(ci => ci.Controller == controller)
+                .Select(ci => new { ci.Path, ci.Action, ci.Subindex0, ci.Subindex1, ci.Subindex2, ci.Subindex3, ci.Subindex4, ci.Subindex5 });
+            List<ContentItem> items = new List<ContentItem>();
+            foreach (var inst in insts)
+                items.Add(new ContentItem
+                {
+                    Path = inst.Path,
+                    Controller = controller,
+                    Action = inst.Action,
+                    Subindex0 = inst.Subindex0,
+                    Subindex1 = inst.Subindex1,
+                    Subindex2 = inst.Subindex2,
+                    Subindex3 = inst.Subindex3,
+                    Subindex4 = inst.Subindex4,
+                    Subindex5 = inst.Subindex5
+                });
+            return items;
         }
 
         public virtual void Save()

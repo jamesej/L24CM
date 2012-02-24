@@ -22,6 +22,7 @@ namespace L24CM.Controllers
     public interface IContentController
     {
         List<string> SignificantRouteKeys { get; }
+        Type ContentType { get; }
     }
     
     public class ContentController<TContent> : ContentController<ContentModel<TContent>, TContent>
@@ -38,6 +39,11 @@ namespace L24CM.Controllers
         public virtual List<string> SignificantRouteKeys
         {
             get { return new List<string>(); }
+        }
+
+        public Type ContentType
+        {
+            get { return typeof(TContent); }
         }
 
         public ContentController()
@@ -131,18 +137,11 @@ namespace L24CM.Controllers
         [Authorize(Roles=Models.User.AdminRole)]
         public ActionResult Create(string path, TContent update)
         {
-            L24CMEntities ctx = new L24CMEntities();
-            ContentItem content = ctx.ContentItemSet.FirstOrDefault(c => c.Path == path);
-            if (content == null)
-            {
-                RequestDataSpecification rds = new RequestDataSpecification(RouteData, Request);
-                content = new ContentItem(update, this.SignificantRouteKeys, rds);
-                ctx.AddToContentItemSet(content);
-            }
+            RequestDataSpecification rds = new RequestDataSpecification(RouteData, Request);
+            ContentItem item = new ContentItem(update, this.SignificantRouteKeys, rds);
+            item = ContentRepository.Instance.AddContentItem(item);
 
-            ctx.SaveChanges();
-
-            return View(ConfigHelper.GetViewPath("L24CMEditor.aspx"), update);
+            return View(ConfigHelper.GetViewPath("L24CMEditor.aspx"), item.Content);
         }
 
         [HttpGet]

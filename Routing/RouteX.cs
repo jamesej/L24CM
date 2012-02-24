@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web.Routing;
 using System.Web.Mvc;
+using L24CM.Models;
 
 namespace L24CM.Routing
 {
@@ -11,7 +12,9 @@ namespace L24CM.Routing
     {
         public static void MapExtendedRoute(this RouteCollection routes, string name, string url, object defaults)
         {
-            routes.Add(name, new ExtendedRoute(url, new RouteValueDictionary(defaults), new MvcRouteHandler()));
+            RouteValueDictionary rvs = new RouteValueDictionary(defaults);
+            routes.Add(name, new ExtendedRoute(url, rvs, new MvcRouteHandler()));
+            SiteStructure.Current.AddController(name, url, rvs);
         }
     }
 }

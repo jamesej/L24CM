@@ -12,21 +12,16 @@ namespace L24CM.Routing
     {
         public ExtendedRoute(string url, IRouteHandler rh)
             : base(url, rh)
-        { SaveStructure(url, new RouteValueDictionary()); }
+        { }
         public ExtendedRoute(string url, RouteValueDictionary defaults, IRouteHandler rh)
             : base(url, defaults, rh)
-        { SaveStructure(url, defaults); }
+        { }
         public ExtendedRoute(string url, RouteValueDictionary defaults, RouteValueDictionary constraints, IRouteHandler rh)
             : base(url, defaults, constraints, rh)
-        { SaveStructure(url, defaults); }
+        { }
         public ExtendedRoute(string url, RouteValueDictionary defaults, RouteValueDictionary constraints, RouteValueDictionary dataTokens, IRouteHandler rh)
             : base(url, defaults, constraints, dataTokens, rh)
-        { SaveStructure(url, defaults); }
-
-        private void SaveStructure(string url, RouteValueDictionary defaults)
-        {
-            SiteStructure.Current.AddController(url, defaults);
-        }
+        { }
 
         public override RouteData GetRouteData(HttpContextBase httpContext)
         {

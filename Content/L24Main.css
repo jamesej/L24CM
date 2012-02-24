@@ -28,4 +28,13 @@ body { font-family: Arial, Sans-Serif; }
 
 #structureManager .editor-label { height: 22px; margin-bottom: 3px; }
 #structureManager .template-name { float: left; width: 120px; overflow: hidden; font-size: 16px; }
-#structureManager .url-pattern { float: left; margin-left: 10px; }
+#structureManager .inst { font-size: 12px; }
+#structureManager .edit-area { background-color: #f0f0f0; margin-top: 3px; }
+#structureManager .url-pattern { font-size: 12px; margin-top: 2px; }
+#structureManager .enter-route { margin-top: 2px; }
+#structureManager .input0 { border: solid 1px #0000d6 }
+#structureManager .input1 { border: solid 1px #1414ff }
+#structureManager .input2 { border: solid 1px #00994d }
+#structureManager .input3 { border: solid 1px #4d9900 }
+#structureManager .input4 { border: solid 1px #999900 }
+#structureManager .input5 { border: solid 1px #d6d600 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
-using L24CM.Models;
+using L24CM.Routing;
 
 namespace L24CM.Controllers
 {
@@ -25,23 +25,34 @@ namespace L24CM.Controllers
             var instances = new
             {
                 actions = cInfo.Actions,
-                routeKeys = cInfo.RouteKeys
+                routeKeys = cInfo.RouteKeys,
+                pattern = cInfo.Url.StartsWith("/") ? cInfo.Url : "/" + cInfo.Url,
+                defaults = cInfo.Defaults,
+                insts = cInfo.Instances.Select(ci => ci.Path)
             };
 
             return Json(instances, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
-        public ActionResult AddInstance(string name, string[] fieldNames, string[] fieldValues)
+        public ActionResult AddInstance(string name, string pattern, string[] fieldNames, string[] fieldValues)
         {
             ControllerInfo cInfo = SiteStructure.Current.Controllers.FirstOrDefault(ci => ci.Name == name);
 
             if (cInfo == null)
                 return new HttpStatusCodeResult(500, "No such template: " + name);
 
-            cInfo.Create(fieldNames, fieldValues);
+            int patternIdx = int.Parse(pattern);
+            if (fieldNames == null)
+                fieldNames = new string[0];
+            if (fieldValues == null)
+                fieldValues = new string[0];
+            bool created = cInfo.CreateInstance(cInfo.GetPatternAction(patternIdx), fieldNames, fieldValues);
 
-            return Content("OK");
+            if (created)
+                return Content("OK");
+            else
+                return Content("Already Exists");
         }
 
     }
