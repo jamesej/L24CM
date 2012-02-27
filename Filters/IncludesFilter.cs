@@ -149,8 +149,7 @@ namespace L24CM.Filters
             // creates a list of lists where in each list each item depends on the ones before it
             List<List<string>> depLists = requested
                 .Where(ie => ie.Dependencies != null)
-                .Select(ie => ie.Dependencies.Concat(ie.Include).ToList())
-                .Concat(primaries.ToList())
+                .Select(ie => primaries.Concat(ie.Dependencies).Concat(ie.Include).ToList())
                 .ToList();
 
             // distinct items in lists
