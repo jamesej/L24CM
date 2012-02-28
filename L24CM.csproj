@@ -94,6 +94,7 @@
     <Compile Include="Models\BaseContent.cs" />
     <Compile Include="Models\ContentRepository.cs" />
     <Compile Include="Models\ContentModel.cs" />
+    <Compile Include="Models\ImageLink.cs" />
     <Compile Include="Routing\ControllerInfo.cs" />
     <Compile Include="Models\Image.cs" />
     <Compile Include="Models\L24CMEntities.cs" />
@@ -145,6 +146,7 @@
     <Compile Include="Utility\HtmlHelperX.cs" />
     <Compile Include="Utility\IOX.cs" />
     <Compile Include="Utility\LinqX.cs" />
+    <Compile Include="Utility\ReflectionX.cs" />
     <Compile Include="Utility\StringX.cs" />
     <Compile Include="Utility\UrlX.cs" />
     <Compile Include="Utility\WebX.cs" />

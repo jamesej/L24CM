@@ -7,6 +7,11 @@ body { font-family: Arial, Sans-Serif; }
 #editPanel { font-size: 11px; }
 #editPanel input[type="text"] { font-size: 11px; }
 .file-image-thumb { max-width: 50px; max-height: 50px; }
+#editPanel .action-button { color: White; background-color: Gray; font-size: 16px; width: 16px; text-align: center; border: solid 1px White; cursor: pointer; }
+#editPanel .collection { display: none; }
+#editPanel .collection>* { background-color: #e0e0e0; border-bottom: solid 2px White; }
+#editPanel .collection .action-button { background-color: Gray; float: left; }
+#editPanel .editor-field .text-box { width: 100%; }
 
 #outer { width: 600px; height: 300px; z-index: 0; }
 #listContainer, #treeContainer

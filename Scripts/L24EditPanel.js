@@ -1,9 +1,15 @@
 ﻿(function($) {
     $(document).ready(function() {
-        $('#newButton').click(function() {
-            var createUrl = prompt("Enter url of new page");
-        });
+
+		$('#editPanel').delegate('.action-button', 'click', function () {
+			$('#editPanel form').append($("<input type='hidden' name='_l24action'/>").val($(this).attr('id'))).submit();
+		}).delegate('.editor-label', 'click', function () {
+			$(this).next('.editor-field').find('.collection').toggle();
+		});
 		
+		$('.collection').closest('.editor-field').prev('.editor-label')
+			.append($('<span>...</span>')).css('cursor', 'pointer');
+			
 		var showLinkFields = function () {
 			$link = $(this).closest('.l24-link');
 			var isint = $link.find('.l24-link-isinternal input').attr('checked');

@@ -16,6 +16,7 @@ using L24CM.Attributes;
 using System.Web.Security;
 using L24CM.Config;
 using System.Configuration;
+using System.Collections;
 
 namespace L24CM.Controllers
 {
@@ -115,8 +116,29 @@ namespace L24CM.Controllers
         [HttpPost]
         [ValidateInput(false)]
         [Authorize(Roles=Models.User.EditorRole)]
-        public ActionResult Edit(string path, TContent update)
+        public ActionResult Edit(string path, TContent update, string _l24action)
         {
+            if (_l24action != null)
+            {
+                IList list;
+                Type itemType;
+                switch (_l24action.UpTo("-"))
+                {
+                    case "add":
+                        list = ReflectionX.GetPropertyValueByPath(update, _l24action.After("-")) as IList;
+                        itemType = list.GetType().GetGenericArguments()[0];
+                        if (list != null)
+                            list.Add(Activator.CreateInstance(itemType));
+                        break;
+                    case "del":
+                        list = ReflectionX.GetPropertyValueByPath(update, _l24action.After("-").UpToLast("[")) as IList;
+                        itemType = list.GetType().GetGenericArguments()[0];
+                        if (list != null)
+                            list.RemoveAt(int.Parse(_l24action.LastAfter("[").UpTo("]")));
+                        break;
+
+                }
+            }
             JavaScriptSerializer jsSer = new JavaScriptSerializer();
             Model.ContentItem.Content = jsSer.Serialize(update);
             ContentRepository.Instance.Save();  // Model.ContentItem originated from ContentRepository.
