@@ -57,7 +57,7 @@ namespace L24CM.Controllers
             
             this.RegisterScript("jquery", "/L24CM/Embedded/Scripts/jquery.js", ExtendedController.PrimaryInclude);
             this.RegisterScript("/L24CM/Embedded/Scripts/L24Main.js");
-            this.RegisterCss("/L24CM/Embedded/Content/L24Main.css");
+            //this.RegisterCss("/L24CM/Embedded/Content/L24Main.css");
         }
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
