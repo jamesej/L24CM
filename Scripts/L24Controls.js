@@ -10,5 +10,7 @@
 		var $ac = $(this).closest('.l24-bimodal-autocomplete-container').find('.l24-bimodal-autocomplete');
 		$ac.autocomplete("search", "");
 		$ac.focus();
+	}).delegate('.l24-styled-dd span', 'click', function () {
+		$(this).prev('select').click();
 	})
 })(jQuery);
