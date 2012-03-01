@@ -53,21 +53,22 @@ namespace L24CM.Utility
                 new List<string> { "/L24CM/Embedded/Scripts/jquery.js", "/L24CM/Embedded/Scripts/jquery-ui.js" });
         }
 
-        public static MvcHtmlString StyledSelect(this HtmlHelper html, IEnumerable<SelectListItem> items, object attributes, int rightShadowWidth, string rightImageUrl)
+        public static MvcHtmlString StyledSelect(this HtmlHelper html, IEnumerable<SelectListItem> items, object attributes, string rightImageUrl, int rightShadowWidth, string initValue )
         {
             StringBuilder sb = new StringBuilder();
             RouteValueDictionary aDict = new RouteValueDictionary(attributes);
             aDict["class"] = (aDict["class"] ?? "") + " l24-styled-dd";
             aDict["style"] = "position: relative; display: inline-block; padding: 0px;" + (aDict["style"] ?? "");
-            sb.AppendFormat("<span {0}><select style='margin: 0px; width: 100%; height: 100%; z-index: 10; border: none; opacity: 0; -khtml-appearance: none; -webkit-appearance: none; filter: alpha(opacity=0); zoom: 1;'>",
+            sb.AppendFormat("<span {0}><select style='margin: 0px; width: 100%; height: 100%; position: relative; z-index: 10; border: none; opacity: 0; -khtml-appearance: none; -webkit-appearance: none; filter: alpha(opacity=0); zoom: 1;'>",
                 aDict.Select(kvp => kvp.Key + "='" + html.AttributeEncode(kvp.Value) + "'").Join(" "));
             items.Do(sli => sb.AppendFormat("<option value='{0}'{1}>{2}</option>",
                 html.Encode(sli.Value),
                 sli.Selected ? " selected" : "",
                 html.Encode(sli.Text)));
-            sb.AppendFormat("</select><span style='position: absolute; top: 0px; left: 0px; right: {0}px; bottom: 0px; z-index: 1; background: url({1}) no-repeat right;'>&nbsp;</span></span>",
+            sb.AppendFormat("</select><span style='position: absolute; top: 0px; left: 0px; right: {0}px; bottom: 0px; z-index: 1; background: url({1}) no-repeat right; padding-left: 5px;'>{2}</span></span>",
                 -rightShadowWidth,
-                rightImageUrl);
+                rightImageUrl,
+                initValue ?? "&nbsp;");
             MvcHtmlString s = MvcHtmlString.Create(sb.ToString());
             RegisterControlsScript(html);
             return s;

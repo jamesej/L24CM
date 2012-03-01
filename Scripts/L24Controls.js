@@ -10,7 +10,15 @@
 		var $ac = $(this).closest('.l24-bimodal-autocomplete-container').find('.l24-bimodal-autocomplete');
 		$ac.autocomplete("search", "");
 		$ac.focus();
-	}).delegate('.l24-styled-dd span', 'click', function () {
-		$(this).prev('select').click();
-	})
+	}).delegate('.l24-styled-dd select', 'change', function () {
+		$(this).next().text($(this).find('option:selected').text());
+	});
+	// set span on styled selects to show selected value if not already a default;
+	$('.l24-styled-dd option:selected').each(function () {
+		var $span = $(this).parent().next();
+		if ($span.text() == "&#160")
+			$span.text($(this).text())
+		else
+			$(this).parent().val(null);
+	});
 })(jQuery);
