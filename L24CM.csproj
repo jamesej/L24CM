@@ -149,6 +149,7 @@
     <Compile Include="Utility\ReflectionX.cs" />
     <Compile Include="Utility\StringX.cs" />
     <Compile Include="Utility\UrlX.cs" />
+    <Compile Include="Utility\ViewX.cs" />
     <Compile Include="Utility\WebX.cs" />
     <Compile Include="Validation.cs" />
     <Compile Include="XhrFileUploader.cs" />
