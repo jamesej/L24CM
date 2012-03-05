@@ -78,6 +78,7 @@
   <ItemGroup>
     <Compile Include="Attributes\ContentDisplayNameAttribute.cs" />
     <Compile Include="Attributes\NoCacheAttribute.cs" />
+    <Compile Include="Attributes\RequiredAnyAttribute.cs" />
     <Compile Include="Config\ConfigHelper.cs" />
     <Compile Include="Config\L24CMSection.cs" />
     <Compile Include="Config\NavCache.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="Models\ContentRepository.cs" />
     <Compile Include="Models\ContentModel.cs" />
     <Compile Include="Models\ImageLink.cs" />
+    <Compile Include="Models\Recaptcha.cs" />
     <Compile Include="Routing\ControllerInfo.cs" />
     <Compile Include="Models\Image.cs" />
     <Compile Include="Models\L24CMEntities.cs" />

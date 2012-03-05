@@ -21,6 +21,13 @@ namespace L24CM.Config
             get { return (ValueElement)this["l24CMFileManagerRoot"]; }
             set { this["l24CMFileManagerRoot"] = value; }
         }
+
+        [ConfigurationProperty("l24CMCaptcha")]
+        public CaptchaElement L24CMCaptcha
+        {
+            get { return (CaptchaElement)this["l24CMCaptcha"]; }
+            set { this["l24CMCaptcha"] = value; }
+        }
     }
 
     public class ValueElement : ConfigurationElement
@@ -30,6 +37,30 @@ namespace L24CM.Config
         {
             get { return (string)this["value"]; }
             set { this["value"] = value; }
+        }
+    }
+
+    public class CaptchaElement : ConfigurationElement
+    {
+        [ConfigurationProperty("publicKey", IsRequired = true)]
+        public string PublicKey
+        {
+            get { return (string)this["publicKey"]; }
+            set { this["publicKey"] = value; }
+        }
+
+        [ConfigurationProperty("privateKey", IsRequired = true)]
+        public string PrivateKey
+        {
+            get { return (string)this["privateKey"]; }
+            set { this["privateKey"] = value; }
+        }
+
+        [ConfigurationProperty("verifyUrl", IsRequired = true)]
+        public string VerifyUrl
+        {
+            get { return (string)this["verifyUrl"]; }
+            set { this["verifyUrl"] = value; }
         }
     }
 }
