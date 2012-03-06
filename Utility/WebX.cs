@@ -49,5 +49,23 @@ namespace L24CM.Utility
             stOut.Close();
             return req;
         }
+        public static HttpWebRequest GetPostRequest(string url, Dictionary<string, string> postVals)
+        {
+            return GetPostRequest(url,
+                postVals.Select(kvp => kvp.Key + "=" + HttpUtility.UrlEncode(kvp.Value))
+                    .Join("&"));
+        }
+
+        public static string MakeGetRequest(string url)
+        {
+            HttpWebRequest req = WebRequest.Create(url) as HttpWebRequest;
+            req.Method = "GET";
+            return req.GetResponseString();
+        }
+
+        public static string GetExternalIp()
+        {
+            return MakeGetRequest("http://checkip.dyndns.org").After(":").UpTo("<").Trim();
+        }
     }
 }

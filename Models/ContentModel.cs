@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace L24CM.Models
 {
+    [Bind(Exclude = "Controller,SignificantRouteKeys,ContentItem,Content")]
     public class ContentModel<T> where T: BaseContent, new()
     {
         protected RequestDataSpecification reqDataSpec = null;

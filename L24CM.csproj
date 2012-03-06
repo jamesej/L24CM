@@ -79,6 +79,7 @@
     <Compile Include="Attributes\ContentDisplayNameAttribute.cs" />
     <Compile Include="Attributes\NoCacheAttribute.cs" />
     <Compile Include="Attributes\RequiredAnyAttribute.cs" />
+    <Compile Include="Binding\RecaptchaBinder.cs" />
     <Compile Include="Config\ConfigHelper.cs" />
     <Compile Include="Config\L24CMSection.cs" />
     <Compile Include="Config\NavCache.cs" />

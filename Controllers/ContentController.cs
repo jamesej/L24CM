@@ -128,7 +128,7 @@ namespace L24CM.Controllers
                         list = ReflectionX.GetPropertyValueByPath(update, _l24action.After("-")) as IList;
                         itemType = list.GetType().GetGenericArguments()[0];
                         if (list != null)
-                            list.Add(Activator.CreateInstance(itemType));
+                            list.Add(CreateInstance(itemType));
                         break;
                     case "del":
                         list = ReflectionX.GetPropertyValueByPath(update, _l24action.After("-").UpToLast("[")) as IList;
@@ -144,6 +144,18 @@ namespace L24CM.Controllers
             ContentRepository.Instance.Save();  // Model.ContentItem originated from ContentRepository.
 
             return View(ConfigHelper.GetViewPath("L24CMEditor.aspx"), update);
+        }
+
+
+        object CreateInstance(Type t)
+        {
+            switch (t.FullName)
+            {
+                case "System.String":
+                    return "<new>"; // an empty string will be converted to null which has no type and will break editor builder
+                default:
+                    return Activator.CreateInstance(t);
+            }
         }
 
         [HttpGet]
