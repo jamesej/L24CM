@@ -125,5 +125,11 @@ namespace L24CM.Routing
                 InvalidateInstances();
             return created;
         }
+
+        public void DeleteInstances(string[] urls)
+        {
+            ContentRepository.Instance.DeleteByUrls(urls);
+            InvalidateInstances();
+        }
     }
 }

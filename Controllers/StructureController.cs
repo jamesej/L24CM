@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using L24CM.Routing;
+using L24CM.Models;
 
 namespace L24CM.Controllers
 {
@@ -14,7 +15,7 @@ namespace L24CM.Controllers
             return View("L24CMStructure", SiteStructure.Current);
         }
 
-        [HttpGet]
+        [HttpGet, OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
         public ActionResult Instances(string name)
         {
             ControllerInfo cInfo = SiteStructure.Current.Controllers.FirstOrDefault(ci => ci.Name == name);
@@ -53,6 +54,14 @@ namespace L24CM.Controllers
                 return Content("OK");
             else
                 return Content("Already Exists");
+        }
+
+        [HttpPost]
+        public ActionResult DeleteInstances(string name, string[] urls)
+        {
+            ControllerInfo cInfo = SiteStructure.Current.Controllers.FirstOrDefault(ci => ci.Name == name);
+            cInfo.DeleteInstances(urls);
+            return Content("OK");
         }
 
     }

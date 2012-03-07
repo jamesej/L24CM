@@ -50,7 +50,7 @@ namespace L24CM.Utility
         private static Expression<Func<TElement, bool>> GetWhereInExpression<TElement, TValue>(Expression<Func<TElement, TValue>> propertySelector, IEnumerable<TValue> values)
         {
             ParameterExpression p = propertySelector.Parameters.Single();
-            if (!values.Any())
+            if (values == null || !values.Any())
                 return e => false;
 
             var equals = values.Select(value => (Expression)Expression.Equal(propertySelector.Body, Expression.Constant(value, typeof(TValue))));

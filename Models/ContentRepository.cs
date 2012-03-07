@@ -75,6 +75,15 @@ namespace L24CM.Models
             return items;
         }
 
+        public virtual void DeleteByUrls(string[] urls)
+        {
+            Ctx.ContentItemSet
+                .WhereIn(ci => ci.Path, urls)
+                .AsEnumerable()
+                .Do(ci => Ctx.DeleteObject(ci));
+            Ctx.SaveChanges();
+        }
+
         public virtual void Save()
         {
             Ctx.SaveChanges();
