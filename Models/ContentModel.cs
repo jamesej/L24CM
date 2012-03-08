@@ -10,17 +10,21 @@ namespace L24CM.Models
     public class ContentModel<T> where T: BaseContent, new()
     {
         protected RequestDataSpecification reqDataSpec = null;
-
-        Controller controller = null;
-        public Controller Controller
+        protected RequestDataSpecification ReqDataSpec
         {
-            get { return controller; }
-            set
+            get
             {
-                controller = value;
-                this.reqDataSpec = new RequestDataSpecification(controller.RouteData, controller.Request);
+                if (reqDataSpec == null)
+                {
+                    if (Controller == null)
+                        throw new Exception("Attempting to get RequestDataSpecification before setting Controller in ContentModel");
+                    reqDataSpec = new RequestDataSpecification(Controller.RouteData, Controller.Request);
+                }
+                return reqDataSpec;
             }
         }
+
+        public Controller Controller { get; set; }
 
         List<string> significantRouteKeys = null;
         public List<string> SignificantRouteKeys
@@ -42,7 +46,7 @@ namespace L24CM.Models
             {
                 if (contentItem == null)
                 {
-                    contentItem = ContentRepository.Instance.GetContent(SignificantRouteKeys, reqDataSpec);
+                    contentItem = ContentRepository.Instance.GetContent(SignificantRouteKeys, ReqDataSpec);
                     if (contentItem == null)
                         content = null;
                     else

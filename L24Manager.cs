@@ -9,6 +9,7 @@ using System.Web.Security;
 using System.Security.Principal;
 using L24CM.Membership;
 using System.Threading;
+using System.Reflection;
 
 namespace L24CM
 {
@@ -16,6 +17,11 @@ namespace L24CM
     {
         static readonly L24Manager current = new L24Manager();
         public static L24Manager Current { get { return current; } }
+
+        public static Assembly ControllerAssembly
+        {
+            get { return HttpContext.Current.Application["_L24ControllerAssembly"] as Assembly; }
+        }
 
         static L24Manager() { }
 

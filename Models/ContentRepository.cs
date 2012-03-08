@@ -7,6 +7,8 @@ using L24CM.Utility;
 using System.Web;
 using System.Collections;
 using System.Linq.Dynamic;
+using L24CM.Attributes;
+using Newtonsoft.Json.Linq;
 
 namespace L24CM.Models
 {
@@ -30,14 +32,56 @@ namespace L24CM.Models
             }
         }
 
+        public virtual ContentItem GetContentItem(ContentAddress ca)
+        {
+            var query = Ctx.ContentItemSet.Where(c => c.Controller == ca.Controller && c.Action == ca.Action);
+            for (int i = 0; i < ca.Subindexes.Count; i++)
+                query = query.Where(string.Format("Subindex{0} = @0", i), new object[] { ca.Subindexes[i] });
+            ContentItem contentItem = query.FirstOrDefault();
+
+            return contentItem;
+        }
+
         public virtual ContentItem GetContent(List<string> significantRouteKeys, RequestDataSpecification rds)
         {
-            List<string> routeValues = rds.GetRouteValues(significantRouteKeys);
-            var query = Ctx.ContentItemSet.Where(c => c.Controller == rds.Controller && c.Action == rds.Action);
-            for (int i = 0; i < routeValues.Count; i++)
-                query = query.Where(string.Format("Subindex{0} = @0", i), new object[] { routeValues[i] });
-            ContentItem contentItem = query.FirstOrDefault();
+            ContentAddress primaryAddress = new ContentAddress(rds, significantRouteKeys);
+            ContentItem contentItem = GetContentItem(primaryAddress);
+
+            if (contentItem != null)
+            {
+                Type contentType = L24Manager.ControllerAssembly.GetType(contentItem.Type);
+                var rpsAttributes = contentType
+                    .GetCustomAttributes(typeof(RedirectPropertySourceAttribute), false)
+                    .Cast<RedirectPropertySourceAttribute>()
+                    .ToList();
+                if (rpsAttributes.Any())
+                {
+                    contentItem.JObjectContent = JObject.Parse(contentItem.Content);
+                    foreach (var rpsAttribute in rpsAttributes)
+                        foreach (string path in rpsAttribute.Path.Split('/'))
+                            UpdateJObjectForPathSource(contentItem.JObjectContent, path, rpsAttribute.SourceDescriptor, primaryAddress);
+                }
+            }
             return contentItem;
+        }
+
+        protected virtual void UpdateJObjectForPathSource(JObject jo, string path, string sourceDescriptor, ContentAddress address)
+        {
+            ContentAddress redirectAddress = address.Redirect(sourceDescriptor);
+            ContentItem redirectContent = GetContentItem(redirectAddress);
+            if (redirectContent != null)
+            {
+                JObject redirectJo = JObject.Parse(redirectContent.Content);
+                JProperty primaryProperty = jo.Property(path);
+                JProperty redirectProperty = redirectJo.Property(path);
+                if (redirectProperty != null)
+                {
+                    if (primaryProperty == null)
+                        jo.Add(redirectProperty);
+                    else
+                        primaryProperty.Replace(redirectProperty);
+                }
+            }
         }
 
         public virtual ContentItem AddContentItem(ContentItem item)
@@ -92,6 +136,11 @@ namespace L24CM.Models
         public virtual IQueryable<string> Paths()
         {
             return Ctx.ContentItemSet.Select(ci => ci.Path).OrderBy(p => p);
+        }
+
+        public virtual IQueryable<ContentItem> All()
+        {
+            return Ctx.ContentItemSet;
         }
     }
 }

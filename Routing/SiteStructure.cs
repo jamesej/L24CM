@@ -35,7 +35,7 @@ namespace L24CM.Routing
                 if (allControllers != null)
                     return allControllers;
 
-                Assembly siteAssembly = HttpContext.Current.Application["_L24ControllerAssembly"] as Assembly;
+                Assembly siteAssembly = L24Manager.ControllerAssembly;
                 allControllers = siteAssembly
                     .GetTypes()
                     .Where(t => t.BaseType != null && t.BaseType.Name.StartsWith("ContentController"))

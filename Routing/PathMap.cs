@@ -44,7 +44,7 @@ namespace L24CM.Routing
 
         public PathMap()
         {
-            Assembly assemblyWithControllers = HttpContext.Current.Application["_L24ControllerAssembly"] as Assembly;
+            Assembly assemblyWithControllers = L24Manager.ControllerAssembly;
 
             List<ControllerAction> controllers = assemblyWithControllers.GetTypes()
                 .Where(t => IsSubclassOfRawGeneric(typeof(ContentController<,>), t))

@@ -32,9 +32,6 @@ namespace L24CM.Routing
         {
             RouteData rd = base.GetRouteData(httpContext);
 
-            L24CMEntities ctx = new L24CMEntities();
-
-            string path = rd.Values["path"] as string;
             string action = rd.Values["action"] as string;
             bool isDiverted = (rd.Values["originalAction"] != null);
             RequestDataSpecification rds = new RequestDataSpecification(rd, httpContext.Request);

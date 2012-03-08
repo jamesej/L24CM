@@ -5,6 +5,7 @@ using System.Text;
 using System.Web.Mvc;
 using L24CM.Routing;
 using L24CM.Models;
+using L24CM.Search;
 
 namespace L24CM.Controllers
 {
@@ -61,6 +62,13 @@ namespace L24CM.Controllers
         {
             ControllerInfo cInfo = SiteStructure.Current.Controllers.FirstOrDefault(ci => ci.Name == name);
             cInfo.DeleteInstances(urls);
+            return Content("OK");
+        }
+
+        [HttpPost]
+        public ActionResult BuildIndex()
+        {
+            SearchManager.BuildIndex();
             return Content("OK");
         }
 

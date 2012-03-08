@@ -4,12 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Web.Script.Serialization;
 using L24CM.Utility;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace L24CM.Models
 {
     public partial class ContentItem
     {
         private Dictionary<string, object> objectContent = null;
+
+        public JObject JObjectContent { get; set; }
 
         public ContentItem() { }
         public ContentItem(BaseContent content, List<string> significantRouteKeys, RequestDataSpecification rds)
@@ -61,14 +65,14 @@ namespace L24CM.Models
 
         public T GetContent<T>() where T: new()
         {
-            JavaScriptSerializer jsSer = new JavaScriptSerializer();
             T contentObject = default(T);
             if (string.IsNullOrEmpty(this.Content))
                 contentObject = new T();
+            else if (this.JObjectContent != null)
+                contentObject = JObjectContent.ToObject<T>();
             else
-            {
-                contentObject = jsSer.Deserialize<T>(this.Content);
-            }
+                contentObject = JsonConvert.DeserializeObject<T>(this.Content);
+
             return contentObject;
         }
 

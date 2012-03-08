@@ -101,7 +101,7 @@ namespace L24CM.Membership
                     throw new ProviderException("Password format not supported.");
             }
 
-            Assembly siteAssembly = HttpContext.Current.Application["_L24ControllerAssembly"] as Assembly;
+            Assembly siteAssembly = L24Manager.ControllerAssembly;
             string localUserObjectContextType = config["localUserObjectContextType"];
             if (!string.IsNullOrEmpty(localUserObjectContextType))
                  UserObjectContextType = siteAssembly.GetType(localUserObjectContextType);

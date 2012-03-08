@@ -75,6 +75,8 @@ namespace L24CM.Models
         public string LoadPath { get; set; }
         public List<PathDataSpecification> PathDataSpecs { get; set; }
 
+        private RequestDataSpecification() { }
+
         public RequestDataSpecification(ActionExecutingContext filterContext)
             : this(filterContext.RouteData, filterContext.HttpContext.Request)
         {
@@ -160,6 +162,17 @@ namespace L24CM.Models
             Dictionary<string, string> args =
                 PathDataSpecs.SelectMany(pds => pds.ToArgs()).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
             return args;
+        }
+
+        public RequestDataSpecification Clone()
+        {
+            RequestDataSpecification rds = new RequestDataSpecification();
+            rds.Action = this.Action;
+            rds.Controller = this.Controller;
+            rds.RouteData = this.RouteData.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            rds.Path = this.Path;
+
+            return rds;
         }
     }
 }
