@@ -6,6 +6,8 @@ using System.Web;
 using L24CM.Models;
 using Lucene.Net.Documents;
 using L24CM.Attributes;
+using Newtonsoft.Json.Linq;
+using L24CM.Utility;
 
 namespace L24CM.Search
 {
@@ -35,18 +37,29 @@ namespace L24CM.Search
                     continue;
 
                 var indexedProps = type.GetProperties()
-                    .Select(pi => pi.GetCustomAttributes(typeof(IndexAttribute), false).FirstOrDefault())
-                    .Where(ia => ia != null)
+                    .Select(pi => new { PropPath = pi.Name, IndexAttr = pi.GetCustomAttributes(typeof(IndexAttribute), false).FirstOrDefault() as IndexAttribute })
+                    .Where(ip => ip.IndexAttr != null)
                     .ToList();
 
                 // type has no indexing
                 if (indexedProps.Count == 0)
                     continue;
 
+                JObject jo = JObject.Parse(contentItem.Content);
+
                 Document doc = new Document();
-                
+
+                indexedProps.Select(ip =>
+                    new Field(ip.PropPath,
+                        jo.SelectToken(ip.PropPath).ToString(),
+                        Mode2Store(ip.IndexAttr.IndexMode),
+                        Mode2Index(ip.IndexAttr.IndexMode),
+                        Mode2TermVector(ip.IndexAttr.IndexMode)))
+                    .Do(f => doc.Add(f));
 
             }
+
+
 
             //Lucene.Net.Documents.Field fldContent =
             //  new Lucene.Net.Documents.Field("content",
@@ -65,6 +78,35 @@ namespace L24CM.Search
             ////optimize and close the writer
             //indexWriter.Optimize();
             //indexWriter.Close();
+        }
+
+        private static Field.Index Mode2Index(IndexAttribute.Mode mode)
+        {
+            switch (mode)
+            {
+                case IndexAttribute.Mode.Textual:
+                    return Field.Index.ANALYZED;
+                case IndexAttribute.Mode.NonTextual:
+                default:
+                    return Field.Index.NOT_ANALYZED;
+            }
+        }
+
+        private static Field.TermVector Mode2TermVector(IndexAttribute.Mode mode)
+        {
+            switch (mode)
+            {
+                case IndexAttribute.Mode.Textual:
+                    return Field.TermVector.YES;
+                case IndexAttribute.Mode.NonTextual:
+                default:
+                    return Field.TermVector.NO;
+            }
+        }
+
+        private static Field.Store Mode2Store(IndexAttribute.Mode mode)
+        {
+            return Field.Store.NO;
         }
     }
 }
