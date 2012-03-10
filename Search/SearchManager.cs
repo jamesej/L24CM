@@ -8,26 +8,42 @@ using Lucene.Net.Documents;
 using L24CM.Attributes;
 using Newtonsoft.Json.Linq;
 using L24CM.Utility;
+using Lucene.Net.Analysis;
+using Lucene.Net.Analysis.Standard;
+using Lucene.Net.QueryParsers;
+using Lucene.Net.Store;
+using Lucene.Net.Index;
+using Lucene.Net.Search;
 
 namespace L24CM.Search
 {
     public class SearchManager
     {
-        public static void BuildIndex()
+        public static SearchManager Instance { get; set; }
+
+        static SearchManager()
+        {
+            Instance = new SearchManager();
+        }
+
+        public virtual string GetIndexFilePath()
+        {
+            return HttpContext.Current.Server.MapPath("/App_Data/Lucene");
+        }
+
+        public void BuildIndex()
         {
             //state the file location of the index
-            string indexFileLocation = HttpContext.Current.Server.MapPath("/App_Data/Lucene");
-            Lucene.Net.Store.Directory dir =
+            string indexFileLocation = GetIndexFilePath();
+            Directory dir =
                 Lucene.Net.Store.FSDirectory.GetDirectory(indexFileLocation, true);
 
             //create an analyzer to process the text
-            Lucene.Net.Analysis.Analyzer analyzer = new
-            Lucene.Net.Analysis.Standard.StandardAnalyzer();
+            Analyzer analyzer = new StandardAnalyzer();
 
             //create the index writer with the directory and analyzer defined.
-            Lucene.Net.Index.IndexWriter indexWriter = new
-            Lucene.Net.Index.IndexWriter(dir, analyzer,
-                /*true to create a new index*/ true);
+            IndexWriter indexWriter = new
+            IndexWriter(dir, analyzer, true); /*true to create a new index*/ 
 
             foreach (ContentItem contentItem in ContentRepository.Instance.All())
             {
@@ -49,7 +65,9 @@ namespace L24CM.Search
 
                 Document doc = new Document();
 
-                indexedProps.Select(ip =>
+                indexedProps
+                    .Where(ip => ip.IndexAttr.IndexMode != IndexAttribute.Mode.Agglomerate)
+                    .Select(ip =>
                     new Field(ip.PropPath,
                         jo.SelectToken(ip.PropPath).ToString(),
                         Mode2Store(ip.IndexAttr.IndexMode),
@@ -57,30 +75,42 @@ namespace L24CM.Search
                         Mode2TermVector(ip.IndexAttr.IndexMode)))
                     .Do(f => doc.Add(f));
 
+                var agglomProps = indexedProps.Where(ip => ip.IndexAttr.IndexMode == IndexAttribute.Mode.Agglomerate);
+                if (agglomProps.Any())
+                {
+                    string glom = agglomProps.Select(ip => jo.SelectToken(ip.PropPath).ToString()).Join(" ").Trim();
+                    doc.Add(new Field("_GLOM_", glom, Field.Store.NO, Field.Index.ANALYZED, Field.TermVector.YES));
+                }
+
+                doc.Add(new Field("_CONTENTADDRESS_", contentItem.ContentAddress.ToString(), Field.Store.YES, Field.Index.NO));
+
+                indexWriter.AddDocument(doc);
             }
 
-
-
-            //Lucene.Net.Documents.Field fldContent =
-            //  new Lucene.Net.Documents.Field("content",
-            //  "The quick brown fox jumps over the lazy dog",
-            //  Lucene.Net.Documents.Field.Store.YES,
-
-
-            //Lucene.Net.Documents.Field.Index.TOKENIZED,
-            //Lucene.Net.Documents.Field.TermVector.YES);
-
-            //doc.Add(fldContent);
-
-            ////write the document to the index
-            //indexWriter.AddDocument(doc);
-
-            ////optimize and close the writer
-            //indexWriter.Optimize();
-            //indexWriter.Close();
+            //optimize and close the writer
+            indexWriter.Optimize();
+            indexWriter.Close();
         }
 
-        private static Field.Index Mode2Index(IndexAttribute.Mode mode)
+        public List<ContentAddress> Search(string search)
+        {
+            string indexFileLocation = GetIndexFilePath();
+            Directory dir =
+                Lucene.Net.Store.FSDirectory.GetDirectory(indexFileLocation);
+            Analyzer analyzer = new StandardAnalyzer();
+
+            QueryParser parser = new QueryParser("_GLOM_", analyzer);
+            Query query = parser.Parse(search);
+            IndexSearcher searcher = new IndexSearcher(dir);
+            TopDocs hits = searcher.Search(query, 1000);
+            List<ContentAddress> addrs =
+                Enumerable.Range(0, hits.totalHits)
+                    .Select(n => ContentAddress.FromString(searcher.Doc(hits.scoreDocs[n].doc).Get("_CONTENTADDRESS_")))
+                    .ToList();
+            return addrs;
+        }
+
+        private Field.Index Mode2Index(IndexAttribute.Mode mode)
         {
             switch (mode)
             {
@@ -92,7 +122,7 @@ namespace L24CM.Search
             }
         }
 
-        private static Field.TermVector Mode2TermVector(IndexAttribute.Mode mode)
+        private Field.TermVector Mode2TermVector(IndexAttribute.Mode mode)
         {
             switch (mode)
             {
@@ -104,7 +134,7 @@ namespace L24CM.Search
             }
         }
 
-        private static Field.Store Mode2Store(IndexAttribute.Mode mode)
+        private Field.Store Mode2Store(IndexAttribute.Mode mode)
         {
             return Field.Store.NO;
         }

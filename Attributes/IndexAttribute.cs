@@ -11,7 +11,8 @@ namespace L24CM.Attributes
         public enum Mode
         {
             Textual,
-            NonTextual
+            NonTextual,
+            Agglomerate
         }
 
         public Mode IndexMode { get; set; }

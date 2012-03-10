@@ -15,6 +15,20 @@ namespace L24CM.Models
 
         public JObject JObjectContent { get; set; }
 
+        public ContentAddress ContentAddress
+        {
+            get
+            {
+                return new ContentAddress { Controller = this.Controller, Action = this.Action, Subindexes = this.GetSubindexes() };
+            }
+            set
+            {
+                this.Controller = value.Controller;
+                this.Action = value.Action;
+                this.SetSubindexes(value.Subindexes);
+            }
+        }
+
         public ContentItem() { }
         public ContentItem(BaseContent content, List<string> significantRouteKeys, RequestDataSpecification rds)
         {

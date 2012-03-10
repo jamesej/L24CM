@@ -6,17 +6,19 @@ using System.Web.Mvc;
 using L24CM.Routing;
 using L24CM.Models;
 using L24CM.Search;
+using L24CM.Attributes;
 
 namespace L24CM.Controllers
 {
     public class StructureController : DataController<SiteStructure>
     {
+        [Authorize(Roles=Models.User.EditorRole)]
         public ActionResult Index()
         {
             return View("L24CMStructure", SiteStructure.Current);
         }
 
-        [HttpGet, OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        [HttpGet, NoCache, Authorize(Roles = Models.User.EditorRole)]
         public ActionResult Instances(string name)
         {
             ControllerInfo cInfo = SiteStructure.Current.Controllers.FirstOrDefault(ci => ci.Name == name);
@@ -36,7 +38,7 @@ namespace L24CM.Controllers
             return Json(instances, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = Models.User.EditorRole)]
         public ActionResult AddInstance(string name, string pattern, string[] fieldNames, string[] fieldValues)
         {
             ControllerInfo cInfo = SiteStructure.Current.Controllers.FirstOrDefault(ci => ci.Name == name);
@@ -57,7 +59,7 @@ namespace L24CM.Controllers
                 return Content("Already Exists");
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = Models.User.EditorRole)]
         public ActionResult DeleteInstances(string name, string[] urls)
         {
             ControllerInfo cInfo = SiteStructure.Current.Controllers.FirstOrDefault(ci => ci.Name == name);
@@ -65,10 +67,10 @@ namespace L24CM.Controllers
             return Content("OK");
         }
 
-        [HttpPost]
+        [HttpPost, Authorize(Roles = Models.User.EditorRole)]
         public ActionResult BuildIndex()
         {
-            SearchManager.BuildIndex();
+            SearchManager.Instance.BuildIndex();
             return Content("OK");
         }
 

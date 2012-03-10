@@ -94,7 +94,7 @@ namespace L24CM.Filters
             }
         }
 
-        public string InsertIncludes(string markup,
+        public virtual string ProcessHtml(string markup,
             List<IncludeEntry> scripts, List<IncludeEntry> csses, List<IncludeEntry> htmls)
         {
             HtmlDocument doc = new HtmlDocument();
@@ -111,7 +111,15 @@ namespace L24CM.Filters
             if (htmls != null)
                 InsertHtmls(doc, htmls);
 
-            
+            // redirect link targets to top so we don't get recursing editors
+            if ((controller.HttpContext.Request.QueryString["-mode"] ?? "").ToLower() == "view")
+            {
+                HtmlNode head = doc.DocumentNode.SelectSingleNode("/html/head");
+                HtmlNode baseTag = doc.CreateElement("base");
+                baseTag.SetAttributeValue("target", "_top");
+                head.AppendChild(baseTag);
+            }
+
             return doc.DocumentNode.OuterHtml;
         }
 
@@ -132,7 +140,12 @@ namespace L24CM.Filters
             if ((csses != null && csses.Count > 0)
                 || (scripts != null && scripts.Count > 0)
                 || (htmls != null && htmls.Count > 0))
-                s = InsertIncludes(s, scripts, csses, htmls);
+            {
+                DateTime dt0 = DateTime.Now;
+                s = ProcessHtml(s, scripts, csses, htmls);
+                DateTime dt1 = DateTime.Now;
+                Debug.WriteLine("Process page " + (dt1 - dt0).Milliseconds + "ms");
+            }
 
             sw.Write(s);
             sw.Flush();

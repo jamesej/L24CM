@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using L24CM.Utility;
 
 namespace L24CM.Models
 {
@@ -34,6 +35,22 @@ namespace L24CM.Models
             ContentAddress ca = Clone();
             ca.Subindexes = ca.Subindexes.Select(si => (string)null).ToList();
             return ca;
+        }
+
+        public override string ToString()
+        {
+            return Controller + "&" + Action + "&" + Subindexes.Join("&");
+        }
+
+        public static ContentAddress FromString(string s)
+        {
+            string[] words = s.Split('&');
+            return new ContentAddress
+            {
+                Controller = words[0],
+                Action = words[1],
+                Subindexes = words.Skip(2).ToList()
+            };
         }
     }
 }
