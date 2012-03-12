@@ -103,6 +103,7 @@
     <Compile Include="Membership\IUserCachingService.cs" />
     <Compile Include="Membership\IUserObjectContext.cs" />
     <Compile Include="Membership\LightweightIdentity.cs" />
+    <Compile Include="Models\AddressedContent.cs" />
     <Compile Include="Models\BaseContent.cs" />
     <Compile Include="Models\ContentAddress.cs" />
     <Compile Include="Models\ContentRepository.cs" />

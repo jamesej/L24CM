@@ -92,22 +92,36 @@ namespace L24CM.Search
             indexWriter.Close();
         }
 
-        public List<ContentAddress> Search(string search)
+        public List<ContentAddress> Search(string search, Dictionary<string, object> nonTextualMatches)
         {
             string indexFileLocation = GetIndexFilePath();
             Directory dir =
                 Lucene.Net.Store.FSDirectory.GetDirectory(indexFileLocation);
             Analyzer analyzer = new StandardAnalyzer();
-
-            QueryParser parser = new QueryParser("_GLOM_", analyzer);
-            Query query = parser.Parse(search);
             IndexSearcher searcher = new IndexSearcher(dir);
-            TopDocs hits = searcher.Search(query, 1000);
-            List<ContentAddress> addrs =
-                Enumerable.Range(0, hits.totalHits)
-                    .Select(n => ContentAddress.FromString(searcher.Doc(hits.scoreDocs[n].doc).Get("_CONTENTADDRESS_")))
-                    .ToList();
-            return addrs;
+            try
+            {
+                QueryParser parser = new QueryParser("_GLOM_", analyzer);
+                Query textQuery = parser.Parse(search);
+                BooleanQuery query = new BooleanQuery();
+                query.Add(textQuery, BooleanClause.Occur.MUST);
+                foreach (var match in nonTextualMatches)
+                {
+                    query.Add(new TermQuery(new Term(match.Key, match.Value.ToString())), BooleanClause.Occur.MUST);
+                }
+                TopDocs hits = searcher.Search(query, 1000);
+                List<ContentAddress> addrs =
+                    Enumerable.Range(0, hits.totalHits)
+                        .Select(n => ContentAddress.FromString(searcher.Doc(hits.scoreDocs[n].doc).Get("_CONTENTADDRESS_")))
+                        .ToList();
+                return addrs;
+            }
+            finally
+            {
+                searcher.Close();
+                analyzer.Close();
+                dir.Close();
+            }
         }
 
         private Field.Index Mode2Index(IndexAttribute.Mode mode)

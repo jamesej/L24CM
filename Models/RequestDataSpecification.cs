@@ -152,9 +152,15 @@ namespace L24CM.Models
 
         public List<string> GetRouteValues(List<string> significantRouteKeys)
         {
-            return significantRouteKeys
+            var routeValues = significantRouteKeys
                 .Select(rk => RouteData.ContainsKey(rk) ? RouteData[rk].ToString() : null)
                 .ToList();
+            for (int i = routeValues.Count - 1; i >= 0; i--)
+            {
+                if (routeValues[i] != null) break;
+                routeValues.RemoveAt(i);
+            }
+            return routeValues;
         }
 
         public Dictionary<string, string> ToArgs()

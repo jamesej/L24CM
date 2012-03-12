@@ -8,6 +8,7 @@ using System.Web.Routing;
 using System.Web.Mvc;
 
 using L24CM.Utility;
+using L24CM.Models;
 
 namespace L24CM.Routing
 {
@@ -77,6 +78,21 @@ namespace L24CM.Routing
             if (!rvs.ContainsKey("controller")) return null;
             ControllerInfo cInfo = Controllers.FirstOrDefault(ci => ci.Name == (string)rvs["controller"]);
             if (cInfo == null) return null;
+
+            UrlPattern patt = cInfo.UrlPatterns.FirstOrDefault(up => up.Matches(rvs));
+            if (patt == null) return null;
+            return patt.BuildUrl(rvs);
+        }
+        public string GetUrl(ContentAddress ca)
+        {
+            RouteValueDictionary rvs = new RouteValueDictionary();
+            rvs.Add("controller", ca.Controller);
+            rvs.Add("action", ca.Action);
+            ControllerInfo cInfo = Controllers.FirstOrDefault(ci => ci.Name == (string)rvs["controller"]);
+            if (cInfo == null) return null;
+
+            for (int i = 0; i < Math.Min(cInfo.SignificantRouteKeys.Count, ca.Subindexes.Count); i++)
+                rvs.Add(cInfo.SignificantRouteKeys[i], ca.Subindexes[i]);
 
             UrlPattern patt = cInfo.UrlPatterns.FirstOrDefault(up => up.Matches(rvs));
             if (patt == null) return null;

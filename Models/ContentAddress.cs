@@ -10,7 +10,20 @@ namespace L24CM.Models
     {
         public string Controller { get; set; }
         public string Action { get; set; }
-        public List<string> Subindexes { get; set; }
+
+        // A valid list of Subindexes will have no trailing null strings, but may include null strings within the list
+        // to maintain the positioning of non-null items
+        List<string> subindexes = null;
+        public List<string> Subindexes
+        {
+            get { return subindexes; }
+            set
+            {
+                if (value.Count > 0 && value[value.Count - 1] == null)
+                    throw new ArgumentException("Cannot have trailing null strings in Subindexes");
+                subindexes = value;
+            }
+        }
 
         public ContentAddress()
         { }
@@ -33,13 +46,14 @@ namespace L24CM.Models
         public ContentAddress Redirect(string redirectDescriptor)
         {
             ContentAddress ca = Clone();
-            ca.Subindexes = ca.Subindexes.Select(si => (string)null).ToList();
+            ca.Subindexes = new List<string>();
             return ca;
         }
 
         public override string ToString()
         {
-            return Controller + "&" + Action + "&" + Subindexes.Join("&");
+            // null subindexes are represented by a space (as this can never be in a url)
+            return (Controller + "&" + Action + "&" + Subindexes.Select(si => si ?? " ").Join("&")).ToLower();
         }
 
         public static ContentAddress FromString(string s)
@@ -49,7 +63,7 @@ namespace L24CM.Models
             {
                 Controller = words[0],
                 Action = words[1],
-                Subindexes = words.Skip(2).ToList()
+                Subindexes = words.Skip(2).Select(w => w == " " ? (string)null : w).ToList() // null subindex = " "
             };
         }
     }

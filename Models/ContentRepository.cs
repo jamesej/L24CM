@@ -34,10 +34,14 @@ namespace L24CM.Models
 
         public virtual ContentItem GetContentItem(ContentAddress ca)
         {
-            var query = Ctx.ContentItemSet.Where(c => c.Controller == ca.Controller && c.Action == ca.Action);
-            for (int i = 0; i < ca.Subindexes.Count; i++)
-                query = query.Where(string.Format("Subindex{0} = @0", i), new object[] { ca.Subindexes[i] });
-            ContentItem contentItem = query.FirstOrDefault();
+            //var query = Ctx.ContentItemSet.Where(c => c.Controller == ca.Controller && c.Action == ca.Action);
+            //for (int i = 0; i < ca.Subindexes.Count; i++)
+            //    query = query.Where(string.Format("Subindex{0} = @0", i), new object[] { ca.Subindexes[i] });
+            //ContentItem contentItem = query.FirstOrDefault();
+
+            // TODO: Versioning
+            string addressKey = ca.ToString().GetMd5Sum();
+            ContentItem contentItem = Ctx.ContentItemSet.FirstOrDefault(c => c.AddressKey == addressKey);
 
             return contentItem;
         }
@@ -86,7 +90,8 @@ namespace L24CM.Models
 
         public virtual ContentItem AddContentItem(ContentItem item)
         {
-            ContentItem existing = Ctx.ContentItemSet.FirstOrDefault(ci => ci.Path == item.Path);
+            item.SetKeys();
+            ContentItem existing = Ctx.ContentItemSet.FirstOrDefault(ci => ci.AddressKey == item.AddressKey);
             if (existing != null)
                 return existing;
             else
@@ -133,14 +138,18 @@ namespace L24CM.Models
             Ctx.SaveChanges();
         }
 
-        public virtual IQueryable<string> Paths()
-        {
-            return Ctx.ContentItemSet.Select(ci => ci.Path).OrderBy(p => p);
-        }
-
         public virtual IQueryable<ContentItem> All()
         {
             return Ctx.ContentItemSet;
+        }
+
+        public virtual IEnumerable<AddressedContent<T>> GetContent<T>(IEnumerable<ContentAddress> addresses) where T : BaseContent, new()
+        {
+            var query = Ctx.ContentItemSet
+                .WhereIn(ci => ci.AddressKey, addresses.Select(ca => ca.ToString().GetMd5Sum()))
+                .AsEnumerable()
+                .Select(ci => new AddressedContent<T> { Address = ci.ContentAddress, Content = ci.GetContent<T>() });
+            return query;
         }
     }
 }

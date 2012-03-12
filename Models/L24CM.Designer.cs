@@ -11,7 +11,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmSchemaAttribute()]
 
 // Original file name:
-// Generation date: 05/12/2011 18:35:19
+// Generation date: 12/03/2012 12:20:22
 namespace L24CM.Models
 {
     
@@ -108,13 +108,17 @@ namespace L24CM.Models
         /// <param name="type">Initial value of Type.</param>
         /// <param name="action">Initial value of Action.</param>
         /// <param name="controller">Initial value of Controller.</param>
-        public static ContentItem CreateContentItem(string path, string type, string action, string controller)
+        /// <param name="addressKey">Initial value of AddressKey.</param>
+        /// <param name="versionKey">Initial value of VersionKey.</param>
+        public static ContentItem CreateContentItem(string path, string type, string action, string controller, string addressKey, string versionKey)
         {
             ContentItem contentItem = new ContentItem();
             contentItem.Path = path;
             contentItem.Type = type;
             contentItem.Action = action;
             contentItem.Controller = controller;
+            contentItem.AddressKey = addressKey;
+            contentItem.VersionKey = versionKey;
             return contentItem;
         }
         /// <summary>
@@ -370,6 +374,75 @@ namespace L24CM.Models
         private string _Subindex5;
         partial void OnSubindex5Changing(string value);
         partial void OnSubindex5Changed();
+        /// <summary>
+        /// There are no comments for Property AddressKey in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string AddressKey
+        {
+            get
+            {
+                return this._AddressKey;
+            }
+            set
+            {
+                this.OnAddressKeyChanging(value);
+                this.ReportPropertyChanging("AddressKey");
+                this._AddressKey = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("AddressKey");
+                this.OnAddressKeyChanged();
+            }
+        }
+        private string _AddressKey;
+        partial void OnAddressKeyChanging(string value);
+        partial void OnAddressKeyChanged();
+        /// <summary>
+        /// There are no comments for Property Version in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Nullable<int> Version
+        {
+            get
+            {
+                return this._Version;
+            }
+            set
+            {
+                this.OnVersionChanging(value);
+                this.ReportPropertyChanging("Version");
+                this._Version = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("Version");
+                this.OnVersionChanged();
+            }
+        }
+        private global::System.Nullable<int> _Version;
+        partial void OnVersionChanging(global::System.Nullable<int> value);
+        partial void OnVersionChanged();
+        /// <summary>
+        /// There are no comments for Property VersionKey in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public string VersionKey
+        {
+            get
+            {
+                return this._VersionKey;
+            }
+            set
+            {
+                this.OnVersionKeyChanging(value);
+                this.ReportPropertyChanging("VersionKey");
+                this._VersionKey = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("VersionKey");
+                this.OnVersionKeyChanged();
+            }
+        }
+        private string _VersionKey;
+        partial void OnVersionKeyChanging(string value);
+        partial void OnVersionKeyChanged();
     }
     /// <summary>
     /// There are no comments for l24cmModel.User in the schema.

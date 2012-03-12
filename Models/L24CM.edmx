@@ -14,6 +14,7 @@
             <PropertyRef Name="path" />
           </Key>
           <Property Name="action" Type="varchar" Nullable="false" MaxLength="45" />
+          <Property Name="addresskey" Type="char" Nullable="false" MaxLength="32" />
           <Property Name="content" Type="varchar" MaxLength="60000" />
           <Property Name="controller" Type="varchar" Nullable="false" MaxLength="45" />
           <Property Name="path" Type="varchar" Nullable="false" MaxLength="700" />
@@ -24,6 +25,8 @@
           <Property Name="subindex4" Type="varchar" MaxLength="150" />
           <Property Name="subindex5" Type="varchar" MaxLength="150" />
           <Property Name="type" Type="varchar" Nullable="false" MaxLength="300" />
+          <Property Name="version" Type="int" />
+          <Property Name="versionkey" Type="char" Nullable="false" MaxLength="32" />
         </EntityType>
         <EntityType Name="user">
           <Key>
@@ -48,8 +51,7 @@
           <EntitySet Name="UserSet" EntityType="l24cmModel.User" /></EntityContainer>
         <EntityType Name="ContentItem">
           <Key>
-            <PropertyRef Name="Path" />
-          </Key>
+            <PropertyRef Name="Path" /></Key>
           <Property Name="Content" Type="String" />
           <Property Name="Path" Type="String" Nullable="false" />
           <Property Name="Type" Type="String" Nullable="false" />
@@ -60,7 +62,10 @@
           <Property Name="Subindex2" Type="String" Nullable="true" />
           <Property Name="Subindex3" Type="String" Nullable="true" />
           <Property Name="Subindex4" Type="String" Nullable="true" />
-          <Property Name="Subindex5" Type="String" Nullable="true" /></EntityType>
+          <Property Name="Subindex5" Type="String" Nullable="true" />
+          <Property Name="AddressKey" Type="String" Nullable="false" />
+          <Property Name="Version" Type="Int32" Nullable="true" />
+          <Property Name="VersionKey" Type="String" Nullable="false" /></EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="Id" /></Key>
@@ -81,6 +86,9 @@
           <EntitySetMapping Name="ContentItemSet">
             <EntityTypeMapping TypeName="IsTypeOf(l24cmModel.ContentItem)">
               <MappingFragment StoreEntitySet="contentitem">
+                <ScalarProperty Name="VersionKey" ColumnName="versionkey" />
+                <ScalarProperty Name="Version" ColumnName="version" />
+                <ScalarProperty Name="AddressKey" ColumnName="addresskey" />
                 <ScalarProperty Name="Subindex5" ColumnName="subindex5" />
                 <ScalarProperty Name="Subindex4" ColumnName="subindex4" />
                 <ScalarProperty Name="Subindex3" ColumnName="subindex3" />

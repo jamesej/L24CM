@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
+using System.Web.Mvc;
+using L24CM.Models;
+using L24CM.Routing;
 
 namespace L24CM.Utility
 {
@@ -49,6 +52,11 @@ namespace L24CM.Utility
             res.Append(url);
 
             return res.ToString();
+        }
+
+        static public string Action(this UrlHelper urls, ContentAddress addr)
+        {
+            return SiteStructure.Current.GetUrl(addr);
         }
     }
 }

@@ -26,7 +26,16 @@ namespace L24CM.Models
                 this.Controller = value.Controller;
                 this.Action = value.Action;
                 this.SetSubindexes(value.Subindexes);
+                SetKeys();
             }
+        }
+
+        public void SetKeys()
+        {
+            string contentAddress = ContentAddress.ToString();
+            this.VersionKey = ((Version.HasValue ? Version.Value.ToString() : "")
+                + contentAddress).GetMd5Sum();
+            this.AddressKey = contentAddress.GetMd5Sum();
         }
 
         public ContentItem() { }
@@ -51,29 +60,27 @@ namespace L24CM.Models
         public void SetSubindexes(List<string> subindexes)
         {
             int c = subindexes.Count;
-            if (c < 1) return;
-            this.Subindex0 = subindexes[0];
-            if (c < 2) return;
-            this.Subindex1 = subindexes[1];
-            if (c < 3) return;
-            this.Subindex2 = subindexes[2];
-            if (c < 4) return;
-            this.Subindex3 = subindexes[3];
-            if (c < 5) return;
-            this.Subindex4 = subindexes[4];
-            if (c < 6) return;
-            this.Subindex5 = subindexes[5];
+            if (c > 0) this.Subindex0 = subindexes[0];
+            if (c > 1) this.Subindex1 = subindexes[1];
+            if (c > 2) this.Subindex2 = subindexes[2];
+            if (c > 3) this.Subindex3 = subindexes[3];
+            if (c > 4) this.Subindex4 = subindexes[4];
+            if (c > 5) this.Subindex5 = subindexes[5];
+            SetKeys();
         }
 
         public List<string> GetSubindexes()
         {
             List<string> sis = new List<string>();
-            if (this.Subindex0 != null) sis.Add(this.Subindex0);
-            if (this.Subindex1 != null) sis.Add(this.Subindex1);
-            if (this.Subindex2 != null) sis.Add(this.Subindex2);
-            if (this.Subindex3 != null) sis.Add(this.Subindex3);
-            if (this.Subindex4 != null) sis.Add(this.Subindex4);
-            if (this.Subindex5 != null) sis.Add(this.Subindex5);
+
+            bool started = false;
+            if (this.Subindex5 != null || started) { sis.Add(this.Subindex5); started = true; }
+            if (this.Subindex4 != null || started) { sis.Add(this.Subindex4); started = true; }
+            if (this.Subindex3 != null || started) { sis.Add(this.Subindex3); started = true; }
+            if (this.Subindex2 != null || started) { sis.Add(this.Subindex2); started = true; }
+            if (this.Subindex1 != null || started) { sis.Add(this.Subindex1); started = true; }
+            if (this.Subindex0 != null || started) { sis.Add(this.Subindex0); started = true; }
+
             return sis;
         }
 

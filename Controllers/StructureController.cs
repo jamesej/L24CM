@@ -7,6 +7,7 @@ using L24CM.Routing;
 using L24CM.Models;
 using L24CM.Search;
 using L24CM.Attributes;
+using L24CM.Utility;
 
 namespace L24CM.Controllers
 {
@@ -71,6 +72,10 @@ namespace L24CM.Controllers
         public ActionResult BuildIndex()
         {
             SearchManager.Instance.BuildIndex();
+
+            ContentRepository.Instance.All().Do(ci => ci.SetKeys());
+            ContentRepository.Instance.Save();
+
             return Content("OK");
         }
 
