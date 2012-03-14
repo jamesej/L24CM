@@ -76,7 +76,7 @@ namespace L24CM.Routing
         public string GetUrl(RouteValueDictionary rvs)
         {
             if (!rvs.ContainsKey("controller")) return null;
-            ControllerInfo cInfo = Controllers.FirstOrDefault(ci => ci.Name == (string)rvs["controller"]);
+            ControllerInfo cInfo = Controllers.FirstOrDefault(ci => ci.Name.ToLower() == ((string)rvs["controller"]).ToLower());
             if (cInfo == null) return null;
 
             UrlPattern patt = cInfo.UrlPatterns.FirstOrDefault(up => up.Matches(rvs));
@@ -88,7 +88,7 @@ namespace L24CM.Routing
             RouteValueDictionary rvs = new RouteValueDictionary();
             rvs.Add("controller", ca.Controller);
             rvs.Add("action", ca.Action);
-            ControllerInfo cInfo = Controllers.FirstOrDefault(ci => ci.Name == (string)rvs["controller"]);
+            ControllerInfo cInfo = Controllers.FirstOrDefault(ci => ci.Name.ToLower() == ((string)rvs["controller"]).ToLower());
             if (cInfo == null) return null;
 
             for (int i = 0; i < Math.Min(cInfo.SignificantRouteKeys.Count, ca.Subindexes.Count); i++)

@@ -38,16 +38,23 @@ namespace L24CM.Routing
         }
 
         private List<string> displayActions = null;
+        public List<string> DisplayActions
+        {
+            get
+            {
+                if (displayActions == null)
+                    displayActions = UrlPatterns.SelectMany(up => up.DisplayActions(this.Actions)).ToList();
+                return displayActions;
+            }
+        }
+
         private List<string> displayPatterns = null;
         public List<string> DisplayPatterns
         {
             get
             {
                 if (displayPatterns == null)
-                {
                     displayPatterns = UrlPatterns.SelectMany(up => up.DisplayPatterns(this.Name, this.Actions)).ToList();
-                    displayActions = UrlPatterns.SelectMany(up => up.DisplayActions(this.Actions)).ToList();
-                }
                 return displayPatterns;
             }
         }
@@ -98,7 +105,7 @@ namespace L24CM.Routing
 
         public string GetPatternAction(int patternIdx)
         {
-            return displayActions[patternIdx];
+            return DisplayActions[patternIdx];
         }
 
         public bool TryAddPattern(string url, RouteValueDictionary defaults)

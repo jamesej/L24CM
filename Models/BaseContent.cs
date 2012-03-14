@@ -9,8 +9,7 @@ namespace L24CM.Models
 {
     public class BaseContent
     {
-        [ScaffoldColumn(false)]
-        [ScriptIgnore]
+        [ScaffoldColumn(false), ScriptIgnore]
         public ContentItem ContentItem { get; set; }
     }
 }

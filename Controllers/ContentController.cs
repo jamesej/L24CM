@@ -110,13 +110,14 @@ namespace L24CM.Controllers
         [Authorize(Roles=Models.User.EditorRole)]
         public ActionResult Edit()
         {
+            ViewData["formState"] = ";0"; // set scroll position to zero
             return View(ConfigHelper.GetViewPath("L24CMEditor.aspx"), Model.Content);
         }
 
         [HttpPost]
         [ValidateInput(false)]
         [Authorize(Roles=Models.User.EditorRole)]
-        public ActionResult Edit(string path, TContent update, string _l24action)
+        public ActionResult Edit(string path, TContent update, string _l24action, string formState)
         {
             if (_l24action != null)
             {
@@ -143,9 +144,20 @@ namespace L24CM.Controllers
             Model.ContentItem.Content = jsSer.Serialize(update);
             ContentRepository.Instance.Save();  // Model.ContentItem originated from ContentRepository.
 
+            ViewData["formState"] = formState;
             return View(ConfigHelper.GetViewPath("L24CMEditor.aspx"), update);
         }
 
+        [HttpGet, Authorize(Roles = Models.User.EditorRole)]
+        public ActionResult PropertyItemHtml(string propertyPath)
+        {
+            ViewData["propertyPath"] = propertyPath;
+            IList list = ReflectionX.GetPropertyValueByPath(Model.Content, propertyPath) as IList;
+            list.Clear();
+            list.Add(CreateInstance(list.GetType().GetGenericArguments()[0]));
+            CancelProcessingHtml();
+            return PartialView(ConfigHelper.GetViewPath("L24CMPropertyItem.ascx"), Model.Content);
+        }
 
         object CreateInstance(Type t)
         {

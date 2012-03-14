@@ -6,7 +6,7 @@ using L24CM.Utility;
 
 namespace L24CM.Models
 {
-    public class ContentAddress
+    public class ContentAddress : IEquatable<ContentAddress>
     {
         public string Controller { get; set; }
         public string Action { get; set; }
@@ -66,5 +66,39 @@ namespace L24CM.Models
                 Subindexes = words.Skip(2).Select(w => w == " " ? (string)null : w).ToList() // null subindex = " "
             };
         }
+
+        #region IEquatable<ContentAddress> Members
+
+        public bool Equals(ContentAddress other)
+        {
+ 	        return (this.ToString() == other.ToString());
+        }
+
+        #endregion
+
+        public override bool Equals(object obj)
+        {
+            ContentAddress otherCa = obj as ContentAddress;
+            if (otherCa == null) throw new ArgumentException("Can only compare to another ContentAddress");
+            return this.Equals(otherCa);
+        }
+
+        public override int GetHashCode()
+        {
+            return this.ToString().GetHashCode();
+        }
+
+        public static bool operator ==(ContentAddress a, ContentAddress b)
+        {
+            if (Object.ReferenceEquals(a, b)) return true;
+            if (((object)a == null || ((object)b == null))) return false;
+            return a.Equals(b);
+        }
+
+        public static bool operator !=(ContentAddress a, ContentAddress b)
+        {
+            return !(a == b);
+        }
+
     }
 }

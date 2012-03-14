@@ -98,7 +98,9 @@ namespace L24CM.Filters
             List<IncludeEntry> scripts, List<IncludeEntry> csses, List<IncludeEntry> htmls)
         {
             HtmlDocument doc = new HtmlDocument();
+            HtmlNode.ElementsFlags["link"] = HtmlElementFlag.Empty;
             doc.Load(new StringReader(markup));
+            doc.OptionWriteEmptyNodes = true;
 
             if (csses != null)
                 UpdateIncludes(doc, "link", "href", csses,

@@ -44,14 +44,20 @@ namespace L24CM.Controllers
         public const string HtmlsItem = "_L24Htmls";
         public static readonly List<string> PrimaryInclude = null;
 
+        protected bool processHtml = true;
+        protected virtual void CancelProcessingHtml()
+        {
+            processHtml = false;
+        }
+
         protected override void OnResultExecuted(ResultExecutedContext filterContext)
         {
-            if (filterContext.Result is ViewResult
-                || (filterContext.Result is PartialViewResult && !this.ControllerContext.IsChildAction))
+            if (processHtml && (filterContext.Result is ViewResult
+                || (filterContext.Result is PartialViewResult && !this.ControllerContext.IsChildAction)))
             {
                 filterContext.HttpContext.Response.Filter = new IncludesFilter(filterContext.HttpContext.Response.Filter, this);
             }
-
+            processHtml = true;
         }
 
         protected virtual void RegisterInclude(string key, string incl, string id, List<string> deps)

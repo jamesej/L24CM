@@ -1,14 +1,16 @@
 ﻿iframe { border: 0; }
 
-body { font-family: Arial, Sans-Serif; }
+body { font-family: Arial, Sans-Serif; margin: 0px; padding: 0px; }
 
 .editor-label { background-color: Gray; color: White; padding: 2px; font-size: 12px; height: auto; }
 
 #editPanel { font-size: 11px; }
 #editPanel input[type="text"] { font-size: 11px; }
 .file-image-thumb { max-width: 50px; max-height: 50px; }
-#editPanel .action-button { color: White; background-color: Gray; font-size: 16px; width: 16px; text-align: center; border: solid 1px White; cursor: pointer; }
-#editPanel .collection { display: none; }
+#editPanel .action-button, #editPanel .add-button { color: White; background-color: Gray; font-size: 16px; width: 16px; text-align: center; border: solid 1px White; cursor: pointer; }
+#editPanel .action-button:hover, #editPanel .add-button:hover { background-color: Black; }
+#editPanel #save { width: auto; }
+#editPanel .closed { display: none; }
 #editPanel .collection>table, #editPanel .collection>div { background-color: #e0e0e0; border-bottom: solid 2px White; }
 #editPanel .collection .action-button { background-color: Gray; float: left; }
 #editPanel .editor-field .text-box { width: 100%; }
