@@ -81,7 +81,7 @@ namespace L24CM.Models
             : this(filterContext.RouteData, filterContext.HttpContext.Request)
         {
         }
-        public RequestDataSpecification(string routeName, string controller, string action, string[] routeKeys, string[] routeValues)
+        public RequestDataSpecification(string controller, string action, string[] routeKeys, string[] routeValues)
         {
             Controller = controller;
             Action = action;

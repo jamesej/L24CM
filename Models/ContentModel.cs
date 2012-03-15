@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
+using L24CM.Routing;
 
 namespace L24CM.Models
 {
@@ -36,25 +37,32 @@ namespace L24CM.Models
         ContentItem contentItem = null;
         public ContentItem ContentItem
         {
-            get { return contentItem; }
+            get
+            {
+                if (contentItem == null)
+                {
+                    ContentAddress ca = new ContentAddress(ReqDataSpec, SignificantRouteKeys);
+                    contentItem = ContentRoute.GetContentForAddress(ca);
+                    if (contentItem == null)
+                        contentItem = ContentRepository.Instance.GetContentItem(ca);
+                }
+                return contentItem;
+            }
         }
 
         private T content = null;
         public T Content
         {
             get
-            {
-                if (contentItem == null)
+            {   
+                if (ContentItem == null)
+                    content = null;
+                else
                 {
-                    contentItem = ContentRepository.Instance.GetContent(SignificantRouteKeys, ReqDataSpec);
-                    if (contentItem == null)
-                        content = null;
-                    else
-                    {
-                        content = contentItem.GetContent<T>();
-                        content.ContentItem = contentItem;
-                    }
+                    content = ContentItem.GetContent<T>();
+                    content.ContentItem = ContentItem;
                 }
+
                 return content;
             }
             set { content = value; }

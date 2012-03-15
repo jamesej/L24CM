@@ -47,17 +47,24 @@ namespace L24CM.Controllers
             if (cInfo == null)
                 return new HttpStatusCodeResult(500, "No such template: " + name);
 
-            int patternIdx = int.Parse(pattern);
-            if (fieldNames == null)
-                fieldNames = new string[0];
-            if (fieldValues == null)
-                fieldValues = new string[0];
-            bool created = cInfo.CreateInstance(cInfo.GetPatternAction(patternIdx), fieldNames, fieldValues);
+            try
+            {
+                int patternIdx = int.Parse(pattern);
+                if (fieldNames == null)
+                    fieldNames = new string[0];
+                if (fieldValues == null)
+                    fieldValues = new string[0];
+                bool created = cInfo.CreateInstance(cInfo.GetPatternAction(patternIdx), fieldNames, fieldValues);
 
-            if (created)
-                return Content("OK");
-            else
-                return Content("Already Exists");
+                if (created)
+                    return Content("OK");
+                else
+                    return Content("Already Exists");
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(500, ex.Message);
+            }
         }
 
         [HttpPost, Authorize(Roles = Models.User.EditorRole)]

@@ -10,11 +10,11 @@ namespace L24CM.Routing
 {
     public static class RouteX
     {
-        public static void MapExtendedRoute(this RouteCollection routes, string name, string url, object defaults)
+        public static void MapContentRoute(this RouteCollection routes, string name, string url, object defaults)
         {
             RouteValueDictionary rvs = new RouteValueDictionary(defaults);
-            routes.Add(name, new ExtendedRoute(url, rvs, new MvcRouteHandler()));
-            SiteStructure.Current.AddController(name, url, rvs);
+            routes.Add(name, new ContentRoute(url, rvs, new MvcRouteHandler()));
+            SiteStructure.Current.AddController(url, rvs);
         }
     }
 }

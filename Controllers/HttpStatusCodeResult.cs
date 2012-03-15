@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
+using System.Net.Mime;
 
 namespace L24CM.Controllers
 {
@@ -23,6 +24,11 @@ namespace L24CM.Controllers
         {
             context.HttpContext.Response.StatusCode = code;
             context.HttpContext.Response.StatusDescription = description;
+            if (500 <= code && code < 600)
+            {
+                context.HttpContext.Response.ContentType = MediaTypeNames.Text.Plain;
+                context.HttpContext.Response.Write(description);
+            }
         }
     }
 }

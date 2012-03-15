@@ -18,7 +18,6 @@ namespace L24CM.Routing
         public Type Controller { get; set; }
         public Type Content { get; set; }
         public string Name { get; set; }
-        public string MainRouteName { get; set; }
         public string Url { get; set; }
         public List<UrlPattern> UrlPatterns { get; set; }
         public List<string> Actions { get; set; }
@@ -80,7 +79,7 @@ namespace L24CM.Routing
         {
             UrlPatterns = new List<UrlPattern>();
         }
-        public ControllerInfo(string routeName, Type controllerType, string url, RouteValueDictionary defaults)
+        public ControllerInfo(Type controllerType, string url, RouteValueDictionary defaults)
         {
             this.Controller = controllerType;
             this.Name = this.Controller.Name.UpTo("Controller");
@@ -100,7 +99,6 @@ namespace L24CM.Routing
             IContentController cc = Activator.CreateInstance(this.Controller) as IContentController;
             this.SignificantRouteKeys = cc.SignificantRouteKeys;
             this.Content = cc.ContentType;
-            this.MainRouteName = routeName;
         }
 
         public string GetPatternAction(int patternIdx)
@@ -124,7 +122,7 @@ namespace L24CM.Routing
         {
             BaseContent blankContent = Activator.CreateInstance(this.Content) as BaseContent;
             ContentItem newItem = new ContentItem(blankContent, this.SignificantRouteKeys,
-                new RequestDataSpecification(this.MainRouteName, this.Name, action, fieldNames, fieldValues));
+                new RequestDataSpecification(this.Name, action, fieldNames, fieldValues));
 
             ContentItem itemOnPath = ContentRepository.Instance.AddContentItem(newItem);
             bool created = (itemOnPath == newItem);
