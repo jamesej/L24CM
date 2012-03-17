@@ -33,7 +33,7 @@ body { font-family: Arial, Sans-Serif; margin: 0px; padding: 0px; }
 #fileDetails { float:right }
 .file-image-thumb { max-width: 50px; max-height: 50px; }
 
-#structureManager .editor-label { height: 22px; margin-bottom: 3px; }
+#structureManager .editor-label { height: 22px; margin-bottom: 3px; cursor: pointer; }
 #structureManager .template-name { float: left; width: 120px; overflow: hidden; font-size: 16px; }
 #structureManager .inst { font-size: 12px; }
 #structureManager .edit-area { background-color: #f0f0f0; margin-top: 3px; }

@@ -106,6 +106,14 @@ namespace L24CM.Routing
             return DisplayActions[patternIdx];
         }
 
+        public UrlPattern GetPatternByDisplayIdx(int patternIdx)
+        {
+            return UrlPatterns.SelectMany(up => up.DisplayPatterns(this.Name, this.Actions)
+                .Select(dp => up))
+                .Skip(patternIdx)
+                .First();
+        }
+
         public bool TryAddPattern(string url, RouteValueDictionary defaults)
         {
             bool matches = true;
@@ -118,11 +126,11 @@ namespace L24CM.Routing
             return matches;
         }
 
-        public bool CreateInstance(string action, string[] fieldNames, string[] fieldValues)
+        public bool CreateInstance(RouteValueDictionary rvs)
         {
             BaseContent blankContent = Activator.CreateInstance(this.Content) as BaseContent;
             ContentItem newItem = new ContentItem(blankContent, this.SignificantRouteKeys,
-                new RequestDataSpecification(this.Name, action, fieldNames, fieldValues));
+                new RequestDataSpecification(rvs));
 
             ContentItem itemOnPath = ContentRepository.Instance.AddContentItem(newItem);
             bool created = (itemOnPath == newItem);

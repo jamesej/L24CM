@@ -8,6 +8,7 @@ using L24CM.Models;
 using L24CM.Search;
 using L24CM.Attributes;
 using L24CM.Utility;
+using System.Web.Routing;
 
 namespace L24CM.Controllers
 {
@@ -54,12 +55,20 @@ namespace L24CM.Controllers
                     fieldNames = new string[0];
                 if (fieldValues == null)
                     fieldValues = new string[0];
-                bool created = cInfo.CreateInstance(cInfo.GetPatternAction(patternIdx), fieldNames, fieldValues);
+                RouteValueDictionary rvs = new RouteValueDictionary();
+                rvs.Add("controller", name);
+                rvs.Add("action", cInfo.GetPatternAction(patternIdx));
+                for (int i = 0; i < fieldNames.Length; i++)
+                    rvs.Add(fieldNames[i], fieldValues[i]);
+                foreach (var kvp in cInfo.GetPatternByDisplayIdx(patternIdx).Defaults)
+                    if (!rvs.ContainsKey(kvp.Key))
+                        rvs.Add(kvp.Key, kvp.Value);
+                bool created = cInfo.CreateInstance(rvs);
 
                 if (created)
                     return Content("OK");
                 else
-                    return Content("Already Exists");
+                    return new HttpStatusCodeResult(500, "Already exists");
             }
             catch (Exception ex)
             {

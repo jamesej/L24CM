@@ -74,12 +74,12 @@ namespace L24CM.Models
             List<string> sis = new List<string>();
 
             bool started = false;
-            if (this.Subindex5 != null || started) { sis.Add(this.Subindex5); started = true; }
-            if (this.Subindex4 != null || started) { sis.Add(this.Subindex4); started = true; }
-            if (this.Subindex3 != null || started) { sis.Add(this.Subindex3); started = true; }
-            if (this.Subindex2 != null || started) { sis.Add(this.Subindex2); started = true; }
-            if (this.Subindex1 != null || started) { sis.Add(this.Subindex1); started = true; }
-            if (this.Subindex0 != null || started) { sis.Add(this.Subindex0); started = true; }
+            if (this.Subindex5 != null || started) { sis.Insert(0, this.Subindex5); started = true; }
+            if (this.Subindex4 != null || started) { sis.Insert(0, this.Subindex4); started = true; }
+            if (this.Subindex3 != null || started) { sis.Insert(0, this.Subindex3); started = true; }
+            if (this.Subindex2 != null || started) { sis.Insert(0, this.Subindex2); started = true; }
+            if (this.Subindex1 != null || started) { sis.Insert(0, this.Subindex1); started = true; }
+            if (this.Subindex0 != null || started) { sis.Insert(0, this.Subindex0); started = true; }
 
             return sis;
         }

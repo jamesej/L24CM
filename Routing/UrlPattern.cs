@@ -22,10 +22,16 @@ namespace L24CM.Routing
 
         public bool Matches(RouteValueDictionary rvs)
         {
-            return rvs.All(kvp => kvp.Key == "controller"
-                                  || Url.Contains("{" + kvp.Key + "}")
+            Dictionary<string, object> adjustedRvs = rvs.ToDictionary(rv => rv.Key, rv => rv.Value); // clone
+            if (adjustedRvs.ContainsKey("originalAction"))
+            {
+                adjustedRvs["action"] = adjustedRvs["originalAction"];
+                adjustedRvs.Remove("originalAction");
+            }
+            return adjustedRvs.All(kvp => kvp.Key == "controller"
+                                  || !Defaults.ContainsKey(kvp.Key)
                                   || Defaults.Contains(kvp))
-                   && UrlVariables.All(uv => rvs.ContainsKey(uv));
+                   && UrlVariables.All(uv => adjustedRvs.ContainsKey(uv));
         }
 
         public string BuildUrl(RouteValueDictionary rvs)

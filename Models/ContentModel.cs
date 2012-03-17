@@ -54,15 +54,15 @@ namespace L24CM.Models
         public T Content
         {
             get
-            {   
-                if (ContentItem == null)
-                    content = null;
-                else
-                {
-                    content = ContentItem.GetContent<T>();
-                    content.ContentItem = ContentItem;
-                }
+            {
+                if (content != null)
+                    return content;
 
+                if (ContentItem == null)
+                    return null;
+
+                content = ContentItem.GetContent<T>();
+                content.ContentItem = ContentItem;
                 return content;
             }
             set { content = value; }

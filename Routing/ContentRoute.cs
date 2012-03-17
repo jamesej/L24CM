@@ -50,9 +50,19 @@ namespace L24CM.Routing
             if (rd == null) return null;
 
             string action = rd.Values["action"] as string;
-            bool isDiverted = (rd.Values["originalAction"] != null);
-            RequestDataSpecification rds = new RequestDataSpecification(rd, httpContext.Request);
-            ContentItem content = ContentRepository.Instance.GetContent(SiteStructure.Current[rds.Controller].SignificantRouteKeys, rds);
+            RequestDataSpecification rds;
+            try
+            {
+                rds = new RequestDataSpecification(rd, httpContext.Request);
+            }
+            catch (StructureException sEx)
+            {
+                return null;
+            }
+            if (!SiteStructure.Current.HasController(rds.Controller)) 
+                return null;
+            ControllerInfo ci = SiteStructure.Current[rds.Controller];
+            ContentItem content = ContentRepository.Instance.GetContent(ci.SignificantRouteKeys, rds);
             
             if (content == null && action != "create")
                 return null;

@@ -81,33 +81,16 @@ namespace L24CM.Models
             : this(filterContext.RouteData, filterContext.HttpContext.Request)
         {
         }
-        public RequestDataSpecification(string controller, string action, string[] routeKeys, string[] routeValues)
+        public RequestDataSpecification(RouteValueDictionary rvs)
         {
-            Controller = controller;
-            Action = action;
-            RouteData = Enumerable.Range(0, routeKeys.Length)
-                .ToDictionary(i => routeKeys[i], i => (object)routeValues[i]);
+            Controller = rvs["controller"] as string;
+            Action = (rvs["originalAction"] as string) ?? (rvs["action"] as string);
+            RouteData = rvs.ToDictionary(rv => rv.Key, rv => rv.Value);
 
-            RouteValueDictionary rvs = new RouteValueDictionary(RouteData);
-            rvs.Add("controller", controller);
-            rvs.Add("action", action);
             Path = SiteStructure.Current.GetUrl(rvs);
-            //Path = UrlHelper.GenerateUrl(routeName,
-            //    Action, Controller,
-            //    new RouteValueDictionary(RouteData),
-            //    RouteTable.Routes,
-            //    (HttpContext.Current.Handler as MvcHandler).RequestContext,
-            //    false);
         }
-        public RequestDataSpecification(RouteData rd, HttpRequestBase req)
+        public RequestDataSpecification(RouteData rd, HttpRequestBase req) : this(rd.Values)
         {
-            Path = (rd.Values["path"] as string) ?? req.Path;
-            Controller = rd.Values["controller"] as string;
-            Action = (rd.Values["originalAction"] as string) ?? (rd.Values["action"] as string);
-            RouteData = rd.Values.ToDictionary(v => v.Key, v => v.Value);
-            
-            if (!string.IsNullOrEmpty(Path) && Path[0] == '/') Path = Path.Substring(1);
-
             List<KeyValuePair<string, string>> allValues = req.Form.ToKeyValues()
                 .Concat(req.QueryString.ToKeyValues())
                 .ToList();
