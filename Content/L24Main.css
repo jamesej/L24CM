@@ -11,7 +11,7 @@ body { font-family: Arial, Sans-Serif; margin: 0px; padding: 0px; }
 #editPanel .action-button:hover, #editPanel .add-button:hover { background-color: Black; }
 #editPanel #save { width: auto; }
 #editPanel .closed { display: none; }
-#editPanel .collection>table, #editPanel .collection>div { background-color: #e0e0e0; border-bottom: solid 2px White; }
+#editPanel .collection>table, #editPanel .collection>div { border-bottom: solid 2px White; }
 #editPanel .collection .action-button { background-color: Gray; float: left; }
 #editPanel .editor-field .text-box { width: 100%; }
 
