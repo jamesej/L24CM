@@ -106,6 +106,7 @@
     <Compile Include="Models\AddressedContent.cs" />
     <Compile Include="Models\BaseContent.cs" />
     <Compile Include="Models\ContentAddress.cs" />
+    <Compile Include="Models\ContentCollator.cs" />
     <Compile Include="Models\ContentRepository.cs" />
     <Compile Include="Models\ContentModel.cs" />
     <Compile Include="Models\ImageLink.cs" />

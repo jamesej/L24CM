@@ -19,6 +19,13 @@ namespace L24CM.Routing
         public StructureException(string msg, Exception inner) : base(msg, inner) { }
     }
 
+    public class MissingControllerException : StructureException
+    {
+        public MissingControllerException() : base() { }
+        public MissingControllerException(string msg) : base(msg) { }
+        public MissingControllerException(string msg, Exception inner) : base(msg, inner) { }
+    }
+
     public class SiteStructure
     {
         static readonly SiteStructure current = new SiteStructure();
@@ -40,7 +47,7 @@ namespace L24CM.Routing
             get
             {
                 ControllerInfo controllerInfo = GetController(controllerName);
-                if (controllerInfo == null) throw new StructureException("Controller missing: " + controllerName);
+                if (controllerInfo == null) throw new MissingControllerException("Can't find controller " + controllerName);
                 return controllerInfo;
             }
         }
@@ -81,7 +88,7 @@ namespace L24CM.Routing
             {
                 Type controllerType = AllControllers.FirstOrDefault(t => t.Name.UpTo("Controller") == (string)defaults["controller"]);
                 if (controllerType == null)
-                    throw new Exception("Attempt to add route to missing controller " + (string)defaults["controller"]);
+                    throw new MissingControllerException("Attempt to add route to missing controller " + (string)defaults["controller"]);
                 ControllerInfo existing = GetController((string)defaults["controller"]);
                 if (existing == null)
                     Controllers.Add(new ControllerInfo(controllerType, url, defaults));
@@ -108,7 +115,7 @@ namespace L24CM.Routing
         {
             if (!rvs.ContainsKey("controller")) throw new ArgumentException("Route values for GetUrl missing controller entry");
             ControllerInfo cInfo = GetController((string)rvs["controller"]);
-            if (cInfo == null) throw new StructureException("Can't find controller " + (string)rvs["controller"]);
+            if (cInfo == null) throw new MissingControllerException("Can't find controller " + (string)rvs["controller"]);
 
             UrlPattern patt = cInfo.UrlPatterns.FirstOrDefault(up => up.Matches(rvs));
             if (patt == null) throw new StructureException("No matching pattern found on controller " + cInfo.Controller.Name);
@@ -120,7 +127,7 @@ namespace L24CM.Routing
             rvs.Add("controller", ca.Controller);
             rvs.Add("action", ca.Action);
             ControllerInfo cInfo = GetController((string)rvs["controller"]); ;
-            if (cInfo == null) throw new StructureException("Can't find controller " + ca.Controller);
+            if (cInfo == null) throw new MissingControllerException("Can't find controller " + ca.Controller);
 
             for (int i = 0; i < Math.Min(cInfo.SignificantRouteKeys.Count, ca.Subindexes.Count); i++)
                 rvs.Add(cInfo.SignificantRouteKeys[i], ca.Subindexes[i]);

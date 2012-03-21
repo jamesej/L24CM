@@ -8,5 +8,6 @@ namespace L24CM.Models
     public class PageContent : BaseContent
     {
         public string PageTitle { get; set; }
+        public string PageDescription { get; set; }
     }
 }

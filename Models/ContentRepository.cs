@@ -34,16 +34,19 @@ namespace L24CM.Models
 
         public virtual ContentItem GetContentItem(ContentAddress ca)
         {
-            //var query = Ctx.ContentItemSet.Where(c => c.Controller == ca.Controller && c.Action == ca.Action);
-            //for (int i = 0; i < ca.Subindexes.Count; i++)
-            //    query = query.Where(string.Format("Subindex{0} = @0", i), new object[] { ca.Subindexes[i] });
-            //ContentItem contentItem = query.FirstOrDefault();
-
             // TODO: Versioning
             string addressKey = ca.ToString().GetMd5Sum();
             ContentItem contentItem = Ctx.ContentItemSet.FirstOrDefault(c => c.AddressKey == addressKey);
 
             return contentItem;
+        }
+
+        public virtual List<ContentItem> GetContentItems(List<ContentAddress> cas)
+        {
+            List<ContentItem> items = Ctx.ContentItemSet
+                .WhereIn(c => c.AddressKey, cas.Select(ca => ca.ToString().GetMd5Sum()))
+                .ToList();
+            return items;
         }
 
         public virtual ContentItem GetContent(List<string> significantRouteKeys, RequestDataSpecification rds)

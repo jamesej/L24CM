@@ -46,8 +46,23 @@ namespace L24CM.Models
         public ContentAddress Redirect(string redirectDescriptor)
         {
             ContentAddress ca = Clone();
-            ca.Subindexes = new List<string>();
+            string[] words = redirectDescriptor.Split('&');
+            ca.Controller = RedirectWord(ca.Controller, words[0]);
+            ca.Action = RedirectWord(ca.Action, words[1]);
+            //ca.Subindexes = ca.Subindexes
+            //    .Select((s, i) => i > RedirectWord(s, words[i + 2]))
+            //    .ToList();
             return ca;
+        }
+
+        string RedirectWord(string oldWord, string redirect)
+        {
+            if (redirect == "*")
+                return null;
+            else if (redirect == "=")
+                return oldWord;
+            else
+                return redirect;
         }
 
         public override string ToString()

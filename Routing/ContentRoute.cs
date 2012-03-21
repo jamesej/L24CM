@@ -57,7 +57,10 @@ namespace L24CM.Routing
             }
             catch (StructureException sEx)
             {
-                return null;
+                if (sEx is MissingControllerException) // if controller is missing, its not a content controller, process as normal
+                    return rd;
+                else
+                    return null;
             }
             if (!SiteStructure.Current.HasController(rds.Controller)) 
                 return null;
