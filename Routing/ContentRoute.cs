@@ -65,7 +65,7 @@ namespace L24CM.Routing
             if (!SiteStructure.Current.HasController(rds.Controller)) 
                 return null;
             ControllerInfo ci = SiteStructure.Current[rds.Controller];
-            ContentItem content = ContentRepository.Instance.GetContent(ci.SignificantRouteKeys, rds);
+            ContentItem content = ContentCollator.Instance.GetContent(ci.SignificantRouteKeys, rds);
             
             if (content == null && action != "create")
                 return null;

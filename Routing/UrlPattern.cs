@@ -30,7 +30,8 @@ namespace L24CM.Routing
             }
             return adjustedRvs.All(kvp => kvp.Key == "controller"
                                   || !Defaults.ContainsKey(kvp.Key)
-                                  || Defaults.Contains(kvp))
+                                  || Defaults.Contains(kvp)
+                                  || UrlVariables.Contains(kvp.Key))
                    && UrlVariables.All(uv => adjustedRvs.ContainsKey(uv));
         }
 

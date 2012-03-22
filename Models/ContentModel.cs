@@ -44,7 +44,7 @@ namespace L24CM.Models
                     ContentAddress ca = new ContentAddress(ReqDataSpec, SignificantRouteKeys);
                     contentItem = ContentRoute.GetContentForAddress(ca);
                     if (contentItem == null)
-                        contentItem = ContentRepository.Instance.GetContentItem(ca);
+                        contentItem = ContentCollator.Instance.GetContent(ca);
                 }
                 return contentItem;
             }

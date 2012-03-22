@@ -102,9 +102,12 @@ namespace L24CM.Search
             try
             {
                 QueryParser parser = new QueryParser("_GLOM_", analyzer);
-                Query textQuery = parser.Parse(search);
                 BooleanQuery query = new BooleanQuery();
-                query.Add(textQuery, BooleanClause.Occur.MUST);
+                if (!string.IsNullOrEmpty(search))
+                {
+                    Query textQuery = parser.Parse(search);
+                    query.Add(textQuery, BooleanClause.Occur.MUST);
+                }
                 foreach (var match in nonTextualMatches)
                 {
                     query.Add(new TermQuery(new Term(match.Key, match.Value.ToString())), BooleanClause.Occur.MUST);

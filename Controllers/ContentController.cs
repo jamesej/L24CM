@@ -140,9 +140,7 @@ namespace L24CM.Controllers
 
                 }
             }
-            JavaScriptSerializer jsSer = new JavaScriptSerializer();
-            Model.ContentItem.Content = jsSer.Serialize(update);
-            ContentRepository.Instance.Save();  // Model.ContentItem originated from ContentRepository.
+            ContentCollator.Instance.SetContent(Model.ContentItem, update);
 
             ViewData["formState"] = formState;
             return View(ConfigHelper.GetViewPath("L24CMEditor.aspx"), update);

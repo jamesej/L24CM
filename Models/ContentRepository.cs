@@ -32,6 +32,10 @@ namespace L24CM.Models
             }
         }
 
+        public virtual ContentItem GetContentItem(List<string> significantRouteKeys, RequestDataSpecification rds)
+        {
+            return GetContentItem(new ContentAddress(rds, significantRouteKeys));
+        }
         public virtual ContentItem GetContentItem(ContentAddress ca)
         {
             // TODO: Versioning
@@ -43,53 +47,56 @@ namespace L24CM.Models
 
         public virtual List<ContentItem> GetContentItems(List<ContentAddress> cas)
         {
+            if (cas == null || cas.Count == 0)
+                return new List<ContentItem>();
+
             List<ContentItem> items = Ctx.ContentItemSet
                 .WhereIn(c => c.AddressKey, cas.Select(ca => ca.ToString().GetMd5Sum()))
                 .ToList();
             return items;
         }
 
-        public virtual ContentItem GetContent(List<string> significantRouteKeys, RequestDataSpecification rds)
-        {
-            ContentAddress primaryAddress = new ContentAddress(rds, significantRouteKeys);
-            ContentItem contentItem = GetContentItem(primaryAddress);
+        //public virtual ContentItem GetContent(List<string> significantRouteKeys, RequestDataSpecification rds)
+        //{
+        //    ContentAddress primaryAddress = new ContentAddress(rds, significantRouteKeys);
+        //    ContentItem contentItem = GetContentItem(primaryAddress);
 
-            if (contentItem != null)
-            {
-                Type contentType = L24Manager.ControllerAssembly.GetType(contentItem.Type);
-                var rpsAttributes = contentType
-                    .GetCustomAttributes(typeof(RedirectPropertySourceAttribute), false)
-                    .Cast<RedirectPropertySourceAttribute>()
-                    .ToList();
-                if (rpsAttributes.Any())
-                {
-                    contentItem.JObjectContent = JObject.Parse(contentItem.Content);
-                    foreach (var rpsAttribute in rpsAttributes)
-                        foreach (string path in rpsAttribute.Path.Split('/'))
-                            UpdateJObjectForPathSource(contentItem.JObjectContent, path, rpsAttribute.SourceDescriptor, primaryAddress);
-                }
-            }
-            return contentItem;
-        }
+        //    if (contentItem != null)
+        //    {
+        //        Type contentType = L24Manager.ControllerAssembly.GetType(contentItem.Type);
+        //        var rpsAttributes = contentType
+        //            .GetCustomAttributes(typeof(RedirectPropertySourceAttribute), false)
+        //            .Cast<RedirectPropertySourceAttribute>()
+        //            .ToList();
+        //        if (rpsAttributes.Any())
+        //        {
+        //            contentItem.JObjectContent = JObject.Parse(contentItem.Content);
+        //            foreach (var rpsAttribute in rpsAttributes)
+        //                foreach (string path in rpsAttribute.Path.Split('/'))
+        //                    UpdateJObjectForPathSource(contentItem.JObjectContent, path, rpsAttribute.SourceDescriptor, primaryAddress);
+        //        }
+        //    }
+        //    return contentItem;
+        //}
 
-        protected virtual void UpdateJObjectForPathSource(JObject jo, string path, string sourceDescriptor, ContentAddress address)
-        {
-            ContentAddress redirectAddress = address.Redirect(sourceDescriptor);
-            ContentItem redirectContent = GetContentItem(redirectAddress);
-            if (redirectContent != null)
-            {
-                JObject redirectJo = JObject.Parse(redirectContent.Content);
-                JProperty primaryProperty = jo.Property(path);
-                JProperty redirectProperty = redirectJo.Property(path);
-                if (redirectProperty != null)
-                {
-                    if (primaryProperty == null)
-                        jo.Add(redirectProperty);
-                    else
-                        primaryProperty.Replace(redirectProperty);
-                }
-            }
-        }
+        //protected virtual void UpdateJObjectForPathSource(JObject jo, string path, string sourceDescriptor, ContentAddress address)
+        //{
+        //    ContentAddress redirectAddress = address.Redirect(sourceDescriptor);
+        //    ContentItem redirectContent = GetContentItem(redirectAddress);
+        //    if (redirectContent != null)
+        //    {
+        //        JObject redirectJo = JObject.Parse(redirectContent.Content);
+        //        JProperty primaryProperty = jo.Property(path);
+        //        JProperty redirectProperty = redirectJo.Property(path);
+        //        if (redirectProperty != null)
+        //        {
+        //            if (primaryProperty == null)
+        //                jo.Add(redirectProperty);
+        //            else
+        //                primaryProperty.Replace(redirectProperty);
+        //        }
+        //    }
+        //}
 
         public virtual ContentItem AddContentItem(ContentItem item)
         {
