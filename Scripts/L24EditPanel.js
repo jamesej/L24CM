@@ -35,13 +35,13 @@
 					});
 					$collection.append($add.contents());
 				});
-		}).delegate('.l24-image-load', 'click', function () {
+		}).delegate('.l24-image-load, .l24-media-load', 'click', function () {
 			var $this = $(this);
 			var $fname = $this.siblings('input');
 			top.getFile($fname.val(), function(fname) {
 				var suffix = fname.afterLast('.').toLowerCase();
 				if (suffix && suffix.length) {
-					if ("png|jpg|gif".indexOf(suffix) < 0) 
+					if ($this.hasClass("l24-image-load") && "png|jpg|gif".indexOf(suffix) < 0) 
 						return "Please select an image file only";
 					$fname.val(fname);
 					$this.closest('table').find('.l24-image-content-cell')

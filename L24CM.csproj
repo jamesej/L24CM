@@ -109,6 +109,7 @@
     <Compile Include="Models\ContentCollator.cs" />
     <Compile Include="Models\ContentRepository.cs" />
     <Compile Include="Models\ContentModel.cs" />
+    <Compile Include="Models\MediaFileLink.cs" />
     <Compile Include="Models\ImageLink.cs" />
     <Compile Include="Models\Recaptcha.cs" />
     <Compile Include="Routing\ControllerInfo.cs" />
