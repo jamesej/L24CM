@@ -21,7 +21,7 @@ namespace L24CM.Routing
         public static ContentItem GetContentForAddress(ContentAddress ca)
         {
             ContentItem contentItem = RequestContent;
-            if (contentItem.ContentAddress == ca)
+            if (contentItem != null && contentItem.ContentAddress == ca)
                 return contentItem;
             else
                 return null;
