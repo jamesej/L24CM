@@ -134,6 +134,11 @@ namespace L24CM.Models
             return items;
         }
 
+        public virtual void Delete(ContentItem item)
+        {
+            Ctx.DeleteObject(item);
+        }
+
         public virtual void DeleteByUrls(string[] urls)
         {
             Ctx.ContentItemSet
@@ -141,6 +146,13 @@ namespace L24CM.Models
                 .AsEnumerable()
                 .Do(ci => Ctx.DeleteObject(ci));
             Ctx.SaveChanges();
+        }
+
+        public virtual ContentItem[] GetByUrls(string[] urls)
+        {
+            return Ctx.ContentItemSet
+                        .WhereIn(ci => ci.Path, urls)
+                        .ToArray();
         }
 
         public virtual void Save()

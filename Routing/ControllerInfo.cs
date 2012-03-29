@@ -144,5 +144,28 @@ namespace L24CM.Routing
             ContentRepository.Instance.DeleteByUrls(urls);
             InvalidateInstances();
         }
+
+        public void RenameInstances(string[] urls, string from, string to)
+        {
+            ContentItem[] items = ContentRepository.Instance.GetByUrls(urls);
+            foreach (ContentItem item in items)
+            {
+                if (item.GetSubindexes().Any(si => si.Contains(from)))
+                {
+                    ContentItem newItem = item.Clone();
+                    ContentRepository.Instance.Delete(item);
+
+                    newItem.SetSubindexes(
+                        newItem.GetSubindexes()
+                            .Select(si => si == null ? null : si.Replace(from, to))
+                            .ToList());
+                    newItem.Path = SiteStructure.Current.GetUrl(newItem.ContentAddress);
+
+                    ContentRepository.Instance.AddContentItem(newItem);
+                }
+                
+            }
+            ContentRepository.Instance.Save();
+        }
     }
 }

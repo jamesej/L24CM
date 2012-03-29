@@ -85,6 +85,14 @@ namespace L24CM.Controllers
         }
 
         [HttpPost, Authorize(Roles = Models.User.EditorRole)]
+        public ActionResult RenameInstances(string name, string[] urls, string from, string to)
+        {
+            ControllerInfo cInfo = SiteStructure.Current.Controllers.FirstOrDefault(ci => ci.Name == name);
+            cInfo.RenameInstances(urls, from, to);
+            return Content("OK");
+        }
+
+        [HttpPost, Authorize(Roles = Models.User.EditorRole)]
         public ActionResult BuildIndex()
         {
             SearchManager.Instance.BuildIndex();

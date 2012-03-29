@@ -105,6 +105,22 @@ namespace L24CM.Models
             return null;
         }
 
+        public ContentItem Clone()
+        {
+            ContentItem newItem = new ContentItem
+            {
+                Action = this.Action,
+                Content = this.Content,
+                Controller = this.Controller,
+                Path = this.Path,
+                Type = this.Type,
+                Version = this.Version
+            };
+            newItem.SetSubindexes(this.GetSubindexes());
+            newItem.SetKeys();
+            return newItem;
+        }
+
         public object this[string propertyPath]
         {
             get
