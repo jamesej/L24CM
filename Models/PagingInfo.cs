@@ -13,6 +13,7 @@ namespace L24CM.Models
         private RequestDataSpecification rds;
         private PathDataSpecification pathData;
         private string urlBase;
+        private Dictionary<string, string> queryValues;
 
         public int? FullCount
         {
@@ -47,9 +48,12 @@ namespace L24CM.Models
             this.dataPath = dataPath;
             this.PageNumbersWindow = pageNumbersWindow;
             HttpContext httpc = HttpContext.Current;
-            rds = httpc.Items["_L24DataSpec"] as RequestDataSpecification;
+            rds = RequestDataSpecification.Current;
             pathData = rds[dataPath];
             urlBase = httpc.Request.RawUrl.UpTo("?");
+            queryValues = httpc.Request.RawUrl.After("?").Split(new char[] { '&' }, StringSplitOptions.RemoveEmptyEntries).ToDictionary(w => w.UpTo("="), w => w.After("="));
+            foreach (var formField in httpc.Request.Form.ToKeyValues())
+                queryValues.Add(formField.Key, formField.Value);
         }
 
         public string GetPageLink(int page)
@@ -57,7 +61,11 @@ namespace L24CM.Models
             if (PageCount.HasValue && page >= PageCount.Value) page = PageCount.Value - 1;
             Dictionary<string, string> currentArgs = rds.ToArgs();
             currentArgs[dataPath + PathDataSpecification.PageSuffix] = page.ToString();
-            return string.Format("{0}?{1}", urlBase, currentArgs.Select(kvp => kvp.Key + "=" + kvp.Value).Join("&"));
+            return string.Format("{0}?{1}", urlBase,
+                queryValues
+                    .Select(kvp => new KeyValuePair<string, string>(kvp.Key, currentArgs.ContainsKey(kvp.Key) ? currentArgs[kvp.Key] : kvp.Value))
+                    .Concat(currentArgs.Where(kvp => !queryValues.ContainsKey(kvp.Key)))
+                    .Select(kvp => kvp.Key + "=" + kvp.Value).Join("&"));
         }
 
         public string GetOffsetPageLink(int offset)
@@ -66,6 +74,16 @@ namespace L24CM.Models
             if (page < 0) page = 0;
             if (PageCount.HasValue && page >= PageCount.Value) page = PageCount.Value - 1;
             return GetPageLink(page);
+        }
+
+        public bool HasPrevious
+        {
+            get { return Page > 0; }
+        }
+
+        public bool HasNext
+        {
+            get { return (PageCount.HasValue && Page < PageCount.Value - 1); }
         }
 
         public IEnumerable<KeyValuePair<int,string>> GetPageNumberLinks()

@@ -68,6 +68,12 @@ namespace L24CM.Models
     /// </summary>
     public class RequestDataSpecification
     {
+        public static RequestDataSpecification Current
+        {
+            get { return HttpContext.Current.Items["_L24ReqDS"] as RequestDataSpecification; }
+            set { HttpContext.Current.Items["_L24ReqDS"] = value; }
+        }
+
         public string Path { get; set; }
         public string Action { get; set; }
         public string Controller { get; set; }
@@ -79,21 +85,35 @@ namespace L24CM.Models
 
         public RequestDataSpecification(ActionExecutingContext filterContext)
             : this(filterContext.RouteData, filterContext.HttpContext.Request)
+        { }
+        public RequestDataSpecification(RouteValueDictionary rvs, bool isContent)
         {
+            if (rvs != null)
+            {
+                Controller = rvs["controller"] as string;
+                Action = (rvs["originalAction"] as string) ?? (rvs["action"] as string);
+                RouteData = rvs.ToDictionary(rv => rv.Key, rv => rv.Value);
+            }
+
+            if (rvs != null && isContent)
+                Path = SiteStructure.Current.GetUrl(rvs);
+            else
+                Path = HttpContext.Current.Request.Path;
         }
         public RequestDataSpecification(RouteValueDictionary rvs)
+            : this(rvs, true)
+        { }
+        public RequestDataSpecification(RouteData rd, HttpRequestBase req)
+            : this(rd, req, true)
+        { }
+        public RequestDataSpecification(RouteData rd, HttpRequestBase req, bool isContent)
+            : this(rd, req.Form.ToKeyValues().Concat(req.QueryString.ToKeyValues()), isContent)
+        { }
+        public RequestDataSpecification(RouteData rd, HttpRequest req, bool isContent)
+            : this(rd, req.Form.ToKeyValues().Concat(req.QueryString.ToKeyValues()), isContent)
+        { }
+        public RequestDataSpecification(RouteData rd, IEnumerable<KeyValuePair<string,string>> allValues, bool isContent) : this(rd == null ? null : rd.Values, isContent)
         {
-            Controller = rvs["controller"] as string;
-            Action = (rvs["originalAction"] as string) ?? (rvs["action"] as string);
-            RouteData = rvs.ToDictionary(rv => rv.Key, rv => rv.Value);
-
-            Path = SiteStructure.Current.GetUrl(rvs);
-        }
-        public RequestDataSpecification(RouteData rd, HttpRequestBase req) : this(rd.Values)
-        {
-            List<KeyValuePair<string, string>> allValues = req.Form.ToKeyValues()
-                .Concat(req.QueryString.ToKeyValues())
-                .ToList();
             LoadPath = allValues.FirstSelectOrDefault(kvp => kvp.Key == "-loadpath", kvp => kvp.Value) ?? "";
             PathDataSpecs = allValues
                 .Where(kvp => kvp.Key != null

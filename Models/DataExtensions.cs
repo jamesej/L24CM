@@ -63,7 +63,7 @@ namespace L24CM.Models
         }
         public static int? FilteredCount(this ViewDataDictionary viewData, string dataPath)
         {
-            RequestDataSpecification rds = HttpContext.Current.Items["_L24DataSpec"] as RequestDataSpecification;
+            RequestDataSpecification rds = RequestDataSpecification.Current;
             return rds[dataPath].FilteredCount;
         }
     }
