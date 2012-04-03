@@ -2,7 +2,7 @@
 .listContainer { font-family: Arial; font-size: 12px; position: relative; }
 .treeContainer { font-family: Arial; font-size: 12px; }
 
-.listContainer table { width: 400px; }
+.listContainer table { width: 400px; border-collapse: collapse; }
 .listContainer table th { text-align: left; }
 .listContainer td.ext { width: 20px; }
 ins.ext_dir { width:16px; height:16px; display:inline-block; background-position: -56px -19px; }
@@ -39,6 +39,8 @@ ins.ext_dir { width:16px; height:16px; display:inline-block; background-position
 
 .qq-upload-failed-text {display:none;}
 .qq-upload-fail .qq-upload-failed-text {display:inline;}
+
+.selected td { background-color: #e0e0ff; }
 
 
 /* Core Styles */

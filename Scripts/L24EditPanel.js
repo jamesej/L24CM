@@ -2,23 +2,10 @@
     $(document).ready(function() {
 		$(window).scrollTop($('#formState').val().afterLast(';'));
 		
-		$('#editPanel').delegate('.action-button', 'click', function () {
-			$fs = $('#formState');
-			$fs.val($fs.val() + $(window).scrollTop());
-			$('#editPanel form').append($("<input type='hidden' name='_l24action'/>").val($(this).attr('id'))).submit();
-		}).delegate('.editor-label', 'click', function () {
-			var $collection = $(this).next('.editor-field').find('.collection');
-			$collection.toggleClass('closed');
-			var formState = $('#formState').val();
-			if ($collection.hasClass('closed'))
-				$('#formState').val(formState.replace($collection.attr('id') + ";", ""));
-			else
-				$('#formState').val(formState + $collection.attr('id') + ";");
-			
-		}).delegate('.add-button', 'click', function() {
+		function addItem($addButton, param, postAdd) {
 			var postUrl = $('#editPanel form').attr('action').upTo('?');
-			var prop = $(this).attr('id').after('-');
-			var $collection = $(this).siblings('.collection');
+			var prop = $addButton.attr('id').after('-');
+			var $collection = $addButton.siblings('.collection');
 			$collection.removeClass('closed');
 			$.get(postUrl + '?-action=PropertyItemHtml&propertyPath=' + prop)
 				.success(function (html) {
@@ -33,20 +20,58 @@
 						var name = $(this).attr('name');
 						$(this).attr('name', name.upToLast('[') + '[' + n + ']' + name.afterLast(']'));
 					});
-					$collection.append($add.contents());
+					var $added = $add.contents().appendTo($collection);
+					if (postAdd) postAdd($added, param);
 				});
+		}
+		
+		function setFilename($input, fname) {
+			$input.val(fname);
+			$input.closest('table').find('.l24-image-content-cell')
+				.empty()
+				.append($("<img class='file-image-thumb' src='" + fname + "'/>"));
+		}
+		
+		$('#editPanel').delegate('.action-button', 'click', function () {
+			$fs = $('#formState');
+			$fs.val($fs.val() + $(window).scrollTop());
+			$('#editPanel form').append($("<input type='hidden' name='_l24action'/>").val($(this).attr('id'))).submit();
+		}).delegate('.editor-label', 'click', function () {
+			var $collection = $(this).next('.editor-field').find('.collection');
+			$collection.toggleClass('closed');
+			var formState = $('#formState').val();
+			if ($collection.hasClass('closed'))
+				$('#formState').val(formState.replace($collection.attr('id') + ";", ""));
+			else
+				$('#formState').val(formState + $collection.attr('id') + ";");
+			
+		}).delegate('.add-button', 'click', function() {
+			addItem($(this));
 		}).delegate('.l24-image-load, .l24-media-load', 'click', function () {
 			var $this = $(this);
 			var $fname = $this.siblings('input');
 			top.getFile($fname.val(), function(fname) {
-				var suffix = fname.afterLast('.').toLowerCase();
-				if (suffix && suffix.length) {
-					if ($this.hasClass("l24-image-load") && "png|jpg|gif".indexOf(suffix) < 0) 
-						return "Please select an image file only";
-					$fname.val(fname);
-					$this.closest('table').find('.l24-image-content-cell')
-						.empty()
-						.append($("<img class='file-image-thumb' src='" + fname + "'/>"));
+				var files = fname.split(',');
+				if ($this.hasClass("l24-image-load")) {
+					for (var i = 0; i < files.Length; i++) {
+						var suffix = fname.afterLast('.').toLowerCase();
+						if (suffix && suffix.length && "png|jpg|gif".indexOf(suffix) < 0) 
+							return "Please only image files";
+					}
+				}
+				if (files.length == 1) {
+					setFilename($fname, fname);
+				} else {
+					if (confirm("You have selected " + files.length + " files, do you want to add them all?")) {
+						var $addButton = $this.closest('.collection').nextAll('.add-button');
+						setFilename($fname, $.trim(files[0]));
+						for (var i = 1; i < files.length; i++) {
+							addItem($addButton, i, function($added, idx) {
+								setFilename($added.find('.l24-file-url'), $.trim(files[idx]));
+							});
+						}
+					} else
+						return "Please select your files";
 				}
 				return null;
 			});

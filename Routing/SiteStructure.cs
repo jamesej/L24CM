@@ -136,5 +136,9 @@ namespace L24CM.Routing
             if (patt == null) throw new StructureException("No matching pattern found on controller " + ca.Controller);
             return patt.BuildUrl(rvs);
         }
+        public string GetUrl(string cas)
+        {
+            return GetUrl(new ContentAddress(cas));
+        }
     }
 }

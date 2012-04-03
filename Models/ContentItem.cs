@@ -52,8 +52,7 @@ namespace L24CM.Models
                 this.Content = "{}";
             else
             {
-                JavaScriptSerializer jsSer = new JavaScriptSerializer();
-                this.Content = jsSer.Serialize(content);
+                this.Content = JsonConvert.SerializeObject(content);
             }
         }
 

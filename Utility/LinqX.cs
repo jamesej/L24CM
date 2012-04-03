@@ -110,7 +110,7 @@ namespace L24CM.Utility
 
         public static IEnumerable<KeyValuePair<string, string>> ToKeyValues(this NameValueCollection nvc)
         {
-            return nvc.Cast<string>().Select(key => new KeyValuePair<string, string>(key, nvc[key]));
+            return nvc.Cast<string>().SelectMany(key => nvc[key].Split(',').Select(val => new KeyValuePair<string, string>(key, val)));
         }
 
         public static TValue FirstSelectOrDefault<TElement, TValue>(this IEnumerable<TElement> source, Func<TElement, bool> test, Func<TElement, TValue> selector)

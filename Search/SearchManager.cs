@@ -17,6 +17,23 @@ using Lucene.Net.Search;
 
 namespace L24CM.Search
 {
+    public enum FieldSearchOperator
+    {
+        AND, ANDNOT
+    }
+
+    public class FieldSearch
+    {
+        public string FieldName { get; set; }
+        public string Value { get; set; }
+        public FieldSearchOperator Operator { get; set; }
+
+        public FieldSearch()
+        {
+            Operator = FieldSearchOperator.AND;
+        }
+    }
+
     public class SearchManager
     {
         public static SearchManager Instance { get; set; }
@@ -92,7 +109,7 @@ namespace L24CM.Search
             indexWriter.Close();
         }
 
-        public List<ContentAddress> Search(string search, Dictionary<string, object> nonTextualMatches)
+        public List<ContentAddress> Search(string search, List<FieldSearch> nonTextualMatches)
         {
             string indexFileLocation = GetIndexFilePath();
             Directory dir =
@@ -110,7 +127,7 @@ namespace L24CM.Search
                 }
                 foreach (var match in nonTextualMatches)
                 {
-                    query.Add(new TermQuery(new Term(match.Key, match.Value.ToString())), BooleanClause.Occur.MUST);
+                    query.Add(new TermQuery(new Term(match.FieldName, match.Value)), match.Operator == FieldSearchOperator.ANDNOT ? BooleanClause.Occur.MUST_NOT : BooleanClause.Occur.MUST);
                 }
                 TopDocs hits = searcher.Search(query, 1000);
                 List<ContentAddress> addrs =
@@ -123,6 +140,57 @@ namespace L24CM.Search
             {
                 searcher.Close();
                 analyzer.Close();
+                dir.Close();
+            }
+        }
+        public List<ContentAddress> Search(string textualSearch, string nonTextualSearch)
+        {
+            string indexFileLocation = GetIndexFilePath();
+            Directory dir =
+                Lucene.Net.Store.FSDirectory.GetDirectory(indexFileLocation);
+            IndexSearcher searcher = new IndexSearcher(dir);
+            Analyzer textualAnal = null;
+            Analyzer nonTextualAnal = null;
+            try
+            {
+                Query textualQuery = null;
+                Query nonTextualQuery = null;
+
+                if (!string.IsNullOrEmpty(textualSearch))
+                {
+                    textualAnal = new StandardAnalyzer();
+                    QueryParser parser = new QueryParser("_GLOM_", textualAnal);
+                    textualQuery = parser.Parse(textualSearch);
+                }
+                if (!string.IsNullOrEmpty(nonTextualSearch))
+                {
+                    nonTextualAnal = new KeywordAnalyzer();
+                    QueryParser parser = new QueryParser("", nonTextualAnal);
+                    nonTextualQuery = parser.Parse(nonTextualSearch);
+                }
+
+                Query query = textualQuery;
+                if (query == null)
+                    query = nonTextualQuery;
+                else if (nonTextualQuery != null)
+                {
+                    query = new BooleanQuery();
+                    (query as BooleanQuery).Add(textualQuery, BooleanClause.Occur.MUST);
+                    (query as BooleanQuery).Add(nonTextualQuery, BooleanClause.Occur.MUST);
+                }
+
+                TopDocs hits = searcher.Search(query, 1000);
+                List<ContentAddress> addrs =
+                    Enumerable.Range(0, hits.totalHits)
+                        .Select(n => ContentAddress.FromString(searcher.Doc(hits.scoreDocs[n].doc).Get("_CONTENTADDRESS_")))
+                        .ToList();
+                return addrs;
+            }
+            finally
+            {
+                searcher.Close();
+                if (textualAnal != null) textualAnal.Close();
+                if (nonTextualAnal != null) nonTextualAnal.Close();
                 dir.Close();
             }
         }

@@ -54,7 +54,7 @@ namespace L24CM.Models
                     ContentAddress refdAddress = primaryAddress.Redirect(rpsAttribute.SourceDescriptor);
                     ContentItem refdItem = items.FirstOrDefault(ci => ci.ContentAddress == refdAddress);
                     if (refdItem != null)
-                        foreach (string path in rpsAttribute.Path.Split('/'))
+                        foreach (string path in rpsAttribute.Paths)
                             UpdateJObjectForPathSource(primaryItem.JObjectContent, path, refdItem);
                 }
             }
@@ -81,10 +81,10 @@ namespace L24CM.Models
                 foreach (var rpsAttribute in rpsAttributes)
                 {
                     ContentAddress refdAddress = contentItem.ContentAddress.Redirect(rpsAttribute.SourceDescriptor);
-                    ContentItem refdItem = items.First(ci => ci.ContentAddress == refdAddress);
-
-                    foreach (string path in rpsAttribute.Path.Split('/'))
-                        UpdateItemForPathSource(refdItem, path, contentItem.JObjectContent);
+                    ContentItem refdItem = items.FirstOrDefault(ci => ci.ContentAddress == refdAddress);
+                    if (refdItem != null)
+                        foreach (string path in rpsAttribute.Path.Split('/'))
+                            UpdateItemForPathSource(refdItem, path, contentItem.JObjectContent);
                 }
             }
 

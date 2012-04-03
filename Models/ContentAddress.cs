@@ -27,6 +27,15 @@ namespace L24CM.Models
 
         public ContentAddress()
         { }
+        public ContentAddress(string s)
+        {
+            string[] words = s.Split('&');
+            if (words.Length < 2)
+                throw new ArgumentException("Badly formed content address " + s);
+            Controller = words[0];
+            Action = words[1];
+            Subindexes = words.Skip(2).ToList();
+        }
         public ContentAddress(RequestDataSpecification rds, List<string> significantRouteKeys)
         {
             Controller = rds.Controller;
@@ -81,7 +90,7 @@ namespace L24CM.Models
 
         public static ContentAddress FromString(string s)
         {
-            string[] words = s.Split('&');
+            string[] words = s.Split(new char[] { '&' }, StringSplitOptions.RemoveEmptyEntries);
             return new ContentAddress
             {
                 Controller = words[0],

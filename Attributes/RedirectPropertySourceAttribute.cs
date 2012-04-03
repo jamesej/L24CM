@@ -12,6 +12,11 @@ namespace L24CM.Attributes
         public string SourceDescriptor { get; set; }
         protected Guid UniqueId { get; set; }
 
+        public IEnumerable<string> Paths
+        {
+            get { return Path.Split(',').Select(p => p.Trim()); }
+        }
+
         public RedirectPropertySourceAttribute(string path)
         {
             Path = path;

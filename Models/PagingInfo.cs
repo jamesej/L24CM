@@ -13,7 +13,7 @@ namespace L24CM.Models
         private RequestDataSpecification rds;
         private PathDataSpecification pathData;
         private string urlBase;
-        private Dictionary<string, string> queryValues;
+        private List<KeyValuePair<string, string>> queryValues;
 
         public int? FullCount
         {
@@ -51,9 +51,12 @@ namespace L24CM.Models
             rds = RequestDataSpecification.Current;
             pathData = rds[dataPath];
             urlBase = httpc.Request.RawUrl.UpTo("?");
-            queryValues = httpc.Request.RawUrl.After("?").Split(new char[] { '&' }, StringSplitOptions.RemoveEmptyEntries).ToDictionary(w => w.UpTo("="), w => w.After("="));
+            queryValues = httpc.Request.RawUrl.After("?")
+                .Split(new char[] { '&' }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(w => new KeyValuePair<string,string>(w.UpTo("="), w.After("=")))
+                .ToList();
             foreach (var formField in httpc.Request.Form.ToKeyValues())
-                queryValues.Add(formField.Key, formField.Value);
+                queryValues.Add(new KeyValuePair<string,string>(formField.Key, HttpUtility.UrlEncode(formField.Value)));
         }
 
         public string GetPageLink(int page)
@@ -64,7 +67,7 @@ namespace L24CM.Models
             return string.Format("{0}?{1}", urlBase,
                 queryValues
                     .Select(kvp => new KeyValuePair<string, string>(kvp.Key, currentArgs.ContainsKey(kvp.Key) ? currentArgs[kvp.Key] : kvp.Value))
-                    .Concat(currentArgs.Where(kvp => !queryValues.ContainsKey(kvp.Key)))
+                    .Concat(currentArgs.Where(kvp => !queryValues.Any(qv => qv.Key == kvp.Key)))
                     .Select(kvp => kvp.Key + "=" + kvp.Value).Join("&"));
         }
 

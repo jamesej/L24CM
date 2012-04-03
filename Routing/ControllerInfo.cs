@@ -166,6 +166,7 @@ namespace L24CM.Routing
                 
             }
             ContentRepository.Instance.Save();
+            InvalidateInstances();
         }
     }
 }

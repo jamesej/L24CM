@@ -47,14 +47,14 @@ $.fn.jstreelist = function(options) {
                         $listContainer.find('.fileList').remove();
                         $('#fileListTemplate').tmpl(list).addClass('fileList').appendTo($listContainer.find('.file-list-area'));
 						$('.file-list-area tr').draggable({
-							appendTo: 'body',
+							appendTo: $listContainer.parent()[0],
 							scroll: false,
 							opacity: 0.7,
 							helper: function() {
 								return $(this).find('ins').clone().attr('title', $(this).attr('title'))[0];
 								},
-							zindex: 999,
-							cursorAt: { left: 8 }
+							zindex: 1100,
+							cursorAt: { left: 8 },
 							});
                     });
             $listContainer.data('jstreelist_path', path);
@@ -112,8 +112,15 @@ $.fn.jstreelist = function(options) {
 				});
 	}
 	
-	var showFilename = function (filename) {
-		$filename.val(filename);
+	var showFilenames = function (filename, append) {
+		var filenameList = "";
+		$listContainer.find("tr.selected").each(function () { filenameList += ", " + $(this).attr('title'); });
+		filenameList = filenameList.substr(2);
+		$filename.val(filenameList);
+		if (filenameList.indexOf(filename) < 0) {
+			var pos = filenameList.indexOf(',');
+			filename = pos > 0 ? filenameList.substring(0, pos) : filenameList;
+		}
 		if ($fileDetails && filename && filename.length) {
 			var suffix = filename.afterLast('.').toLowerCase();
 			switch (suffix){
@@ -130,9 +137,12 @@ $.fn.jstreelist = function(options) {
 
     // setup list container
 	if ($filename.length > 0)
-		$('tr', $listContainer[0]).live('click', function() {
+		$('tr', $listContainer[0]).live('click', function(ev) {
+			if (!ev.metaKey)
+				$(this).siblings('.selected').removeClass('selected');
+			$(this).toggleClass('selected');
 	        if ($(this).attr('title'))
-	            showFilename($(this).attr('title'));
+	            showFilenames($(this).attr('title'));
 	    });
 		
     $('tr', $listContainer[0]).live('dblclick', function() {
