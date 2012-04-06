@@ -103,6 +103,7 @@
     <Compile Include="Controllers\StructureController.cs" />
     <Compile Include="Controllers\DynamicController.cs" />
     <Compile Include="Controllers\HttpStatusCodeResult.cs" />
+    <Compile Include="L24CMAreaRegistration.cs" />
     <Compile Include="L24SecurityManager.cs" />
     <Compile Include="Filters\IncludesFilter.cs" />
     <Compile Include="Membership\IUser.cs" />

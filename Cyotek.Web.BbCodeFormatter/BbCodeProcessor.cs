@@ -101,7 +101,7 @@ namespace Cyotek.Web.BbCodeFormatter
       foreach (IHtmlFormatter formatter in _formatters)
         data = formatter.Format(data);
 
-      return "<p>" + data + "</p>";
+      return data;
     }
 
     #endregion  Public Class Methods

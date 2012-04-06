@@ -12,13 +12,19 @@ namespace L24CM.Models
         {
             return new BbText(s);
         }
+        public static implicit operator string(BbText t)
+        {
+            return t.ToString();
+        }
 
         string text = null;
+        string bbText = null;
 
         public BbText()
         { }
         public BbText(string s)
         {
+            bbText = s;
             text = BbCodeProcessor.Format(s);
         }
 
