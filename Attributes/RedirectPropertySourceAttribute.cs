@@ -10,6 +10,7 @@ namespace L24CM.Attributes
     {
         public string Path { get; set; }
         public string SourceDescriptor { get; set; }
+        public bool ReadOnly { get; set; }
         protected Guid UniqueId { get; set; }
 
         public IEnumerable<string> Paths
@@ -21,6 +22,7 @@ namespace L24CM.Attributes
         {
             Path = path;
             SourceDescriptor = "";
+            ReadOnly = false;
             UniqueId = Guid.NewGuid();
         }
 

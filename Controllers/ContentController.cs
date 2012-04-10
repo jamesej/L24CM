@@ -142,7 +142,10 @@ namespace L24CM.Controllers
                         list = ReflectionX.GetPropertyValueByPath(update, _l24action.After("-").UpToLast("[")) as IList;
                         itemType = list.GetType().GetGenericArguments()[0];
                         if (list != null)
+                        {
+                            ModelState.Clear(); // templating system will take old values out of the ModelState unless you do this
                             list.RemoveAt(int.Parse(_l24action.LastAfter("[").UpTo("]")));
+                        }
                         break;
 
                 }

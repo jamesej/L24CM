@@ -107,7 +107,8 @@ namespace L24CM.Utility
             // Build HTML using passed-in attributes
             StringBuilder sb = new StringBuilder();
             RouteValueDictionary aDict = new RouteValueDictionary(attributes);
-            aDict["class"] = (aDict["class"] ?? "") + " l24-styled-dd";
+            aDict["class"] = (aDict["classes"] ?? "") + " l24-styled-dd";
+            aDict.Remove("classes");
             aDict["style"] = "position: relative; display: inline-block; padding: 0px;" + (aDict["style"] ?? "");
             sb.AppendFormat("<span {0}><select name='{1}' style='margin: 0px; width: 100%; height: 100%; position: relative; z-index: 10; border: none; opacity: 0; -khtml-appearance: none; -webkit-appearance: none; filter: alpha(opacity=0); zoom: 1;'>",
                 aDict.Select(kvp => kvp.Key + "='" + html.AttributeEncode(kvp.Value) + "'").Join(" "),

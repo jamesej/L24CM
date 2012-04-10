@@ -5,6 +5,7 @@ using System.Text;
 using L24CM.Attributes;
 using Newtonsoft.Json.Linq;
 using L24CM.Models;
+using L24CM.Utility;
 
 namespace L24CM.Collation
 {
@@ -57,6 +58,7 @@ namespace L24CM.Collation
             var rpsAttributes = typeof(T)
                 .GetCustomAttributes(typeof(RedirectPropertySourceAttribute), false)
                 .Cast<RedirectPropertySourceAttribute>()
+                .Where(rpsa => !rpsa.ReadOnly)
                 .ToList();
             List<ContentAddress> addresses = rpsAttributes
                     .Select(a => contentItem.ContentAddress.Redirect(a.SourceDescriptor))
@@ -73,7 +75,7 @@ namespace L24CM.Collation
                     ContentAddress refdAddress = contentItem.ContentAddress.Redirect(rpsAttribute.SourceDescriptor);
                     ContentItem refdItem = items.FirstOrDefault(ci => ci.ContentAddress == refdAddress);
                     if (refdItem != null)
-                        foreach (string path in rpsAttribute.Path.Split('/'))
+                        foreach (string path in rpsAttribute.Paths)
                             UpdateItemForPathSource(refdItem, path, contentItem.JObjectContent);
                 }
             }
@@ -85,13 +87,14 @@ namespace L24CM.Collation
 
         protected virtual void UpdateJObjectForPathSource(JObject jo, string path, ContentItem item)
         {
+            string[] paths = GetPaths(path);
             JObject redirectJo = JObject.Parse(item.Content);
-            JProperty primaryProperty = jo.Property(path);
-            JProperty redirectProperty = redirectJo.Property(path);
+            JProperty primaryProperty = SelectProperty(jo, paths[0]) as JProperty;
+            JProperty redirectProperty = SelectProperty(redirectJo, paths[1]) as JProperty;
             if (redirectProperty != null)
             {
                 if (primaryProperty == null)
-                    jo.Add(redirectProperty);
+                    AddAtPath(jo, paths[0], redirectProperty);
                 else
                     primaryProperty.Replace(redirectProperty);
             }
@@ -99,17 +102,61 @@ namespace L24CM.Collation
 
         protected virtual void UpdateItemForPathSource(ContentItem item, string path, JObject jo)
         {
+            string[] paths = GetPaths(path);
             item.JObjectContent = JObject.Parse(item.Content);
-            JProperty primaryProperty = jo.Property(path);
-            JProperty redirectProperty = item.JObjectContent.Property(path);
+            JProperty primaryProperty = SelectProperty(jo, paths[0]) as JProperty;
+            JProperty redirectProperty = SelectProperty(item.JObjectContent, paths[1]) as JProperty;
             if (primaryProperty != null)
             {
                 if (redirectProperty == null)
-                    item.JObjectContent.Add(primaryProperty);
+                    AddAtPath(item.JObjectContent, paths[1], primaryProperty);
                 else
                     redirectProperty.Replace(primaryProperty);
             }
             item.Content = item.JObjectContent.ToString();
+        }
+        
+        protected virtual string[] GetPaths(string path)
+        {
+            if (path.Contains(">"))
+                return path.Split('>').Select(s => s.Trim()).ToArray(); // primary path > redirect path
+            else
+                return new string[] { path, path };
+        }
+
+        protected virtual JProperty SelectProperty(JObject jo, string path)
+        {
+            string leafParent = path.Contains(".") ? path.UpToLast(".") : "";
+            string leafProperty = path.Contains(".") ? path.LastAfter(".") : path;
+            JObject parent = jo;
+            if (!string.IsNullOrEmpty(leafParent))
+                parent = jo.SelectToken(leafParent) as JObject;
+            return parent == null ? null : parent.Property(leafProperty);
+        }
+
+        protected virtual void AddAtPath(JObject jo, string path, JProperty property)
+        {
+            JObject leafParent = jo;
+            if (path.Contains("."))
+            {
+                string[] leafParents = path.UpToLast(".").Split('.');
+                foreach (string propName in leafParents)
+                {
+                    JToken child = leafParent[propName];
+                    if (child is JValue)
+                    {
+                        leafParent.Remove(propName);
+                        child = null;
+                    }
+                    if (child == null)
+                    {
+                        child = new JObject();
+                        leafParent.Add(propName, child);
+                    }
+                    leafParent = child as JObject;
+                }
+            }
+            leafParent.Add(property);
         }
     }
 }

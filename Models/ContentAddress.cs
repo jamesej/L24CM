@@ -64,8 +64,8 @@ namespace L24CM.Models
             string[] words = redirectDescriptor.Split('&');
             ca.Controller = RedirectWord(ca.Controller, words[0]);
             ca.Action = RedirectWord(ca.Action, words[1]);
-            if (ca.Subindexes.Count + 2 > words.Length)
-                throw new Exception("Bad redirect descriptor, too few terms: " + redirectDescriptor);
+            //if (ca.Subindexes.Count + 2 > words.Length)
+            //    throw new Exception("Bad redirect descriptor, too few terms: " + redirectDescriptor);
             ca.Subindexes = words.Skip(2)
                 .Select((w, i) => RedirectWord(ca.Subindexes.Count < i ? ca.Subindexes[i] : (string)null, w))
                 .ToList();
