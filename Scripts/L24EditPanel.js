@@ -5,9 +5,10 @@
 		function addItem($addButton, param, postAdd) {
 			var postUrl = $('#editPanel form').attr('action').upTo('?');
 			var prop = $addButton.attr('id').after('-');
+			var depth = $addButton.attr('class').after('depth-').upTo(' ');
 			var $collection = $addButton.siblings('.collection');
 			$collection.removeClass('closed');
-			$.get(postUrl + '?-action=PropertyItemHtml&propertyPath=' + prop)
+			$.get(postUrl + '?-action=PropertyItemHtml&propertyPath=' + prop + '&depth=' + depth)
 				.success(function (html) {
 					var $add = $(html).find('.collection');
 					var $lastInput = $collection.find("input[name*=']']:last");

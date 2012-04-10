@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using L24CM.Routing;
+using L24CM.Collation;
 
 namespace L24CM.Models
 {
@@ -44,7 +45,7 @@ namespace L24CM.Models
                     ContentAddress ca = new ContentAddress(ReqDataSpec, SignificantRouteKeys);
                     contentItem = ContentRoute.GetContentForAddress(ca);
                     if (contentItem == null)
-                        contentItem = ContentCollator.Instance.GetContent(ca);
+                        contentItem = CollatorBuilder.Factory.Create(Controller.RouteData).GetContent(ca);
                 }
                 return contentItem;
             }

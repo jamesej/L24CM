@@ -17,12 +17,14 @@ using System.Web.Security;
 using L24CM.Config;
 using System.Configuration;
 using System.Collections;
+using L24CM.Collation;
 
 namespace L24CM.Controllers
 {
     public interface IContentController
     {
         List<string> SignificantRouteKeys { get; }
+        ICollator GetCollator();
         Type ContentType { get; }
     }
     
@@ -49,6 +51,11 @@ namespace L24CM.Controllers
 
         public ContentController()
         {
+        }
+
+        public virtual ICollator GetCollator()
+        {
+            return new DefaultContentCollator();
         }
 
         protected override void Initialize(RequestContext requestContext)
@@ -140,16 +147,17 @@ namespace L24CM.Controllers
 
                 }
             }
-            ContentCollator.Instance.SetContent(Model.ContentItem, update);
+            CollatorBuilder.Factory.Create(this.RouteData).SetContent(Model.ContentItem, update);
 
             ViewData["formState"] = formState;
             return View(ConfigHelper.GetViewPath("L24CMEditor.aspx"), update);
         }
 
         [HttpGet, Authorize(Roles = Models.User.EditorRole)]
-        public ActionResult PropertyItemHtml(string propertyPath)
+        public ActionResult PropertyItemHtml(string propertyPath, int depth)
         {
             ViewData["propertyPath"] = propertyPath;
+            ViewData["addDepth"] = depth - 1;
             IList list = ReflectionX.GetPropertyValueByPath(Model.Content, propertyPath) as IList;
             list.Clear();
             list.Add(CreateInstance(list.GetType().GetGenericArguments()[0]));

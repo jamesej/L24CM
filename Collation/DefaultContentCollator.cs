@@ -4,22 +4,12 @@ using System.Linq;
 using System.Text;
 using L24CM.Attributes;
 using Newtonsoft.Json.Linq;
+using L24CM.Models;
 
-namespace L24CM.Models
+namespace L24CM.Collation
 {
-    public class ContentCollator
+    public class DefaultContentCollator : ICollator
     {
-        public static ContentCollator Instance { get; set; }
-
-        static ContentCollator()
-        {
-            Instance = new ContentCollator();
-        }
-
-        public virtual ContentItem GetContent(List<string> significantRouteKeys, RequestDataSpecification rds)
-        {
-            return GetContent(new ContentAddress(rds, significantRouteKeys));
-        }
         public virtual ContentItem GetContent(ContentAddress primaryAddress)
         {
             ContentItem contentItem = ContentRepository.Instance.GetContentItem(primaryAddress);

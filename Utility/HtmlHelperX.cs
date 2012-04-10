@@ -7,6 +7,9 @@ using System.Web.Mvc.Html;
 using L24CM.Controllers;
 using System.Web.Routing;
 using L24CM.Models;
+using System.Linq.Expressions;
+using System.Reflection;
+using System.ComponentModel;
 
 namespace L24CM.Utility
 {
@@ -53,6 +56,39 @@ namespace L24CM.Utility
         {
             html.RegisterScript("_l24controls", "/L24CM/Embedded/Scripts/L24Controls.js",
                 new List<string> { "/L24CM/Embedded/Scripts/jquery.js", "/L24CM/Embedded/Scripts/jquery-ui.js" });
+        }
+
+        public static MvcHtmlString DropDownListFor<TModel, TProperty>(this HtmlHelper<TModel> html, Expression<Func<TModel, TProperty>> expression, Type enumType)
+        {
+            List<SelectListItem> list = new List<SelectListItem>();
+            Dictionary<string, string> enumItems = enumType.GetDescription();
+            foreach (KeyValuePair<string, string> pair in enumItems)
+                list.Add(new SelectListItem() { Value = pair.Key, Text = pair.Value });
+            return html.DropDownListFor(expression, list);
+        }
+
+        /// <summary>
+        /// return the items of enum paired with its description.
+        /// </summary>
+        /// <param name="enumeration">enumeration type to be processed.</param>
+        /// <returns></returns>
+        public static Dictionary<string, string> GetDescription(this Type enumeration)
+        {
+            if (!enumeration.IsEnum)
+            {
+                throw new ArgumentException("passed type must be of Enum type", "enumerationValue");
+            }
+
+            Dictionary<string, string> descriptions = new Dictionary<string, string>();
+            var members = enumeration.GetMembers().Where(m => m.MemberType == MemberTypes.Field);
+
+            foreach (MemberInfo member in members)
+            {
+                var attrs = member.GetCustomAttributes(typeof(DescriptionAttribute), false);
+                if (attrs.Count() != 0)
+                    descriptions.Add(member.Name, ((DescriptionAttribute)attrs[0]).Description);
+            }
+            return descriptions;
         }
 
         public static MvcHtmlString StyledSelect(this HtmlHelper html, string name, IEnumerable<SelectListItem> items, object attributes, string rightImageUrl, int rightShadowWidth, string initValue )

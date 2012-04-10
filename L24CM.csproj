@@ -89,6 +89,10 @@
     <Compile Include="Attributes\NoCacheAttribute.cs" />
     <Compile Include="Attributes\RedirectPropertySourceAttribute.cs" />
     <Compile Include="Attributes\RequiredAnyAttribute.cs" />
+    <Compile Include="Collation\CollatorBuilder.cs" />
+    <Compile Include="Collation\DefaultCollatorFactory.cs" />
+    <Compile Include="Collation\ICollator.cs" />
+    <Compile Include="Collation\ICollatorFactory.cs" />
     <Compile Include="Cyotek.Web.BbCodeFormatter\BbCodeProcessor.cs" />
     <Compile Include="Cyotek.Web.BbCodeFormatter\IHtmlFormatter.cs" />
     <Compile Include="Cyotek.Web.BbCodeFormatter\LinkBreaksFormatter.cs" />
@@ -114,7 +118,7 @@
     <Compile Include="Models\BaseContent.cs" />
     <Compile Include="Models\BbText.cs" />
     <Compile Include="Models\ContentAddress.cs" />
-    <Compile Include="Models\ContentCollator.cs" />
+    <Compile Include="Collation\DefaultContentCollator.cs" />
     <Compile Include="Models\ContentRepository.cs" />
     <Compile Include="Models\ContentModel.cs" />
     <Compile Include="Models\MediaFileLink.cs" />

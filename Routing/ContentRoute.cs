@@ -7,6 +7,7 @@ using L24CM.Models;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Web.Security;
+using L24CM.Collation;
 
 namespace L24CM.Routing
 {
@@ -72,7 +73,8 @@ namespace L24CM.Routing
             if (!SiteStructure.Current.HasController(rds.Controller)) 
                 return null;
             ControllerInfo ci = SiteStructure.Current[rds.Controller];
-            ContentItem content = ContentCollator.Instance.GetContent(ci.SignificantRouteKeys, rds);
+            ContentAddress ca = new ContentAddress(rds, ci.SignificantRouteKeys);
+            ContentItem content = CollatorBuilder.Factory.Create(rd).GetContent(ca);
             
             if (content == null && action != "create")
                 return null;
