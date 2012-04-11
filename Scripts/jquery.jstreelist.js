@@ -69,7 +69,10 @@ $.fn.jstreelist = function(options) {
                         } else {
                             if (done) done(newPath);
                         }
-                    });
+                    }).fail(function(xhr, status, error) {
+						if (rlbk) rlbk();
+	                    alert(xhr.responseText);
+	                });
         },
 		move: function(invoker, path, newDir, rlbk, done) {
             //alert('moving from ' + invoker + ' of ' + path + ' to ' + newDir);
@@ -81,7 +84,10 @@ $.fn.jstreelist = function(options) {
                         } else {
                             if (done) done();
                         }
-                    });
+                    }).fail(function(xhr, status, error) {
+						if (rlbk) rlbk();
+	                    alert(xhr.responseText);
+	                });
         },
 		remove: function(invoker, path, rlbk, done) {
 			$.post("/L24CM/Ajax/Delete",
@@ -92,7 +98,10 @@ $.fn.jstreelist = function(options) {
                         } else {
                             if (done) done();
                         }	
-					});
+					}).fail(function(xhr, status, error) {
+						if (rlbk) rlbk();
+	                    alert(xhr.responseText);
+	                });
 			
 		}
     };

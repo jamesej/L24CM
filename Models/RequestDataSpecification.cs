@@ -143,6 +143,13 @@ namespace L24CM.Models
                 this.PathDataSpecs.Add(spec);
                 return spec;
             }
+            set
+            {
+                PathDataSpecification spec = this.PathDataSpecs.FirstOrDefault(pds => pds.PropertyPath == path);
+                if (spec != null)
+                    this.PathDataSpecs.Remove(spec);
+                this.PathDataSpecs.Add(value);
+            }
         }
 
         public PathDataSpecification DataSpecification

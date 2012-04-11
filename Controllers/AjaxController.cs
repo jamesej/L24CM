@@ -123,9 +123,9 @@ namespace L24CM.Controllers
                     System.IO.File.Delete(filePath);
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(false);
+                return new HttpStatusCodeResult(500, "Error deleting: " + ex.Message);
             }
             return Json(true);
         }
