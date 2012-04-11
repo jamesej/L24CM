@@ -7,12 +7,13 @@ using System.Web;
 using System.IO;
 using L24CM.Utility;
 using L24CM.Config;
+using L24CM.Attributes;
 
 namespace L24CM.Controllers
 {
     public class AjaxController : Controller
     {
-        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        [NoCache]
         public ActionResult FileTreeFolders(string dir)
         {
             if (string.IsNullOrEmpty(dir)) dir = "/";
@@ -32,7 +33,7 @@ namespace L24CM.Controllers
             return Json(output, JsonRequestBehavior.AllowGet);
         }
 
-        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "*")]
+        [NoCache]
         public ActionResult FileTreeFiles(string dir)
         {
             if (string.IsNullOrEmpty(dir)) dir = "/";
