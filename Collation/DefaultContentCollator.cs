@@ -156,7 +156,8 @@ namespace L24CM.Collation
                     leafParent = child as JObject;
                 }
             }
-            leafParent.Add(property);
+            string leafProperty = path.Contains(".") ? path.LastAfter(".") : path;
+            leafParent.Add(leafProperty, property.Value);
         }
     }
 }
