@@ -15,6 +15,15 @@ namespace L24CM.Filters
         StreamWriter sw;
         ExtendedController controller;
 
+        static IncludesFilter()
+        {
+            // fixes a bug where Html Agility Pack always renders 'form' and 'option' as an empty tag
+            // you might want to remove this behaviour if you aren't using XHTML doctype, it was apparently
+            // added to deal with overlapping tags which are valid HTML.
+            HtmlNode.ElementsFlags.Remove("form");
+            HtmlNode.ElementsFlags.Remove("option");
+        }
+
         public IncludesFilter(Stream s, ExtendedController controller)
         {
             sw = new StreamWriter(s);

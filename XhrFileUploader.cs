@@ -20,12 +20,24 @@ namespace L24CM
 
         public override bool Save(string path)
         {
-            Stream input = Request.InputStream;
-            FileStream output = File.OpenWrite(path);
-            int actualSize = input.CopyTo(output);
-            input.Close();
-            output.Close();
-            return (actualSize == this.Size);
+            Stream input = null;
+            FileStream output = null;
+            try
+            {
+                input = Request.InputStream;
+                output = File.OpenWrite(path);
+                input.CopyTo(output);
+            }
+            catch
+            {
+                return false;
+            }
+            finally
+            {
+                if (input != null) input.Close();
+                if (output != null) output.Close();
+            }
+            return true;
         }
     }   
 }

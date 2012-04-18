@@ -43,7 +43,7 @@ namespace L24CM.Routing
                 if (Defaults.Contains(kvp))
                     url = url.Replace("{" + kvp.Key + "}", "").Replace("//", "/");
                 else
-                    url = url.Replace("{" + kvp.Key + "}", (string)kvp.Value);
+                    url = url.Replace("{" + kvp.Key + "}", kvp.Value as string);
             }
             if (!url.StartsWith("/"))
                 url = "/" + url;

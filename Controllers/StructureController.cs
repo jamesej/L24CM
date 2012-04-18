@@ -9,6 +9,7 @@ using L24CM.Search;
 using L24CM.Attributes;
 using L24CM.Utility;
 using System.Web.Routing;
+using L24CM.Membership;
 
 namespace L24CM.Controllers
 {
@@ -103,5 +104,12 @@ namespace L24CM.Controllers
             return Content("OK");
         }
 
+        [HttpPost, Authorize(Roles = Models.User.UserRole)]
+        public ActionResult ChangePassword(string newPw)
+        {
+            //IUser user = 
+
+            return Content("OK");
+        }
     }
 }

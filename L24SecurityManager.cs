@@ -89,6 +89,8 @@ namespace L24CM
 
         public IUser GetFromCache()
         {
+            if (HttpContext.Current == null || HttpContext.Current.Session == null)
+                return null;
             IUser user = HttpContext.Current.Session[CurrentUserKey] as IUser;
             return user;
         }
@@ -98,7 +100,8 @@ namespace L24CM
             if (user == null) return;
 
             IUser detUser = (user as EntityObject).DetachedClone() as IUser;
-            HttpContext.Current.Session[CurrentUserKey] = detUser;
+            if (HttpContext.Current != null && HttpContext.Current.Session != null)
+                HttpContext.Current.Session[CurrentUserKey] = detUser;
         }
 
         #endregion

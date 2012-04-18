@@ -10,6 +10,7 @@ using L24CM.Models;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.ComponentModel;
+using Newtonsoft.Json;
 
 namespace L24CM.Utility
 {
@@ -162,6 +163,13 @@ namespace L24CM.Utility
             html.RegisterCss("/L24CM/Embedded/Content/jquery-ui.css");
 
             return MvcHtmlString.Create(sb.ToString());
+        }
+
+        public static MvcHtmlString ClientScriptAssign(this HtmlHelper html, string varName, object value)
+        {
+            string jsonValue = JsonConvert.SerializeObject(value);
+            string output = string.Format("<script type='text/javascript'>var {0} = {1};</script>", varName, jsonValue);
+            return MvcHtmlString.Create(output);
         }
     }
 }
