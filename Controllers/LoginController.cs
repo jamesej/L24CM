@@ -65,5 +65,20 @@ namespace L24CM.Controllers
             // If we got this far, something failed, redisplay form
             return View(ConfigHelper.GetViewPath("L24CMLogin.aspx"), login);
         }
+
+        [Authorize(Roles = Models.User.UserRole)]
+        public ActionResult Logout(string returnUrl)
+        {
+            FormsAuthentication.SignOut();
+
+            if (!String.IsNullOrEmpty(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home", new { area = "" });
+            }
+        }
     }
 }

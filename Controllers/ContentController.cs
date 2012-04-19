@@ -83,11 +83,13 @@ namespace L24CM.Controllers
                 return;
             }
 
+            string modeFlag = (Request.QueryString["-mode"] ?? "").ToLower();
+
             if (Roles.IsUserInRole(L24CM.Models.User.EditorRole)
                 && !filterContext.IsChildAction               // not called as part of another request
                 && RouteData.Values["originalAction"] == null // this is not a divert
                 && Request.RequestType == "GET"
-                && (Request.QueryString["-mode"] ?? "").ToLower() != "view")
+                && modeFlag != "view")
             {
                 ViewData["Path"] = "/" + (string)RouteData.Values["path"];
                 string query = Request.QueryString.ToString();

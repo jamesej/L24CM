@@ -116,7 +116,7 @@ namespace L24CM.Utility
         public static TValue FirstSelectOrDefault<TElement, TValue>(this IEnumerable<TElement> source, Func<TElement, bool> test, Func<TElement, TValue> selector)
         {
             TElement el = source.FirstOrDefault(test);
-            if (el.Equals(default(TElement)))
+            if (el == null || el.Equals(default(TElement)))
                 return default(TValue);
             else
                 return selector(el);

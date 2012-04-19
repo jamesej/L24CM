@@ -28,9 +28,9 @@ namespace L24CM
                 output = File.OpenWrite(path);
                 input.CopyTo(output);
             }
-            catch
+            catch (Exception ex)
             {
-                return false;
+                throw ex;
             }
             finally
             {

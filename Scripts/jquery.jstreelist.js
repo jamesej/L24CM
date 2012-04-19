@@ -201,6 +201,7 @@ $.fn.jstreelist = function(options) {
         onComplete: function(id, filename, responseJSON) {
             commands.showDir('uploader');
 			setTimeout("$('.qq-upload-list').find('li:first').remove()", 3500);
+            if (responseJSON.success != "OK") alert(responseJSON.success);
         }
     });
 

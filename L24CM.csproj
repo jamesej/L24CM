@@ -153,6 +153,7 @@
     <Compile Include="Models\LoaderDictionary.cs" />
     <Compile Include="Models\PageContent.cs" />
     <Compile Include="Models\PagingInfo.cs" />
+    <Compile Include="Routing\RedirectRoute.cs" />
     <Compile Include="Routing\SiteStructure.cs" />
     <Compile Include="Routing\ContentRoute.cs" />
     <Compile Include="Controllers\ContentController.cs" />

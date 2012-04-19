@@ -1,21 +1,75 @@
-﻿iframe { border: 0; }
-
-body { font-family: Arial, Sans-Serif; margin: 0px; padding: 0px; }
-
-.editor-label { background-color: Gray; color: White; padding: 2px; font-size: 12px; height: auto; }
-
-#editPanel { font-size: 11px; }
-#editPanel input[type="text"] { font-size: 11px; }
-.file-image-thumb { max-width: 50px; max-height: 50px; }
-#editPanel .action-button, #editPanel .add-button { color: White; background-color: Gray; font-size: 16px; width: 16px; text-align: center; border: solid 1px White; cursor: pointer; }
-#editPanel .action-button:hover, #editPanel .add-button:hover { background-color: Black; }
-#editPanel #save { width: auto; }
-#editPanel .closed { display: none; }
-#editPanel .collection>table, #editPanel .collection>div { border-bottom: solid 2px White; }
-#editPanel .collection .action-button { background-color: Gray; float: left; }
-#editPanel .editor-field .text-box { width: 100%; }
-
-#outer { width: 600px; height: 300px; z-index: 0; }
+IFRAME
+{
+	border: 0;
+}
+BODY
+{
+	font-family: Arial, Sans-Serif;
+	margin: 0px;
+	padding: 0px;
+}
+.editor-label
+{
+	background-color: #808080;
+	color: #FFFFFF;
+	padding: 2px;
+	font-size: 12px;
+	height: auto;
+}
+#editPanel
+{
+	font-size: 11px;
+}
+#editPanel INPUT[type="text"]
+{
+	font-size: 11px;
+}
+.file-image-thumb
+{
+	max-width: 50px;
+	max-height: 50px;
+}
+#editPanel .action-button, #editPanel .add-button
+{
+	color: #FFFFFF;
+	background-color: #808080;
+	font-size: 16px;
+	width: 16px;
+	text-align: center;
+	border: 1px solid #FFFFFF;
+	cursor: pointer;
+}
+#editPanel .action-button:hover, #editPanel .add-button:hover
+{
+	background-color: #000000;
+}
+#editPanel #save
+{
+	width: auto;
+}
+#editPanel .closed
+{
+	display: none;
+}
+#editPanel .collection > TABLE, #editPanel .collection > DIV
+{
+	border-bottom: 2px solid #FFFFFF;
+}
+#editPanel .collection .action-button
+{
+	background-color: #808080;
+	float: left;
+}
+#editPanel .editor-field .text-box
+{
+	width: 100%;
+}
+#outer
+{
+	width: 600px;
+	height: 300px;
+	z-index: 0;
+}
 #listContainer, #treeContainer
 {
 	-webkit-user-select: none;
@@ -24,25 +78,106 @@ body { font-family: Arial, Sans-Serif; margin: 0px; padding: 0px; }
 	-o-user-select: none;
 	user-select: none;
 }
-.jstreelist-folder-active { border: solid 1px #3030ff; background-color: Red important!; border-radius: 3px; -moz-border-radius: 3px; }
-
-#simplemodal-overlay { background-color: #000; }
-#simplemodal-container { padding: 20px; background-color: #e0e0ff; border-radius: 8px; -moz-border-radius: 10px; }
-
-#filename { width: 320px }
-#fileDetails { float:right }
-.file-image-thumb { max-width: 50px; max-height: 50px; }
-
-#structureManager .editor-label { height: 22px; margin-bottom: 3px; cursor: pointer; }
-#structureManager .template-name { float: left; width: 120px; overflow: hidden; font-size: 16px; }
-#structureManager .inst { font-size: 12px; }
-#structureManager .inst-list { max-height: 400px; overflow: auto; }
-#structureManager .edit-area { background-color: #f0f0f0; margin-top: 3px; }
-#structureManager .url-pattern { font-size: 12px; margin-top: 2px; }
-#structureManager .enter-route { margin-top: 2px; }
-#structureManager .input0 { border: solid 1px #0000d6 }
-#structureManager .input1 { border: solid 1px #1414ff }
-#structureManager .input2 { border: solid 1px #00994d }
-#structureManager .input3 { border: solid 1px #4d9900 }
-#structureManager .input4 { border: solid 1px #999900 }
-#structureManager .input5 { border: solid 1px #d6d600 }
+.jstreelist-folder-active
+{
+	border: 1px solid #3030FF;
+	background-color: Red important!;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+}
+#simplemodal-overlay
+{
+	background-color: #000;
+}
+#simplemodal-container
+{
+	padding: 20px;
+	background-color: #E0E0FF;
+	border-radius: 8px;
+	-moz-border-radius: 10px;
+}
+#filename
+{
+	width: 320px;
+}
+#fileDetails
+{
+	float: right;
+}
+.file-image-thumb
+{
+	max-width: 50px;
+	max-height: 50px;
+}
+#structureManager .editor-label
+{
+	height: 22px;
+	margin-bottom: 3px;
+	cursor: pointer;
+}
+#structureManager .template-name
+{
+	float: left;
+	width: 120px;
+	overflow: hidden;
+	font-size: 16px;
+}
+#structureManager .inst
+{
+	font-size: 12px;
+}
+#structureManager .inst-list
+{
+	max-height: 400px;
+	overflow: auto;
+}
+#structureManager .edit-area
+{
+	background-color: #F0F0F0;
+	margin-top: 3px;
+}
+#structureManager .url-pattern
+{
+	font-size: 12px;
+	margin-top: 2px;
+}
+#structureManager .enter-route
+{
+	margin-top: 2px;
+}
+#structureManager .input0
+{
+	border: 1px solid #0000D6;
+}
+#structureManager .input1
+{
+	border: 1px solid #1414FF;
+}
+#structureManager .input2
+{
+	border: 1px solid #00994D;
+}
+#structureManager .input3
+{
+	border: 1px solid #4D9900;
+}
+#structureManager .input4
+{
+	border: 1px solid #999900;
+}
+#structureManager .input5
+{
+	border: 1px solid #D6D600;
+}
+#funcPanel
+{
+	font-size: 10pt;
+	margin-bottom: 2px;
+	margin-top: 2px;
+	background-color: #D2D5D7;
+	padding: 2px;
+}
+#funcPanel A, #funcPanel A:visited
+{
+	color: #000;
+}
