@@ -65,6 +65,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>ThirdParty\Lucene.Net.dll</HintPath>
     </Reference>
+    <Reference Include="MySql.Data, Version=6.5.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
+    <Reference Include="MySql.Data.Entity, Version=6.5.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json, Version=4.0.8.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>ThirdParty\Newtonsoft.Json.dll</HintPath>
@@ -111,6 +113,7 @@
     <Compile Include="Attributes\NoCacheAttribute.cs" />
     <Compile Include="Attributes\RedirectPropertySourceAttribute.cs" />
     <Compile Include="Attributes\RequiredAnyAttribute.cs" />
+    <Compile Include="Collation\BaseSummary.cs" />
     <Compile Include="Collation\CollatorBuilder.cs" />
     <Compile Include="Collation\DefaultCollatorFactory.cs" />
     <Compile Include="Collation\ICollator.cs" />

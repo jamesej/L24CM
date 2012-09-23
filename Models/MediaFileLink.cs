@@ -8,6 +8,7 @@ namespace L24CM.Models
     public class MediaFileLink
     {
         public string Url { get; set; }
+        public BbText Content { get; set; }
 
         public MediaFileLink()
         {

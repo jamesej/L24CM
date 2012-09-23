@@ -33,13 +33,5 @@ namespace L24CM.Attributes
                 return UniqueId;
             }
         }
-
-        public override string ToString()
-        {
-            if (string.IsNullOrEmpty(SourceDescriptor))
-                return "{redirect " + Path + " on default content address}";
-            else
-                return "{redirect " + Path + " on " + SourceDescriptor + "}";
-        }
     }
 }

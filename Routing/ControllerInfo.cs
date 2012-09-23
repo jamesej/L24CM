@@ -25,6 +25,9 @@ namespace L24CM.Routing
         public List<string> SignificantRouteKeys { get; set; }
         public Dictionary<string, string> Defaults { get; set; }
 
+        /// <summary>
+        /// All route keys in the Url (except 'action')
+        /// </summary>
         public List<string> RouteKeys
         {
             get

@@ -43,6 +43,8 @@ namespace L24CM.Collation
                 foreach (var rpsAttribute in rpsAttributes)
                 {
                     ContentAddress refdAddress = primaryAddress.Redirect(rpsAttribute.SourceDescriptor);
+                    if (refdAddress == primaryAddress) // redirected to itself
+                        continue;
                     ContentItem refdItem = items.FirstOrDefault(ci => ci.ContentAddress == refdAddress);
                     if (refdItem != null)
                         foreach (string path in rpsAttribute.Paths)
@@ -73,6 +75,8 @@ namespace L24CM.Collation
                 foreach (var rpsAttribute in rpsAttributes)
                 {
                     ContentAddress refdAddress = contentItem.ContentAddress.Redirect(rpsAttribute.SourceDescriptor);
+                    if (refdAddress == contentItem.ContentAddress) // redirected to itself
+                        continue;
                     ContentItem refdItem = items.FirstOrDefault(ci => ci.ContentAddress == refdAddress);
                     if (refdItem != null)
                         foreach (string path in rpsAttribute.Paths)
