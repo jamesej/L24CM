@@ -6,6 +6,8 @@ using System.Web.Script.Serialization;
 using L24CM.Utility;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Reflection;
+using System.Linq.Expressions;
 
 namespace L24CM.Models
 {
@@ -83,6 +85,12 @@ namespace L24CM.Models
             return sis;
         }
 
+        public PropertyInfo GetSummaryProperty(Type t)
+        {
+            Type summaryType = typeof(Summary);
+            return t.GetProperties().FirstOrDefault(pi => summaryType.IsAssignableFrom(pi.PropertyType));
+        }
+
         public T GetContent<T>() where T: new()
         {
             T contentObject = default(T);
@@ -93,7 +101,40 @@ namespace L24CM.Models
             else
                 contentObject = JsonConvert.DeserializeObject<T>(this.Content);
 
+            // Set the summary value if record field has data and a summary property exists on the type
+            if (!string.IsNullOrEmpty(this.Summary))
+            {
+                PropertyInfo summaryPI = GetSummaryProperty(typeof(T));
+                if (summaryPI != null)
+                    summaryPI.SetValue(contentObject, JsonConvert.DeserializeObject(this.Summary, summaryPI.PropertyType), null);
+            }
+
             return contentObject;
+        }
+
+        public void SetContent<T>()
+        {
+            if (this.JObjectContent == null)
+                throw new Exception("Setting content from uninitialised JObjectContent");
+            SetContent<T>(this.JObjectContent);
+        }
+        public void SetContent<T>(JObject jObjectContent)
+        {
+            // ContentItem property is not for serialization
+            jObjectContent.Remove("ContentItem");
+
+            this.JObjectContent = jObjectContent;
+            PropertyInfo summaryPI = GetSummaryProperty(typeof(T));
+            if (summaryPI != null)
+            {
+                JToken summaryProp = jObjectContent[summaryPI.Name];
+                this.Summary = summaryProp.ToString();
+                JObject contentWithoutSummary = jObjectContent.DeepClone() as JObject;
+                contentWithoutSummary.Remove(summaryPI.Name);
+                this.Content = contentWithoutSummary.ToString();
+            }
+            else
+                this.Content = jObjectContent.ToString();
         }
 
         public object GetContent()
@@ -101,6 +142,9 @@ namespace L24CM.Models
             JavaScriptSerializer jsSer = new JavaScriptSerializer();
             Type t = System.Type.GetType(this.Type);
             objectContent = jsSer.DeserializeObject(this.Content) as Dictionary<string, object>;
+            // add summary data
+            if (!string.IsNullOrEmpty(this.Summary))
+                (jsSer.DeserializeObject(this.Summary) as Dictionary<string, object>).Do(kvp => objectContent.Add(kvp.Key, kvp.Value));
             return null;
         }
 

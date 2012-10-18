@@ -493,6 +493,30 @@ namespace L24CM.Models
         private global::System.String _VersionKey;
         partial void OnVersionKeyChanging(global::System.String value);
         partial void OnVersionKeyChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Summary
+        {
+            get
+            {
+                return _Summary;
+            }
+            set
+            {
+                OnSummaryChanging(value);
+                ReportPropertyChanging("Summary");
+                _Summary = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Summary");
+                OnSummaryChanged();
+            }
+        }
+        private global::System.String _Summary;
+        partial void OnSummaryChanging(global::System.String value);
+        partial void OnSummaryChanged();
 
         #endregion
     

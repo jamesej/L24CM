@@ -9,6 +9,9 @@ using System.Collections;
 using System.Linq.Dynamic;
 using L24CM.Attributes;
 using Newtonsoft.Json.Linq;
+using System.Linq.Expressions;
+using Newtonsoft.Json;
+using System.Web.Script.Serialization;
 
 namespace L24CM.Models
 {
@@ -172,6 +175,31 @@ namespace L24CM.Models
                 .AsEnumerable()
                 .Select(ci => new AddressedContent<T> { Address = ci.ContentAddress, Content = ci.GetContent<T>() });
             return query;
+        }
+        public virtual IEnumerable<AddressedContent<T>> GetContent<T>(Func<IQueryable<ContentItem>, IQueryable<ContentItem>> processItems)
+            where T: BaseContent, new()
+        {
+            string typeName = typeof(T).FullName;
+
+            return processItems(Ctx.ContentItemSet.Where(ci => ci.Type == typeName))
+                .AsEnumerable()
+                .Select(ci => new AddressedContent<T>() { Address = ci.ContentAddress, Content = ci.GetContent<T>() });
+        }
+
+        public virtual IEnumerable<AddressedSummary<TSummary>> GetSummaries<TContent, TSummary>(
+            Func<IQueryable<ContentItem>, IQueryable<ContentItem>> processItems)
+            where TSummary : Summary, new()
+        {
+            string typeName = typeof(TContent).FullName;
+
+            return processItems(Ctx.ContentItemSet.Where(ci => ci.Type == typeName))
+                .Select(ci => new { ci.Summary, ci.ContentAddress })
+                .AsEnumerable()
+                .Select(ci => new AddressedSummary<TSummary>
+                {
+                     Address = ci.ContentAddress,
+                     Summary = new JavaScriptSerializer().Deserialize<TSummary>(ci.Summary)
+                });
         }
     }
 }

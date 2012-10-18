@@ -66,7 +66,12 @@ namespace L24CM.Models
                 content.ContentItem = ContentItem;
                 return content;
             }
-            set { content = value; }
+            set
+            {
+                content = value;
+                if (content.ContentItem == null)
+                    content.ContentItem = ContentItem;
+            }
         }
     }
 }

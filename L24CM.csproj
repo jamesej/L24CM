@@ -65,8 +65,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>ThirdParty\Lucene.Net.dll</HintPath>
     </Reference>
-    <Reference Include="MySql.Data, Version=6.5.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
-    <Reference Include="MySql.Data.Entity, Version=6.5.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
+    <Reference Include="MySql.Data, Version=6.3.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
+    <Reference Include="MySql.Data.Entity, Version=6.3.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json, Version=4.0.8.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>ThirdParty\Newtonsoft.Json.dll</HintPath>
@@ -146,9 +146,11 @@
     <Compile Include="Collation\DefaultContentCollator.cs" />
     <Compile Include="Models\ContentRepository.cs" />
     <Compile Include="Models\ContentModel.cs" />
+    <Compile Include="Models\AddressedSummary.cs" />
     <Compile Include="Models\MediaFileLink.cs" />
     <Compile Include="Models\ImageLink.cs" />
     <Compile Include="Models\Recaptcha.cs" />
+    <Compile Include="Models\Summary.cs" />
     <Compile Include="Routing\ControllerInfo.cs" />
     <Compile Include="Models\Image.cs" />
     <Compile Include="Models\L24CMEntities.cs" />
@@ -194,6 +196,7 @@
     <Compile Include="Routing\RouteX.cs" />
     <Compile Include="Routing\UrlPattern.cs" />
     <Compile Include="Search\SearchManager.cs" />
+    <Compile Include="Serialization\ExcludePropertiesContractResolver.cs" />
     <Compile Include="ThirdParty\Dynamic.cs" />
     <Compile Include="ThirdParty\RssReader.cs" />
     <Compile Include="Utility\ArrayGraph.cs" />
@@ -211,7 +214,9 @@
     <Compile Include="XhrFileUploader.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.Config" />
+    <None Include="App.Config">
+      <SubType>Designer</SubType>
+    </None>
     <EntityDeploy Include="Models\L24CM.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>L24CM.Designer.cs</LastGenOutput>

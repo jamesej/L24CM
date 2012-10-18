@@ -15,7 +15,7 @@
           </Key>
           <Property Name="action" Type="varchar" Nullable="false" MaxLength="45" />
           <Property Name="addresskey" Type="char" Nullable="false" MaxLength="32" />
-          <Property Name="content" Type="varchar" MaxLength="60000" />
+          <Property Name="content" Type="varchar" MaxLength="15000" />
           <Property Name="controller" Type="varchar" Nullable="false" MaxLength="45" />
           <Property Name="path" Type="varchar" Nullable="false" MaxLength="700" />
           <Property Name="subindex0" Type="varchar" MaxLength="150" />
@@ -27,6 +27,7 @@
           <Property Name="type" Type="varchar" Nullable="false" MaxLength="300" />
           <Property Name="version" Type="int" />
           <Property Name="versionkey" Type="char" Nullable="false" MaxLength="32" />
+          <Property Name="summary" Type="varchar" MaxLength="5000" />
         </EntityType>
         <EntityType Name="user">
           <Key>
@@ -65,7 +66,9 @@
           <Property Name="Subindex5" Type="String" Nullable="true" />
           <Property Name="AddressKey" Type="String" Nullable="false" />
           <Property Name="Version" Type="Int32" Nullable="true" />
-          <Property Name="VersionKey" Type="String" Nullable="false" /></EntityType>
+          <Property Name="VersionKey" Type="String" Nullable="false" />
+          <Property Name="Summary" Type="String" />
+        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="Id" /></Key>
@@ -100,6 +103,7 @@
                 <ScalarProperty Name="Content" ColumnName="content" />
                 <ScalarProperty Name="Path" ColumnName="path" />
                 <ScalarProperty Name="Type" ColumnName="type" />
+                <ScalarProperty Name="Summary" ColumnName="summary"/>
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

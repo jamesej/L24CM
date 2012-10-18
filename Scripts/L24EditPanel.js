@@ -2,6 +2,24 @@
     $(document).ready(function () {
         $(window).scrollTop($('#formState').val().afterLast(';'));
 
+        var showLinkFields = function () {
+            $link = $(this).closest('.l24-link');
+            var isint = $link.find('.l24-link-isinternal input').attr('checked');
+            $link.find('.l24-link-controller')[isint ? 'show' : 'hide']();
+            $link.find('.l24-link-action')[isint ? 'show' : 'hide']();
+            $link.find('.l24-link-url')[isint ? 'hide' : 'show']();
+        }
+
+        function setupAfterLoad($container) {
+            $container.find('.collection').closest('.editor-field').prev('.editor-label')
+			.addClass('parent').addClass('child-closed').css('cursor', 'pointer');
+
+            $container.find('.l24-link').each(showLinkFields);
+            $container.find('.l24-link-isinternal input').click(showLinkFields);
+        }
+
+        setupAfterLoad($('#editPanel'));
+
         function addItem($addButton, param, postAdd) {
             var postUrl = $('#editPanel form').attr('action').upTo('?');
             var prop = $addButton.attr('id').after('-');
@@ -11,6 +29,7 @@
             $.get(postUrl + '?-action=PropertyItemHtml&propertyPath=' + prop + '&depth=' + depth)
 				.success(function (html) {
 				    var $add = $(html).find('.collection');
+				    $add.find('.add-button').remove();
 				    var $lastInput = $collection.find("input[name*=']']:last");
 				    var n = $lastInput.length ? (parseInt($lastInput.attr('name').afterLast('[').upTo(']')) + 1) : 0;
 				    $add.find("[id*=']']").each(function () {
@@ -21,7 +40,14 @@
 				        var name = $(this).attr('name');
 				        $(this).attr('name', name.upToLast('[') + '[' + n + ']' + name.afterLast(']'));
 				    });
-				    var $added = $add.contents().appendTo($collection);
+				    var indentInc = parseInt($addButton.attr('class').after('indent-').upTo(' '));
+				    $add.find("[class*='indent-']").each(function () {
+				        var cls = $(this).attr('class');
+				        var indent = parseInt(cls.after('indent-').upTo(' ')) + indentInc;
+				        $(this).attr('class', cls.upTo('indent-') + 'indent-' + indent + ' ' + cls.after('indent-').after(' '));
+				    });
+				    var $added = $add.contents().insertBefore($addButton);
+				    setupAfterLoad($added);
 				    if (postAdd) postAdd($added, param);
 				});
         }
@@ -86,20 +112,6 @@
                 $this.siblings('input').val(h);
             });
         });
-
-        $('.collection').closest('.editor-field').prev('.editor-label')
-			.addClass('parent').addClass('child-closed').css('cursor', 'pointer');
-
-        var showLinkFields = function () {
-            $link = $(this).closest('.l24-link');
-            var isint = $link.find('.l24-link-isinternal input').attr('checked');
-            $link.find('.l24-link-controller')[isint ? 'show' : 'hide']();
-            $link.find('.l24-link-action')[isint ? 'show' : 'hide']();
-            $link.find('.l24-link-url')[isint ? 'hide' : 'show']();
-        }
-
-        $('.l24-link').each(showLinkFields);
-        $('.l24-link-isinternal input').click(showLinkFields);
 
     });
 })(jQuery);
