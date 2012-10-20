@@ -68,7 +68,7 @@ namespace L24CM.Collation
                     .ToList();
             List<ContentItem> items = ContentRepository.Instance.GetContentItems(addresses);
             
-            contentItem.JObjectContent = JObject.FromObject(content);
+            JObject jObjectContent = JObject.FromObject(content);
 
             if (rpsAttributes.Any())
             {
@@ -80,11 +80,11 @@ namespace L24CM.Collation
                     ContentItem refdItem = items.FirstOrDefault(ci => ci.ContentAddress == refdAddress);
                     if (refdItem != null)
                         foreach (string path in rpsAttribute.Paths)
-                            UpdateItemForPathSource(refdItem, path, contentItem.JObjectContent);
+                            UpdateItemForPathSource(refdItem, path, jObjectContent);
                 }
             }
 
-            contentItem.Content = contentItem.JObjectContent.ToString();
+            contentItem.SetContent<T>(jObjectContent);
 
             ContentRepository.Instance.Save();
         }

@@ -154,6 +154,7 @@ namespace L24CM.Controllers
 
                 }
             }
+            Model.Content = update;
             CollatorBuilder.Factory.Create(this.RouteData).SetContent(Model.ContentItem, update);
 
             ViewData["formState"] = formState;
