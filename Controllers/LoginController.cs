@@ -52,7 +52,7 @@ namespace L24CM.Controllers
                         }
                         else
                         {
-                            return RedirectToAction("Index", "Home", new { area = "" });
+                            return Redirect("/");
                         }
                     }
                     else
