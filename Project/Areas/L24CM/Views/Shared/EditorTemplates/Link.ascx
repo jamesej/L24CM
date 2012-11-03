@@ -1,17 +1,27 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<L24CM.Models.Link>" %>
+<%@ Import Namespace="L24CM.Models" %>
 <% if (Model != null) { %>
-<table class='l24-link'>
-<tr class='l24-link-isinternal'>
-<td>Is Internal</td><td><input type="checkbox" name="<%= ViewData.TemplateInfo.HtmlFieldPrefix %>.IsInternal" <%= Model.IsInternal ? "checked" : "" %> /></td>
-</tr><tr class='l24-link-controller'>
-<td>Controller</td><td><input type="text" name="<%= ViewData.TemplateInfo.HtmlFieldPrefix %>.Controller" value="<%= Model.Controller %>" /></td>
-</tr><tr class='l24-link-action'>
-<td>Action</td><td><input type="text" name="<%= ViewData.TemplateInfo.HtmlFieldPrefix %>.Action" value="<%= Model.Action %>" /></td>
-</tr><tr class='l24-link-url'>
-<td>Url</td><td><input type="text" name="<%= ViewData.TemplateInfo.HtmlFieldPrefix %>.Url" value="<%= Model.Url %>" /></td>
-</tr><tr class='l24-link-content'>
-<td>Content</td><td><input type="text" name="<%= ViewData.TemplateInfo.HtmlFieldPrefix %>.Content" value="<%= Model.Content %>" /></td>
-</tr>
-</table>
+    <div class='l24-link'>
+        <div class='l24-link-isinternal'>
+            <input type="checkbox" name="<%= ViewData.TemplateInfo.HtmlFieldPrefix %>.IsInternal" <%= Model.IsInternal ? "checked" : "" %> />
+            <span>Internal</span>
+        </div>
+        <div class='l24-link-controller'>
+            <span>Controller</span>
+            <input type="text" name="<%= ViewData.TemplateInfo.HtmlFieldPrefix %>.Controller" value="<%= Model.Controller %>" />
+        </div>
+        <div class='l24-link-action'>
+            <span>Action</span>
+            <input type="text" name="<%= ViewData.TemplateInfo.HtmlFieldPrefix %>.Action" value="<%= Model.Action %>" />
+        </div>
+        <div class='l24-link-url'>
+            <span>Url</span>
+            <input type="text" name="<%= ViewData.TemplateInfo.HtmlFieldPrefix %>.Url" value="<%= Model.Url %>" />
+        </div>
+        <div class='l24-link-content'>
+            <span>Content</span>
+            <input type="text" class="bb-text" name="<%= ViewData.TemplateInfo.HtmlFieldPrefix %>.Content" value="<%= (Model.Content ?? BbText.Empty).Text %>" />
+        </div>
+    </div>
 <% } %>
 

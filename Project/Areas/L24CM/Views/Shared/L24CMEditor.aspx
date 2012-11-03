@@ -5,8 +5,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head runat="server">
         <title>Editor</title>
+    <script type="text/javascript" src="/L24CM/Embedded/Scripts/jquery-ui.js"></script>
     <script type="text/javascript" src="/L24CM/Embedded/Scripts/L24EditPanel.js"></script>
-    <link type="text/css" href="/L24CM/Embedded/Content/L24Main.css" rel="stylesheet" />
+    <!--<link type="text/css" href="/L24CM/Embedded/Content/L24Main.css" rel="stylesheet" />-->
+    <link type="text/css" href="/L24CM/Embedded/Content/jquery-ui.css" rel="stylesheet" />
+    <link type="text/css" href="/Areas/L24CM/Content/L24Main.css" rel="stylesheet" />
 </head>
 <body>
     <div id='funcPanel'>
