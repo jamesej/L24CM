@@ -33,7 +33,7 @@ namespace L24CM.Models
         public string Action { get; set; }
         public string Controller { get; set; }
 
-        public string Content { get; set; }
+        public BbText Content { get; set; }
 
         public Link()
         {

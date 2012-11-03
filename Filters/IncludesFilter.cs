@@ -57,7 +57,7 @@ namespace L24CM.Filters
             int pos = 0;
             foreach (HtmlNode existingIncl in existingIncludes)
             {
-                while (newIncludes[pos] != existingIncl.GetAttributeValue(attr, ""))
+                while (pos < newIncludes.Count && newIncludes[pos] != existingIncl.GetAttributeValue(attr, ""))
                 {
                     HtmlNode newNode = MakeNode(doc, tag, attr, newIncludes[pos], createAttributes);
                     existingIncl.ParentNode.InsertBefore(newNode, existingIncl);
