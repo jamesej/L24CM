@@ -69,6 +69,7 @@ namespace Cyotek.Web.BbCodeFormatter
       _formatters.Add(new RegexFormatter(@"\[indent(?:\s*)\]((.|\n)*?)\[/indent(?:\s*)]", "<div class=\"bbc-indent\">$1</div>"));
 
       _formatters.Add(new RegexFormatter(@"\[hr(?:\s*)\]", "<hr />"));
+      _formatters.Add(new RegexFormatter(@"\[br(?:\s*)\]", "<br />"));
       _formatters.Add(new RegexFormatter(@"\[rule=((.|\n)*?)(?:\s*)\]((.|\n)*?)\[/rule(?:\s*)\]", "<div style=\"height: 0pt; border-top: 1px solid $3; margin: auto; width: $1;\"></div>"));
 
       _formatters.Add(new RegexFormatter(@"\[email(?:\s*)\]((.|\n)*?)\[/email(?:\s*)\]", "<a href=\"mailto:$1\">$1</a>"));

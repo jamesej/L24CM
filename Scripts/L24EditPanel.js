@@ -16,9 +16,34 @@
 
             $container.find('.l24-link').each(showLinkFields);
             $container.find('.l24-link-isinternal input').click(showLinkFields);
+            $container.find('.l24-datetime').datepicker({ changeMonth: true, changeYear: true, dateFormat: 'yy-mm-dd' });
         }
 
         setupAfterLoad($('#editPanel'));
+
+        function reindex($container, idx, addToExisting) {
+            $container.find("[id*=']']").andSelf().filter("[id*=']']").each(function () {
+                var id = $(this).attr('id');
+                var newIdx = idx;
+                if (addToExisting)
+                    newIdx += parseInt(id.afterLast('[').upToLast(']'));
+                $(this).attr('id', id.upToLast('[') + '[' + newIdx + ']' + id.afterLast(']'));
+            });
+            $container.find("[name*=']']").andSelf().filter("[name*=']']").each(function () {
+                var name = $(this).attr('name');
+                var newIdx = idx;
+                if (addToExisting)
+                    newIdx += parseInt(name.afterLast('[').upToLast(']'));
+                $(this).attr('name', name.upToLast('[') + '[' + newIdx + ']' + name.afterLast(']'));
+            });
+        }
+
+        function setFirstLast($coll) {
+            var $reorders = $coll.find('.reorder');
+            $reorders.removeClass('first').removeClass('last');
+            $reorders.first().addClass('first');
+            $reorders.last().addClass('last');
+        }
 
         function addItem($addButton, param, postAdd) {
             var postUrl = $('#editPanel form').attr('action').upTo('?');
@@ -26,20 +51,14 @@
             var depth = $addButton.attr('class').after('depth-').upTo(' ');
             var $collection = $addButton.closest('.collection');
             $collection.removeClass('closed');
+            $collection.find('.reorder.last').removeClass('last');
             $.get(postUrl + '?-action=PropertyItemHtml&propertyPath=' + prop + '&depth=' + depth)
 				.success(function (html) {
 				    var $add = $(html).find('.collection');
 				    $add.find('.add-button').remove();
 				    var $lastInput = $collection.find("input[name*=']']:last");
 				    var n = $lastInput.length ? (parseInt($lastInput.attr('name').afterLast('[').upTo(']')) + 1) : 0;
-				    $add.find("[id*=']']").each(function () {
-				        var id = $(this).attr('id');
-				        $(this).attr('id', id.upToLast('[') + '[' + n + ']' + id.afterLast(']'));
-				    });
-				    $add.find("[name*=']']").each(function () {
-				        var name = $(this).attr('name');
-				        $(this).attr('name', name.upToLast('[') + '[' + n + ']' + name.afterLast(']'));
-				    });
+				    reindex($add, n, false);
 				    var indentInc = parseInt($addButton.attr('class').after('indent-').upTo(' '));
 				    $add.find("[class*='indent-']").each(function () {
 				        var cls = $(this).attr('class');
@@ -47,6 +66,7 @@
 				        $(this).attr('class', cls.upTo('indent-') + 'indent-' + indent + ' ' + cls.after('indent-').after(' '));
 				    });
 				    var $added = $add.contents().insertBefore($addButton);
+				    setFirstLast($collection);
 				    setupAfterLoad($added);
 				    if (postAdd) postAdd($added, param);
 				});
@@ -54,15 +74,42 @@
 
         function setFilename($input, fname) {
             $input.val(fname);
-            $input.closest('table').find('.l24-image-content-cell')
+            $input.closest('.l24-image').find('.l24-image-content')
 				.empty()
 				.append($("<img class='file-image-thumb' src='" + fname + "'/>"));
         }
 
         $('#editPanel').delegate('.action-button', 'click', function () {
-            $fs = $('#formState');
-            $fs.val($fs.val() + $(window).scrollTop());
-            $('#editPanel form').append($("<input type='hidden' name='_l24action'/>").val($(this).attr('id'))).submit();
+            var $this = $(this);
+            if ($this.attr('id') == 'save') {
+                $fs = $('#formState');
+                $fs.val($fs.val() + $(window).scrollTop());
+                $('#editPanel form').append($("<input type='hidden' name='_l24action'/>").val($(this).attr('id'))).submit();
+            }
+            if ($this.hasClass('delete')) {
+                reindex($this.nextAll(), -1, true);
+                $this.next().next().remove();
+                $this.next().remove();
+                $this.remove();
+            } else if ($this.hasClass('reorder-up')) {
+                var $this = $this.closest('.reorder').prev();
+                var $block = $this.add($this.next()).add($this.next().next());
+                var $above = $this.prev().prev().prev();
+                $above.before($block);
+                reindex($block, -1, true);
+                $block = $above.add($above.next()).add($above.next().next());
+                reindex($block, 1, true);
+                setFirstLast($this.closest('.collection'));
+            } else if ($this.hasClass('reorder-down')) {
+                var $this = $this.closest('.reorder').prev();
+                var $block = $this.add($this.next()).add($this.next().next());
+                var $below = $this.next().next().next();
+                $below.next().next().after($block);
+                reindex($block, 1, true);
+                $block = $below.add($below.next()).add($below.next().next());
+                reindex($block, -1, true);
+                setFirstLast($this.closest('.collection'));
+            }
         }).delegate('.editor-label.parent', 'click', function () {
             var $collection = $(this).next('.editor-field').find('.collection');
             if ($collection.length == 0) return;
@@ -92,7 +139,7 @@
                     setFilename($fname, fname);
                 } else {
                     if (confirm("You have selected " + files.length + " files, do you want to add them all?")) {
-                        var $addButton = $this.closest('.collection').nextAll('.add-button');
+                        var $addButton = $this.closest('.collection').children('.add-button');
                         setFilename($fname, $.trim(files[0]));
                         for (var i = 1; i < files.length; i++) {
                             addItem($addButton, i, function ($added, idx) {

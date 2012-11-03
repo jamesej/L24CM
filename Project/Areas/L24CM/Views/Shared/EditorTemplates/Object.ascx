@@ -14,16 +14,18 @@
     <% } else { %>
         <%= ViewData.ModelMetadata.SimpleDisplayText %>
     <% } %>
-<% } else { %>    
+<% } else { %>
+    <div class='object'>
     <% foreach (var prop in ViewData.ModelMetadata.Properties.Where(pm => ShouldShow(pm))) {
-           int indent = (ViewData.TemplateInfo.TemplateDepth + ((ViewData["addDepth"] as int?) ?? 0) - 1) * 10;
+           int useDepth = ViewData.TemplateInfo.TemplateDepth + ((ViewData["addDepth"] as int?) ?? 0) - 1;
            if (prop.HideSurroundingHtml) { %>
-            <div class="editor-field" style="margin-left: <%= indent %>px"><%= Html.Editor(prop.PropertyName) %></div>
+            <div class="editor-field indent-<%= useDepth %>"><%= Html.Editor(prop.PropertyName) %></div>
         <% } else { %>
             <% if (!String.IsNullOrEmpty(Html.Label(prop.PropertyName).ToHtmlString())) { %>
-                <div class="editor-label" style="margin-left: <%= indent %>px"><%= Html.Label(prop.PropertyName) %></div>
+                <div class="editor-label indent-<%= useDepth %>"><%= Html.Label(prop.PropertyName) %></div>
             <% } %>
-            <div class="editor-field" style="margin-left: <%= indent %>px"><%= Html.Editor(prop.PropertyName) %> <%= Html.ValidationMessage(prop.PropertyName, "*") %></div>
+            <div class="editor-field indent-<%= useDepth %>"><%= Html.Editor(prop.PropertyName) %> <%= Html.ValidationMessage(prop.PropertyName, "*") %></div>
         <% } %>
     <% } %>
+    </div>  
 <% } %>
