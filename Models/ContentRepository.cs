@@ -193,11 +193,18 @@ namespace L24CM.Models
             string typeName = typeof(TContent).FullName;
 
             return processItems(Ctx.ContentItemSet.Where(ci => ci.Type == typeName))
-                .Select(ci => new { ci.Summary, ci.ContentAddress })
+                .Select(ci => new { ci.Summary, ci.Action, ci.Controller, ci.Subindex0, ci.Subindex1, ci.Subindex2, ci.Subindex3, ci.Subindex4, ci.Subindex5 })
                 .AsEnumerable()
                 .Select(ci => new AddressedSummary<TSummary>
                 {
-                     Address = ci.ContentAddress,
+                     Address = new ContentAddress
+                     {
+                         Action = ci.Action,
+                         Controller = ci.Controller,
+                         Subindexes = new List<string> { ci.Subindex0, ci.Subindex1, ci.Subindex2, ci.Subindex3, ci.Subindex4, ci.Subindex5 }
+                            .TakeWhile(s => s != null)
+                            .ToList()
+                     },
                      Summary = new JavaScriptSerializer().Deserialize<TSummary>(ci.Summary)
                 });
         }

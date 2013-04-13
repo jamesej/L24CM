@@ -111,7 +111,8 @@ namespace L24CM.Models
         public override bool Equals(object obj)
         {
             ContentAddress otherCa = obj as ContentAddress;
-            if (otherCa == null) throw new ArgumentException("Can only compare to another ContentAddress");
+            if (otherCa == null)
+                throw new ArgumentException("Can only compare to another ContentAddress");
             return this.Equals(otherCa);
         }
 

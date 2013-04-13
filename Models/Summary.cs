@@ -11,7 +11,6 @@ namespace L24CM.Models
     /// </summary>
     public class Summary
     {
-        public ContentAddress Address { get; set; }
         public string SummaryTitle { get; set; }
     }
 }
